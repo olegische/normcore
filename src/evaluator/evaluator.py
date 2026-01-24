@@ -105,7 +105,7 @@ from openai.types.chat import (
 )
 
 try:
-    from src.link_builder.models import LinkSet
+    from .models import LinkSet
 except ImportError:
     LinkSet = None  # Fallback if link_builder not available
 

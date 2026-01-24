@@ -54,7 +54,7 @@ from loguru import logger
 from .models import GroundSet, License, Modality, Scope
 
 if TYPE_CHECKING:
-    from src.link_builder.models import LinkSet
+    from ..models import LinkSet
 
 
 class LicenseDeriver:
@@ -83,7 +83,7 @@ class LicenseDeriver:
         return License(permitted_modalities={Modality.CONDITIONAL, Modality.REFUSAL})
 
     def _derive_with_links(self, ground_set: GroundSet, links: "LinkSet") -> License:
-        from src.link_builder.models import LinkRole
+        from ..models import LinkRole
 
         support_links = [link for link in links.links if link.role == LinkRole.SUPPORTS]
         if not support_links:
@@ -146,7 +146,7 @@ class LicenseDeriver:
 
         if links is not None:
             try:
-                from src.link_builder.models import LinkRole
+                from ..models import LinkRole
 
                 support_links = [link for link in links.links if link.role == LinkRole.SUPPORTS]
                 trace["supports_links_count"] = len(support_links)
