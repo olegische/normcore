@@ -1,0 +1,239 @@
+[project]
+name = "normcore"
+version = "0.1.0"
+description = "NormCore is a Python library for deterministic, auditable evaluation of agent speech-act admissibility based on modality and grounding."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Oleg Romanchuk" }
+]
+keywords = [
+    "llm",
+    "ai-agents",
+    "agents",
+    "admissibility",
+    "grounding",
+    "modality",
+    "evaluation",
+    "policy",
+    "safety",
+    "deterministic",
+    "auditability"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    # LLM Clients
+    "openai==2.15.0",
+    
+    # Data Validation
+    "pydantic==2.12.5",
+    "pydantic-core==2.41.5",
+    # "pydantic-settings==2.12.0",
+    
+    # Logging & Output
+    "loguru==0.7.3",
+    # "rich==14.2.0",
+    
+    # HTTP
+    # "httpx==0.28.1",
+    # "aiohttp==3.13.2",
+    # "certifi==2025.11.12",
+    
+    # Utilities
+    # "python-dotenv==1.2.1",
+    # "pyyaml==6.0.3",
+    # "toml==0.10.2",
+    # "python-dateutil==2.9.0",
+    # "click==8.3.1",
+    # "jinja2==3.1.6",
+    # "deepdiff==8.6.1",
+    
+    # JSON & Data
+    # "addict==2.4.0",
+    # "pandas==2.3.3",
+    # "matplotlib==3.10.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0.0",
+    "ruff>=0.11.0",
+    "mypy>=1.10.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "pytest-xdist>=3.0.0",
+    "ipython>=8.0.0",
+    "pudb>=2024.1.0",
+]
+
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "pytest-xdist>=3.0.0",
+]
+
+lint = [
+    "black>=24.0.0",
+    "ruff>=0.11.0",
+]
+
+type = [
+    "mypy>=1.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/olegische/normcore"
+Repository = "https://github.com/olegische/normcore"
+Documentation = "https://github.com/olegische/normcore#readme"
+Issues = "https://github.com/olegische/normcore/issues"
+
+[project.scripts]
+normcore = "src.engine.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+# === Ruff Configuration ===
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    ".ruff_cache",
+    "__pycache__",
+    "vendor",
+    "*.egg-info",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "D",      # pydocstyle
+    "UP",     # pyupgrade
+    "ARG",    # flake8-unused-arguments
+    "SIM",    # flake8-simplify
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+    "B904",   # use `raise ... from err`
+    "ARG002", # unused method argument
+    "D100",   # missing docstring in public module
+    "D104",   # missing docstring in public package
+]
+unfixable = [
+    "UP",     # avoid auto-changing public signatures without review
+    "SIM",    # avoid readability regressions in public API
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "D",      # docstrings not required in tests
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# === Black Configuration ===
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | venv
+  | vendor
+  | build
+  | dist
+)/
+'''
+
+# === Pytest Configuration ===
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src",
+    "--cov-report=term-missing",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
+
+# === Coverage Configuration ===
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/vendor/*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+# === MyPy Configuration ===
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+follow_imports = "normal"
+ignore_missing_imports = false
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
