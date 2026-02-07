@@ -1,7 +1,7 @@
 import pytest
 
-from evaluator.normative.modality_detector import ModalityDetector
-from evaluator.normative.models import Modality, Statement
+from normcore.normative.modality_detector import ModalityDetector
+from normcore.normative.models import Modality, Statement
 
 
 def test_refusal_has_highest_priority():

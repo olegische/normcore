@@ -1,5 +1,5 @@
-from evaluator.normative.ground_matcher import GroundSetMatcher
-from evaluator.normative.models import KnowledgeNode, Modality, Scope, Source, Statement, Status
+from normcore.normative.ground_matcher import GroundSetMatcher
+from normcore.normative.models import KnowledgeNode, Modality, Scope, Source, Statement, Status
 
 
 def _node(node_id: str, scope: Scope) -> KnowledgeNode:

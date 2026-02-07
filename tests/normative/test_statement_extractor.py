@@ -1,4 +1,4 @@
-from evaluator.normative.statement_extractor import StatementExtractor
+from normcore.normative.statement_extractor import StatementExtractor
 
 
 def test_extract_empty_text_returns_empty():

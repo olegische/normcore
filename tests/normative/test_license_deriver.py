@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from evaluator.models.links import LinkRole, LinkSet, Provenance, StatementGroundLink, CreatorType, EvidenceType
-from evaluator.normative.license_deriver import LicenseDeriver
-from evaluator.normative.models import GroundSet, KnowledgeNode, Modality, Scope, Source, Status
+from normcore.models.links import LinkRole, LinkSet, Provenance, StatementGroundLink, CreatorType, EvidenceType
+from normcore.normative.license_deriver import LicenseDeriver
+from normcore.normative.models import GroundSet, KnowledgeNode, Modality, Scope, Source, Status
 
 
 def _node(node_id: str, scope: Scope = Scope.FACTUAL, strength: str = "strong") -> KnowledgeNode:

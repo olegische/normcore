@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from evaluator.evaluator import AdmissibilityEvaluator
-from evaluator.normative.models import EvaluationStatus
+from normcore.evaluator import AdmissibilityEvaluator
+from normcore.normative.models import EvaluationStatus
 
 
 @dataclass

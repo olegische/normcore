@@ -1,6 +1,6 @@
 from pydantic import ValidationError
 
-from evaluator.models import (
+from normcore.models import (
     AdmissibilityJudgment,
     AdmissibilityStatus,
     AssistantSpeechAct,
@@ -13,8 +13,8 @@ from evaluator.models import (
     StatementGroundLink,
     TextSpeechAct,
 )
-from evaluator.models.links import CreatorType, EvidenceType
-from evaluator.models.messages import ToolResultSpeechAct, _TextPart
+from normcore.models.links import CreatorType, EvidenceType
+from normcore.models.messages import ToolResultSpeechAct, _TextPart
 
 
 def test_public_model_roundtrip():
@@ -73,5 +73,5 @@ def test_links_models_defaults():
 
 
 def test_models_init_exports():
-    # __all__ paths are wired by importing from evaluator.models
+    # __all__ paths are wired by importing from normcore.models
     assert isinstance(TextSpeechAct(text="x"), AssistantSpeechAct.__args__)

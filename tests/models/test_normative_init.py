@@ -1,4 +1,4 @@
-from evaluator import normative
+from normcore import normative
 
 
 def test_normative_init_exports():

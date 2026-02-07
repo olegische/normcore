@@ -1,5 +1,5 @@
-from evaluator.normative.axiom_checker import AxiomChecker
-from evaluator.normative.models import (
+from normcore.normative.axiom_checker import AxiomChecker
+from normcore.normative.models import (
     AxiomCheckResult,
     EvaluationStatus,
     GroundSet,

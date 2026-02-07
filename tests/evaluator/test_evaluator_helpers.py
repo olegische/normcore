@@ -1,8 +1,8 @@
 import json
 import pytest
 
-from evaluator.evaluator import AdmissibilityEvaluator
-from evaluator.models.messages import _RefusalPart, _TextPart
+from normcore.evaluator import AdmissibilityEvaluator
+from normcore.models.messages import _RefusalPart, _TextPart
 
 
 def test_parse_tool_args():

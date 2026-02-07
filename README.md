@@ -10,6 +10,36 @@ it produces an admissibility judgment under a fixed set of axioms (A4–A7).
 
 It evaluates **participation legitimacy**, not semantic truth or task correctness.
 
+## Specification
+
+NormCore tracks the IETF Internet-Draft:
+- [**Normative Admissibility Framework for Agent Speech Acts**](https://datatracker.ietf.org/doc/draft-romanchuk-normative-admissibility/)
+
+Important:
+- This is an Internet-Draft (work in progress), not an RFC.
+- Axiom labels used in this repository (`A4`, `A5`, `A6`, `A7`) follow that draft.
+- If draft wording changes in future revisions, repository behavior may be updated accordingly.
+
+## Installation
+
+From PyPI:
+
+```bash
+pip install normcore
+```
+
+From source:
+
+```bash
+uv sync
+```
+
+or:
+
+```bash
+pip install -e .
+```
+
 ## What this is
 
 NormCore is:
@@ -40,7 +70,7 @@ If you need “is this answer good/correct?”, this is the wrong tool.
 ## Entry point (public API)
 
 ```python
-from evaluator.evaluator import AdmissibilityEvaluator
+from normcore import AdmissibilityEvaluator
 
 judgment = AdmissibilityEvaluator.evaluate(
     agent_message=agent_message,
@@ -48,9 +78,9 @@ judgment = AdmissibilityEvaluator.evaluate(
 )
 ```
 
-Implementation: `src/evaluator/evaluator.py`
+Implementation: `src/normcore/evaluator.py`
 
-Normative pipeline: `src/evaluator/normative/`
+Normative pipeline: `src/normcore/normative/`
 
 ## Inputs
 
@@ -63,7 +93,7 @@ Tool results in the trajectory are the **only** admissible source of grounding.
 ## Usage
 
 ```python
-from evaluator.evaluator import AdmissibilityEvaluator
+from normcore import AdmissibilityEvaluator
 
 agent_message = {
     "role": "assistant",
@@ -92,6 +122,22 @@ trajectory = [
 judgment = AdmissibilityEvaluator.evaluate(agent_message=agent_message, trajectory=trajectory)
 print(judgment.status)
 print(judgment.licensed)
+```
+
+## CLI
+
+Quick phrase check from terminal:
+
+```bash
+normcore evaluate --text "The deployment is blocked, so we should fix it first."
+```
+
+This command prints `AdmissibilityJudgment` as JSON.
+
+Version:
+
+```bash
+normcore --version
 ```
 
 ### Personal context (non-epistemic)
@@ -133,6 +179,7 @@ Personal context:
 
 ## Project structure
 
-- `src/evaluator/evaluator.py`: orchestration + public entrypoint
-- `src/evaluator/models/`: judgment + message models
-- `src/evaluator/normative/`: modality, grounding, licensing, axioms
+- `src/normcore/evaluator.py`: orchestration + public entrypoint
+- `src/normcore/models/`: judgment + message models
+- `src/normcore/normative/`: modality, grounding, licensing, axioms
+- `src/normcore/cli.py`: command-line interface (`normcore`)

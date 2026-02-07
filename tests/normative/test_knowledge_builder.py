@@ -1,8 +1,8 @@
 import json
 
-from evaluator.models.messages import ToolResultSpeechAct
-from evaluator.normative.knowledge_builder import KnowledgeStateBuilder
-from evaluator.normative.models import Scope, Source, Status
+from normcore.models.messages import ToolResultSpeechAct
+from normcore.normative.knowledge_builder import KnowledgeStateBuilder
+from normcore.normative.models import Scope, Source, Status
 
 
 def _tool_result(tool_name: str, result_text: str) -> ToolResultSpeechAct:
