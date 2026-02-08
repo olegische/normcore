@@ -1,6 +1,6 @@
 [project]
 name = "normcore"
-version = "0.1.0"
+version = "0.1.1"
 description = "NormCore is a Python library for deterministic, auditable evaluation of agent speech-act admissibility based on modality and grounding."
 readme = "README.md"
 requires-python = ">=3.10"

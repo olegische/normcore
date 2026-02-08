@@ -74,8 +74,14 @@ tool/file evidence, not code-generation capability evaluation.
 ## Why this framework exists
 
 NormCore is intended as part of the **control plane** for agentic systems:
-an explicit, deterministic gate on whether an agent is normatively allowed to
-make an operational claim from observed grounds.
+an explicit, deterministic mechanism for *assessing* whether an agent is
+normatively allowed to make an operational claim from observed grounds.
+
+It is designed as a preventive layer against **Semantic Laundering**:
+the agent cannot self-license categorical claims from its own text.
+If a claim is not grounded in observed evidence, NormCore reports a
+normative violation (`violates_norm`) or insufficiency (`unsupported`),
+leaving enforcement to the surrounding system.
 
 ## Hard invariants
 
@@ -251,7 +257,7 @@ conversation with NormCore.
 Quick run:
 
 ```bash
-MODEL=gpt-5.3-codex REASONING_EFFORT=medium scripts/smoke_codex_pypi_normcore.sh
+MODEL=gpt-5.2-codex REASONING_EFFORT=medium scripts/smoke_codex_pypi_normcore.sh
 ```
 
 What this does:
@@ -276,7 +282,7 @@ Manual step-by-step (same flow):
 ```bash
 # 1) Run Codex and capture live event JSONL
 echo "your prompt" | codex exec \
-  --model gpt-5.3-codex \
+  --model gpt-5.2-codex \
   --cd . \
   --skip-git-repo-check \
   --json \
