@@ -393,7 +393,9 @@ class AdmissibilityEvaluator:
 
             # Log evaluation
             logger.info(f"  Statement: {statement.raw_text[:80]}...")
-            modality_label = statement.modality.value if statement.modality is not None else "unknown"
+            modality_label = (
+                statement.modality.value if statement.modality is not None else "unknown"
+            )
             logger.info(
                 f"    Modality: {modality_label}, "
                 f"License: {[m.value for m in license.permitted_modalities]}, "

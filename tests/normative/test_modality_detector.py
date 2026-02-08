@@ -1,4 +1,3 @@
-
 from normcore.normative.modality_detector import ModalityDetector
 from normcore.normative.models import Modality, Statement
 
