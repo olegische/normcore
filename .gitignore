@@ -209,6 +209,7 @@ __marimo__/
 # Project specific
 context/
 .*worktrees/
+secrets/
 
 # TLA+/TLC state snapshots
 /states/
