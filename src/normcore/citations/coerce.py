@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from loguru import logger
 from pydantic import ValidationError
 
+from ..logging import logger
 from ..models.links import LinkSet
 from .openai_adapter import (
     OpenAICitation,

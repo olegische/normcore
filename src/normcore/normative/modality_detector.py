@@ -66,7 +66,7 @@ LIMITATIONS
 """
 
 import re
-from loguru import logger
+from ..logging import logger
 
 from .models import Modality, Statement
 

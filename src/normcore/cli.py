@@ -9,12 +9,35 @@ import json
 from importlib.metadata import PackageNotFoundError, version
 
 from normcore.evaluator import evaluate
+from normcore.logging import configure_logging
+
+
+def _resolve_log_level(args: argparse.Namespace) -> str | None:
+    if args.log_level:
+        return args.log_level
+    if args.verbose >= 2:
+        return "DEBUG"
+    if args.verbose == 1:
+        return "INFO"
+    return None
 
 
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="normcore",
         description="NormCore CLI.",
+    )
+    parser.add_argument(
+        "--log-level",
+        choices=["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"],
+        help="Enable CLI diagnostics at selected log level (printed to stderr).",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="count",
+        default=0,
+        help="Increase diagnostics verbosity (-v=INFO, -vv=DEBUG).",
     )
     parser.add_argument(
         "--version",
@@ -47,6 +70,7 @@ def _build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
+    configure_logging(level=_resolve_log_level(args))
 
     if args.version:
         try:

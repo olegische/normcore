@@ -26,7 +26,7 @@ import hashlib
 import json
 from typing import Optional, TYPE_CHECKING
 
-from loguru import logger
+from ..logging import logger
 
 from ..models.messages import ToolResultSpeechAct
 from .models import KnowledgeNode, Scope, Source, Status

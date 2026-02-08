@@ -33,8 +33,54 @@ def test_normcore_cli_version_runs(monkeypatch, capsys):
 
 def test_normcore_cli_evaluate_runs(capsys):
     assert cli_main(["evaluate", "--agent-output", "The deployment is blocked."]) == 0
-    output = capsys.readouterr().out
+    captured = capsys.readouterr()
+    output = captured.out
     assert '"status"' in output
+    assert captured.err == ""
+
+
+def test_normcore_cli_verbose_emits_info_logs(capsys):
+    assert cli_main(["-v", "evaluate", "--agent-output", "We should deploy now."]) == 0
+    captured = capsys.readouterr()
+    assert '"status"' in captured.out
+    assert "INFO | normcore" in captured.err
+
+
+def test_normcore_cli_log_level_debug_emits_debug_logs(capsys):
+    assert (
+        cli_main(
+            [
+                "--log-level",
+                "DEBUG",
+                "evaluate",
+                "--agent-output",
+                "We should deploy now.",
+            ]
+        )
+        == 0
+    )
+    captured = capsys.readouterr()
+    assert '"status"' in captured.out
+    assert "DEBUG | normcore" in captured.err
+
+
+def test_normcore_cli_explicit_log_level_overrides_verbose(capsys):
+    assert (
+        cli_main(
+            [
+                "--log-level",
+                "ERROR",
+                "-vv",
+                "evaluate",
+                "--agent-output",
+                "We should deploy now.",
+            ]
+        )
+        == 0
+    )
+    captured = capsys.readouterr()
+    assert '"status"' in captured.out
+    assert captured.err == ""
 
 
 def test_normcore_cli_evaluate_with_conversation_runs(capsys):

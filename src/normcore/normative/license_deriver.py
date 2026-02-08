@@ -49,7 +49,7 @@ from __future__ import annotations
 
 from typing import Optional, TYPE_CHECKING
 
-from loguru import logger
+from ..logging import logger
 
 from .models import GroundSet, License, Modality, Scope
 

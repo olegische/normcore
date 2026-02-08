@@ -72,7 +72,7 @@ These concerns are explicitly out of scope.
 """
 
 import re
-from loguru import logger
+from ..logging import logger
 
 from .models import Statement
 

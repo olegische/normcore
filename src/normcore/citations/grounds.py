@@ -5,10 +5,10 @@ from __future__ import annotations
 import re
 from typing import Iterable, Any
 
-from loguru import logger
 from pydantic import ValidationError
 from pydantic import BaseModel, TypeAdapter
 
+from ..logging import logger
 from ..models.links import (
     CreatorType,
     EvidenceType,

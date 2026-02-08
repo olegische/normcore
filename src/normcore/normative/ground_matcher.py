@@ -66,7 +66,7 @@ Doing so would violate determinism and introduce
 implicit self-licensing paths.
 """
 
-from loguru import logger
+from ..logging import logger
 
 from .models import (
     GroundSet,

@@ -54,10 +54,10 @@ and downstream policy enforcement.
 import json
 from typing import TYPE_CHECKING, Any, Iterable, Optional, Union
 
-from loguru import logger
 from pydantic import ValidationError
 from pydantic import TypeAdapter as _TypeAdapter  # pydantic v2
 
+from .logging import logger
 from .models.evaluator import (
     AdmissibilityJudgment,
     AdmissibilityStatus,

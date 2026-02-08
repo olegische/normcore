@@ -59,6 +59,14 @@ NormCore does **not**:
 
 If you need “is this answer good/correct?”, this is the wrong tool.
 
+## Normative boundary
+
+NormCore answers one question only:
+
+**Was the agent allowed to speak in this form, given what it observed?**
+
+It does not answer whether the statement is semantically true, useful, or optimal.
+
 ## Hard invariants
 
 ### Grounding is externally observable only
@@ -67,6 +75,11 @@ If you need “is this answer good/correct?”, this is the wrong tool.
 - External grounds from the public API are also allowed (for example file/url evidence from an upstream RAG pipeline).
 - Grounds are linked only when the assistant text cites their `citation_key` in `[@key]` format.
 - Personalization / memory / preferences / profiles are **non-epistemic** and must not become grounding.
+
+Grounding semantics in this project:
+- grounding is not truth verification
+- grounding is not semantic relevance matching
+- grounding is admissible observed evidence for normative licensing
 
 ## Entry point (public API)
 
@@ -128,6 +141,35 @@ print(judgment.status)
 print(judgment.licensed)
 ```
 
+## Canonical examples
+
+Unlicensed assertive (`violates_norm`):
+
+```python
+judgment = evaluate(
+    conversation=[{"role": "assistant", "content": "We should deploy now."}]
+)
+# Expected: status="violates_norm"
+```
+
+Self-licensing attempt (`violates_norm`):
+
+```python
+judgment = evaluate(
+    conversation=[{"role": "assistant", "content": "I believe we should deploy now."}]
+)
+# Expected: status="violates_norm" (agent text alone does not license itself)
+```
+
+Conditional downgrade (`conditionally_acceptable`):
+
+```python
+judgment = evaluate(
+    conversation=[{"role": "assistant", "content": "If the deployment is blocked, we should roll back."}]
+)
+# Expected: status="conditionally_acceptable"
+```
+
 ## CLI
 
 Quick phrase check from terminal:
@@ -139,6 +181,8 @@ normcore evaluate --agent-output "The deployment is blocked, so we should fix it
 This command prints `AdmissibilityJudgment` as JSON.
 
 CLI parameters:
+- `--log-level`: enable diagnostics in `stderr` (`CRITICAL|ERROR|WARNING|INFO|DEBUG`)
+- `-v`, `-vv`: shorthand verbosity (`-v` = `INFO`, `-vv` = `DEBUG`)
 - `--agent-output`: agent output text (string)
 - `--conversation`: conversation history as JSON array; last item must be assistant message
 - `--grounds`: grounds payload as JSON array of OpenAI annotations
@@ -166,14 +210,70 @@ Version:
 normcore --version
 ```
 
+Logging:
+- Library mode is silent by default (no log handlers are configured).
+- CLI diagnostics go to `stderr` so JSON in `stdout` stays machine-parseable.
+- Use `-v` / `-vv`, or `--log-level`.
+- `NORMCORE_LOG_LEVEL` is supported as environment fallback.
+
+```bash
+normcore -vv evaluate --agent-output "We should deploy now."
+NORMCORE_LOG_LEVEL=INFO normcore evaluate --agent-output "We should deploy now."
+```
+
 ## Output
 
-`evaluate()` returns `AdmissibilityJudgment` with:
-- `status`: aggregated admissibility status
-- `licensed`: whether grounding permitted the modality
-- `can_retry`: whether reformulation is appropriate
-- `statement_evaluations`: per-statement traces (modality, license, grounding)
-- `violated_axioms` and `explanation`: explicit audit surface
+`evaluate()` returns an `AdmissibilityJudgment` JSON object.
+
+### Top-level fields
+
+| Field | Meaning |
+|---|---|
+| `status` | Final verdict for the whole response. |
+| `licensed` | Whether grounding permitted the chosen normative form(s). |
+| `can_retry` | Whether reformulation is recommended. |
+| `statement_evaluations` | Per-statement trace (how each statement was judged). |
+| `feedback_hint` | Optional retry hint when reformulation is useful. |
+| `violated_axioms` | List of violated axioms at aggregate level. |
+| `explanation` | Human-readable summary of final verdict. |
+| `num_statements` | Count of evaluated normative statements. |
+| `num_acceptable` | Count of statements with acceptable outcomes. |
+| `grounds_accepted` | Count of grounds admitted into the evidence pool. |
+| `grounds_cited` | Count of admitted grounds actually cited in text (`[@key]`). |
+
+### `statement_evaluations[]` fields
+
+| Field | Meaning |
+|---|---|
+| `statement_id` | Stable statement identifier (`final_response` or `refusal`). |
+| `statement` | Statement text that was evaluated. |
+| `modality` | Detected modality (`assertive`, `conditional`, `refusal`, `descriptive`). |
+| `license` | Modalities permitted by current grounding. |
+| `status` | Verdict for this statement. |
+| `violated_axiom` | Violated axiom for this statement, if any. |
+| `explanation` | Human-readable reason for this statement verdict. |
+| `grounding_trace` | Evidence nodes considered for this statement. |
+| `subject` / `predicate` | Internal normalized statement shape. |
+
+### `grounding_trace[]` fields
+
+| Field | Meaning |
+|---|---|
+| `id` | Internal ground node ID. |
+| `scope` | Ground scope (currently factual in runtime flow). |
+| `source` | Ground source class (for example observed). |
+| `status` | Ground node status (for example confirmed). |
+| `confidence` | Numeric confidence value attached to node. |
+| `strength` | Node strength label used by licensing logic. |
+| `semantic_id` | External/semantic ID used for link resolution. |
+
+### How to read common outcomes
+
+- `status="acceptable"` + `licensed=true` + `can_retry=false`: response is normatively admissible as-is.
+- `status="conditionally_acceptable"` + `licensed=true`: agent used conditional framing and stayed within license.
+- `status="unsupported"` + `can_retry=true`: missing/insufficient grounding; ask for more context or weaken claim form.
+- `status="violates_norm"` + `can_retry=true`: hard normative violation (for example unlicensed assertive claim).
+- `status="no_normative_content"`: protocol-only response; no normative claim was evaluated.
 
 ## Pipeline (fixed)
 

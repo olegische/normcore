@@ -52,7 +52,7 @@ CRITICAL DESIGN PRINCIPLES
    It is a correct outcome indicating lack of evaluator jurisdiction.
 """
 
-from loguru import logger
+from ..logging import logger
 
 from .models import (
     AxiomCheckResult,
