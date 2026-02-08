@@ -3,14 +3,14 @@ import sys
 
 import pytest
 
-from normcore import AdmissibilityEvaluator, evaluate
+import normcore
+from normcore import evaluate
 from normcore.cli import main as cli_main
-from normcore.evaluator import AdmissibilityEvaluator as NamespacedEvaluator
 from normcore.evaluator import evaluate as namespaced_evaluate
 
 
-def test_normcore_namespace_exports_evaluator():
-    assert NamespacedEvaluator is AdmissibilityEvaluator
+def test_normcore_namespace_does_not_export_evaluator_class():
+    assert not hasattr(normcore, "AdmissibilityEvaluator")
 
 
 def test_normcore_namespace_exports_evaluate():
