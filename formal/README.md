@@ -37,6 +37,15 @@ cd formal/implementation
 tlc -deadlock -workers 1 spec.tla
 ```
 
+Run implementation grounds-accounting model:
+
+```bash
+cd formal/implementation
+# Single worker avoids sandbox port issues
+# Use -deadlock to check for deadlocks
+tlc -deadlock -workers 1 grounding_accounting.tla -config grounding_accounting.cfg
+```
+
 Note: `formal/implementation/spec.cfg` uses `InitOnlySpec` by default
 (fast state-space validation for current classifier-style runtime behavior).
 `Spec` (full transition graph) is available in `spec.tla` but is much more expensive.
@@ -50,9 +59,13 @@ Draft model files:
 - `formal/draft/property-map.md` — property traceability
 - `formal/draft/trace-schema.md` — event/action mapping
 
-Implementation model files:
+Implementation model files (split by concern):
 
-- `formal/implementation/spec.tla` — TLA+ model
-- `formal/implementation/spec.cfg` — TLC config (spec + invariants)
-- `formal/implementation/property-map.md` — property traceability
-- `formal/implementation/trace-schema.md` — event/action mapping
+- `formal/implementation/spec.tla` — core decision semantics model
+- `formal/implementation/spec.cfg` — TLC config for core decision model
+- `formal/implementation/grounding_accounting.tla` — grounds accounting model
+- `formal/implementation/grounding_accounting.cfg` — TLC config for grounds accounting model
+- `formal/implementation/property-map.md` — property traceability (core decision)
+- `formal/implementation/grounding-accounting-property-map.md` — property traceability (grounding accounting)
+- `formal/implementation/trace-schema.md` — event/action mapping (core decision)
+- `formal/implementation/grounding-accounting-trace-schema.md` — event/action mapping (grounding accounting)

@@ -1,6 +1,7 @@
 # Property Map for FR-NORMCORE-IMPL-0001
 
 Model status: `PARTIAL` (safety-focused; no liveness obligations encoded in runtime)
+Model role: `core_decision` (ground accounting moved to `grounding_accounting.tla`)
 
 | Property ID | Type | Statement | Source | Status |
 |-------------|------|-----------|--------|--------|

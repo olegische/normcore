@@ -54,7 +54,7 @@ and downstream policy enforcement.
 """
 
 import json
-from typing import Any, Iterable, Optional, Union
+from typing import TYPE_CHECKING, Any, Iterable, Optional, Union
 
 from loguru import logger
 from pydantic import ValidationError
@@ -82,6 +82,11 @@ from .models.messages import (
     _ToolCall,
     _ToolMessage,
 )
+from .citations import (
+    build_links_from_grounds,
+    coerce_grounds_input,
+    grounds_from_tool_call_refs,
+)
 from .normative.axiom_checker import AxiomChecker
 from .normative.models import (
     EvaluationStatus,
@@ -104,10 +109,10 @@ from openai.types.chat import (
     ChatCompletionFunctionMessageParam,
 )
 
-try:
-    from .models import LinkSet
-except ImportError:
-    LinkSet = None  # Fallback if link_builder not available
+if TYPE_CHECKING:
+    from .citations import Ground
+
+from .models import LinkSet
 
 def _adapter(schema):
     """Create a pydantic TypeAdapter for the given schema."""
@@ -150,7 +155,7 @@ class AdmissibilityEvaluator:
         personal_context: Optional[str] = None,
         personal_context_scope: str = "unknown",
         personal_context_source: str = "unknown",
-        links: Optional['LinkSet'] = None,
+        grounds: Optional[list['Ground']] = None,
         **kwargs: Any,
     ) -> AdmissibilityJudgment:
         """
@@ -164,7 +169,7 @@ class AdmissibilityEvaluator:
             personal_context: Optional non-epistemic personalization context (YAML/JSON string)
             personal_context_scope: "global" | "session" | "unknown"
             personal_context_source: "user" | "system" | "memory" | "unknown"
-            links: Optional StatementGroundLinks (loaded by caller)
+            grounds: Optional grounds input (citation_key -> ground_id)
             **kwargs: Additional args (for compatibility)
         
         Returns:
@@ -175,14 +180,36 @@ class AdmissibilityEvaluator:
         # 1. Extract tool results from trajectory
         tool_results = instance._extract_tool_results(trajectory)
         
-        # 2. Build knowledge state
-        knowledge_nodes = instance.knowledge_builder.build(tool_results)
-        
+        # 2. Build knowledge state + tool-call reference grounds
+        knowledge_nodes, tool_call_refs = instance.knowledge_builder.build_with_references(tool_results)
+
         # 3. Validate + map and get agent output
         validated_agent_message = instance._assistant_adapter.validate_python(agent_message)
         # AFTER THIS POINT: no OpenAI types allowed
         assistant_message = instance._map_assistant_message(validated_agent_message)
         speech_act = instance._to_speech_act(assistant_message)
+
+        provided_grounds = coerce_grounds_input(
+            grounds=grounds,
+            legacy_openai_citations=kwargs.get("openai_citations"),
+            legacy_links=kwargs.get("links"),
+        )
+        knowledge_nodes = instance.knowledge_builder.materialize_external_grounds(
+            knowledge_nodes,
+            provided_grounds,
+        )
+        combined_grounds = [*provided_grounds, *grounds_from_tool_call_refs(tool_call_refs)]
+
+        statement_id = "refusal" if isinstance(speech_act, RefusalSpeechAct) else "final_response"
+        text = speech_act.refusal if isinstance(speech_act, RefusalSpeechAct) else speech_act.text
+        links = build_links_from_grounds(
+            text=text,
+            grounds=combined_grounds,
+            statement_id=statement_id,
+        )
+        accepted_ground_ids = {ground.ground_id for ground in combined_grounds}
+        cited_ground_ids = {link.ground_id for link in links.links}
+
         if isinstance(speech_act, RefusalSpeechAct):
             internal_result = instance._evaluate_refusal(
                 speech_act.refusal,
@@ -192,6 +219,8 @@ class AdmissibilityEvaluator:
                 personal_context_scope=personal_context_scope,
                 personal_context_source=personal_context_source,
             )
+            internal_result.grounds_accepted = len(accepted_ground_ids)
+            internal_result.grounds_cited = len(cited_ground_ids)
             return instance._to_judgment(internal_result)
         agent_output = speech_act.text
         
@@ -204,6 +233,8 @@ class AdmissibilityEvaluator:
             personal_context_scope=personal_context_scope,
             personal_context_source=personal_context_source,
         )
+        internal_result.grounds_accepted = len(accepted_ground_ids)
+        internal_result.grounds_cited = len(cited_ground_ids)
         return instance._to_judgment(internal_result)
 
     def _evaluate_core(
@@ -538,6 +569,8 @@ class AdmissibilityEvaluator:
             personal_context_source=result.personal_context_source,
             personal_context_scope=result.personal_context_scope,
             personal_context_present=result.personal_context_present,
+            grounds_accepted=result.grounds_accepted,
+            grounds_cited=result.grounds_cited,
         )
     
     def _extract_tool_results(

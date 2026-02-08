@@ -69,7 +69,11 @@ def test_to_judgment_maps_status_and_statement_data():
         explanation="ok",
         num_statements=1,
         num_acceptable=1,
+        grounds_accepted=3,
+        grounds_cited=2,
     )
     judgment = evaluator._to_judgment(validation)
     assert judgment.status.value == "acceptable"
     assert judgment.statement_evaluations[0].statement_id == "s1"
+    assert judgment.grounds_accepted == 3
+    assert judgment.grounds_cited == 2

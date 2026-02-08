@@ -24,12 +24,15 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from loguru import logger
 
 from ..models.messages import ToolResultSpeechAct
 from .models import KnowledgeNode, Scope, Source, Status
+
+if TYPE_CHECKING:
+    from ..citations import Ground
 
 
 class KnowledgeStateBuilder:
@@ -41,17 +44,65 @@ class KnowledgeStateBuilder:
     """
 
     def build(self, tool_results: list[ToolResultSpeechAct]) -> list[KnowledgeNode]:
+        nodes, _ = self.build_with_references(tool_results)
+        return nodes
+
+    def build_with_references(
+        self, tool_results: list[ToolResultSpeechAct]
+    ) -> tuple[list[KnowledgeNode], dict[str, list[str]]]:
+        """Build knowledge nodes and tool-call keyed reference mapping."""
         nodes: list[KnowledgeNode] = []
+        tool_call_refs: dict[str, list[str]] = {}
         for result in tool_results:
             k = self._tool_result_to_knowledge(result)
             if not k:
                 continue
+
+            produced_nodes: list[KnowledgeNode]
             if isinstance(k, list):
-                nodes.extend(k)
+                produced_nodes = k
             else:
-                nodes.append(k)
+                produced_nodes = [k]
+
+            nodes.extend(produced_nodes)
+
+            if result.tool_call_id:
+                refs = [node.semantic_id or node.id for node in produced_nodes]
+                if refs:
+                    tool_call_refs[result.tool_call_id] = refs
+
         logger.debug(f"KnowledgeStateBuilder: Built {len(nodes)} knowledge nodes from tool results")
-        return nodes
+        return nodes, tool_call_refs
+
+    def materialize_external_grounds(
+        self,
+        knowledge_nodes: list[KnowledgeNode],
+        grounds: list["Ground"],
+    ) -> list[KnowledgeNode]:
+        """Inject external grounds as factual observed nodes when missing."""
+        if not grounds:
+            return knowledge_nodes
+
+        existing_ids = {node.id for node in knowledge_nodes}
+        existing_semantic_ids = {node.semantic_id for node in knowledge_nodes if node.semantic_id}
+        expanded = list(knowledge_nodes)
+
+        for ground in grounds:
+            if ground.ground_id in existing_ids or ground.ground_id in existing_semantic_ids:
+                continue
+            expanded.append(
+                KnowledgeNode(
+                    id=ground.ground_id,
+                    source=Source.OBSERVED,
+                    status=Status.CONFIRMED,
+                    confidence=1.0,
+                    scope=Scope.FACTUAL,
+                    strength="strong",
+                    semantic_id=ground.ground_id,
+                )
+            )
+
+        return expanded
 
     def _tool_result_to_knowledge(
         self, tool_result: ToolResultSpeechAct

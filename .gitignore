@@ -209,3 +209,7 @@ __marimo__/
 # Project specific
 context/
 .*worktrees/
+
+# TLA+/TLC state snapshots
+/states/
+/formal/**/states/

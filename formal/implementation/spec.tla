@@ -4,6 +4,7 @@ EXTENDS Sequences, TLC, Naturals
 (*
 DERIVATION artifact.
 MODEL_STATUS = "PARTIAL"
+MODEL_ROLE = "core_decision"
 
 Source authority:
 - src/normcore/evaluator.py
@@ -14,20 +15,20 @@ Source authority:
 - tests/normative/test_axiom_checker.py
 - tests/normative/test_license_deriver.py
 
-Goal: exact reflection of CURRENT runtime behavior (not draft intent).
+This model captures only decision semantics.
+Ground accounting/provenance is modeled separately in
+`formal/implementation/grounding_accounting.tla`.
 *)
 
 EvaluationModes == {"core_text", "assistant_refusal"}
 CorePaths == {"empty_output", "no_normative", "evaluated"}
 Modalities == {"ASSERTIVE", "CONDITIONAL", "REFUSAL", "DESCRIPTIVE"}
 StrengthValues == {"none", "weak", "strong"}
-LicenseModes == {"conservative", "links"}
+LicenseModes == {"links"}
 
-\* Statuses produced by current AxiomChecker for normal evaluator paths.
 GeneratedStatementStatuses ==
     {"ACCEPTABLE", "CONDITIONALLY_ACCEPTABLE", "VIOLATES_NORM", "UNSUPPORTED"}
 
-\* Kept for aggregate function completeness (branches exist in code).
 AggregateInputStatuses ==
     GeneratedStatementStatuses \cup {"ILL_FORMED", "UNDERDETERMINED"}
 
@@ -62,9 +63,8 @@ Contains(seq, value) ==
     \E i \in 1..Len(seq): seq[i] = value
 
 AssertiveLicensed(mode, factual, linksFactual) ==
-    IF mode = "conservative"
-    THEN factual = "strong"
-    ELSE linksFactual = "strong"
+    /\ mode = "links"
+    /\ linksFactual = "strong"
 
 ConditionalAcceptable(conds, mode, factual, linksFactual) ==
     AssertiveLicensed(mode, factual, linksFactual) \/ conds
@@ -124,10 +124,10 @@ AggregateCanRetry(seqStatuses) ==
     THEN TRUE
     ELSE FALSE
 
-\* Reachability constraints for links-mode abstraction:
-\* links factual strength must be derivable from available factual grounding.
-LinksStrengthFeasible(mode, factual, linksFactual) ==
-    IF mode = "conservative"
+\* In core model, linksFactualStrength is an abstract effective value.
+LinksStrengthFeasible(mode, m, factual, linksFactual) ==
+    mode = "links" /\
+    IF m = "REFUSAL"
     THEN linksFactual = "none"
     ELSE IF factual = "none"
     THEN linksFactual = "none"
@@ -143,18 +143,24 @@ CoreFlowConsistent ==
         /\ hasNormativeContent = TRUE
         /\ modality = "REFUSAL"
         /\ conditionsDeclared = FALSE
-        /\ statementStatus =
-            EvalStatementStatus(
-                modality, conditionsDeclared, licenseMode, factualStrength, linksFactualStrength
-            )
+        /\ licenseMode = "links"
+        /\ factualStrength = "none"
+        /\ linksFactualStrength = "none"
+        /\ statementStatus = "ACCEPTABLE"
         /\ statementStatuses = <<statementStatus>>
-        /\ coreStatus = AggregateStatuses(statementStatuses)
-        /\ licensed = AggregateLicensed(statementStatuses)
-        /\ canRetry = AggregateCanRetry(statementStatuses)
+        /\ coreStatus = "ACCEPTABLE"
+        /\ licensed = TRUE
+        /\ canRetry = FALSE
     ELSE
         /\ evaluationMode = "core_text"
         /\ IF path = "empty_output"
            THEN
+               /\ modality = "DESCRIPTIVE"
+               /\ conditionsDeclared = FALSE
+               /\ licenseMode = "links"
+               /\ factualStrength = "none"
+               /\ linksFactualStrength = "none"
+               /\ statementStatus = "UNDERDETERMINED"
                /\ hasAgentOutput = FALSE
                /\ hasNormativeContent = FALSE
                /\ statementStatuses = <<>>
@@ -163,6 +169,12 @@ CoreFlowConsistent ==
                /\ canRetry = FALSE
            ELSE IF path = "no_normative"
            THEN
+               /\ modality = "DESCRIPTIVE"
+               /\ conditionsDeclared = FALSE
+               /\ licenseMode = "links"
+               /\ factualStrength = "none"
+               /\ linksFactualStrength = "none"
+               /\ statementStatus = "UNDERDETERMINED"
                /\ hasAgentOutput = TRUE
                /\ hasNormativeContent = FALSE
                /\ statementStatuses = <<>>
@@ -197,7 +209,7 @@ TypeOK ==
     /\ coreStatus \in CoreStatuses
     /\ licensed \in BOOLEAN
     /\ canRetry \in BOOLEAN
-    /\ LinksStrengthFeasible(licenseMode, factualStrength, linksFactualStrength)
+    /\ LinksStrengthFeasible(licenseMode, modality, factualStrength, linksFactualStrength)
 
 Init ==
     /\ evaluationMode \in EvaluationModes
@@ -235,16 +247,12 @@ Next ==
     /\ TypeOK'
     /\ CoreFlowConsistent'
 
-\* Full transition relation (kept for completeness, expensive and usually unnecessary).
 Spec ==
     Init /\ [][Next]_vars
 
-\* Practical profile for this project: evaluator is a pure classifier, so
-\* checking all admissible runtime states is sufficient.
 InitOnlySpec ==
     Init /\ [][UNCHANGED vars]_vars
 
-\* Exact-flow invariants
 InvPrecheckEmptyOutput ==
     /\ evaluationMode = "core_text"
     /\ path = "empty_output"
@@ -278,9 +286,8 @@ InvRefusalEntryAlwaysAcceptable ==
        /\ canRetry = FALSE
 
 InvLinksFeasible ==
-    LinksStrengthFeasible(licenseMode, factualStrength, linksFactualStrength)
+    LinksStrengthFeasible(licenseMode, modality, factualStrength, linksFactualStrength)
 
-\* Statement-level logic invariants (evaluated path only)
 InvA6 ==
     /\ path = "evaluated"
     /\ modality = "REFUSAL"

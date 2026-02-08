@@ -1,13 +1,12 @@
-# Trace Schema for FR-NORMCORE-IMPL-0001
+# Trace Schema for FR-NORMCORE-IMPL-0001 (Core Decision Model)
 
 | Event | Actor | Inputs | Preconditions | Observable Outcome | TLA+ Action |
 |-------|-------|--------|---------------|--------------------|-------------|
-| EvaluateEntry | `AdmissibilityEvaluator.evaluate` | `agent_message`, `trajectory`, optional `links`, personal-context metadata | Message validates against OpenAI schema | Entry mode selected: `core_text` or `assistant_refusal` | `evaluationMode` |
+| EvaluateEntry | `AdmissibilityEvaluator.evaluate` | `agent_message`, `trajectory`, optional `grounds`, personal-context metadata | Message validates against OpenAI schema | Entry mode selected: `core_text` or `assistant_refusal` | `evaluationMode` |
 | RefusalEntryPath | Evaluator (`_evaluate_refusal`) | Refusal text + knowledge nodes + optional links | Assistant content is refusal-only | One refusal statement evaluated and aggregated | `CoreFlowConsistent` (assistant_refusal branch) |
 | CorePrecheckEmptyOutput | Evaluator (`_evaluate_core`) | `agent_output` | Empty output string | Final status `UNDERDETERMINED`, no statement statuses | `CoreFlowConsistent` (`path="empty_output"`) |
 | CorePrecheckNoNormative | Evaluator (`_evaluate_core`) | extracted statements | Extractor returns empty list | Final status `NO_NORMATIVE_CONTENT`, no statement statuses | `CoreFlowConsistent` (`path="no_normative"`) |
 | CoreEvaluateSingleStatement | Evaluator core pipeline | one extracted statement + derived grounds + optional links | Non-empty output and normative content present | Single statement status computed and aggregated | `CoreFlowConsistent` (`path="evaluated"`) |
-| DeriveLicenseConservative | `LicenseDeriver` | factual ground set, no links | `licenseMode="conservative"` | License from factual scope strength only | `AssertiveLicensed` |
 | DeriveLicenseLinks | `LicenseDeriver` | ground set + links | `licenseMode="links"` | License from resolved `SUPPORTS` factual grounds only | `AssertiveLicensed`, `LinksStrengthFeasible` |
 | ApplyA6 | `AxiomChecker` | modality + license + grounds | modality is `REFUSAL` | Statement status `ACCEPTABLE` | `EvalStatementStatus` |
 | ApplyA5 | `AxiomChecker` | modality + license | modality is `ASSERTIVE` and assertive license absent | Statement status `VIOLATES_NORM` | `EvalStatementStatus` |

@@ -61,9 +61,11 @@ If you need “is this answer good/correct?”, this is the wrong tool.
 
 ## Hard invariants
 
-### Grounding is tool-results-only
+### Grounding is externally observable only
 
-- Only externally observable tool outputs can become knowledge used for licensing.
+- Tool outputs from the trajectory can become knowledge used for licensing.
+- External grounds from the public API are also allowed (for example file/url evidence from an upstream RAG pipeline).
+- Grounds are linked only when the assistant text cites their `citation_key` in `[@key]` format.
 - Personalization / memory / preferences / profiles are **non-epistemic** and must not become grounding.
 - Personal context is accepted as metadata for audit purposes only.
 
@@ -87,8 +89,9 @@ Normative pipeline: `src/normcore/normative/`
 `AdmissibilityEvaluator.evaluate()` consumes:
 - `agent_message`: the assistant message to judge (OpenAI Chat Completions schema)
 - `trajectory`: the full chat history (used only to extract tool results + build grounding)
+- `grounds` (optional): external grounds as OpenAI annotations (file/url citations)
 
-Tool results in the trajectory are the **only** admissible source of grounding.
+Grounding is built from trajectory tool results plus optional external grounds.
 
 ## Usage
 
@@ -129,10 +132,32 @@ print(judgment.licensed)
 Quick phrase check from terminal:
 
 ```bash
-normcore evaluate --text "The deployment is blocked, so we should fix it first."
+normcore evaluate --agent-output "The deployment is blocked, so we should fix it first."
 ```
 
 This command prints `AdmissibilityJudgment` as JSON.
+
+CLI parameters:
+- `--agent-output`: agent output text (string)
+- `--conversation`: conversation history as JSON array; last item must be assistant message
+- `--grounds`: grounds payload as JSON array of OpenAI annotations
+
+Sanity rule:
+- if both `--agent-output` and `--conversation` are provided, `--agent-output` must exactly match the last assistant `content` in `--conversation`.
+
+Conversation example:
+
+```bash
+normcore evaluate --conversation '[{"role":"user","content":"Weather in New York?"},{"role":"assistant","content":"Use umbrella [@callWeatherNYC]."}]'
+```
+
+Conversation + external grounds example:
+
+```bash
+normcore evaluate \
+  --conversation '[{"role":"user","content":"Weather in New York today vs last year?"},{"role":"assistant","content":"Compare today [@callWeatherNYC] and archive [@file_weather_2025]."}]' \
+  --grounds '[{"type":"file_citation","file_id":"file_weather_2025","filename":"ny_weather_2025.txt","index":0}]'
+```
 
 Version:
 

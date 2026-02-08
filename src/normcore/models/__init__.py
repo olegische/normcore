@@ -19,6 +19,11 @@ from .links import (
     StatementGroundLink,
     LinkSet,
 )
+from .openai_citations import (
+    OpenAICitation,
+    link_set_from_openai_citations,
+    parse_openai_citations,
+)
 
 __all__ = [
     "AdmissibilityJudgment",
@@ -36,4 +41,7 @@ __all__ = [
     "Provenance",
     "StatementGroundLink",
     "LinkSet",
+    "OpenAICitation",
+    "link_set_from_openai_citations",
+    "parse_openai_citations",
 ]
