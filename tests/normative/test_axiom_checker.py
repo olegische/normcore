@@ -1,6 +1,5 @@
 from normcore.normative.axiom_checker import AxiomChecker
 from normcore.normative.models import (
-    AxiomCheckResult,
     EvaluationStatus,
     GroundSet,
     KnowledgeNode,

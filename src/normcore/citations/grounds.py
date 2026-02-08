@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import re
-from typing import Iterable, Any
+from collections.abc import Iterable
+from typing import Any
 
-from pydantic import ValidationError
-from pydantic import BaseModel, TypeAdapter
+from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from ..logging import logger
 from ..models.links import (
@@ -125,7 +125,7 @@ def coerce_grounds_input(
         except ValidationError:
             try:
                 # Public API shape: OpenAI annotations.
-                from .openai_adapter import parse_openai_citations, grounds_from_openai_citations
+                from .openai_adapter import grounds_from_openai_citations, parse_openai_citations
 
                 typed_citations = parse_openai_citations(payload)
                 normalized.extend(grounds_from_openai_citations(typed_citations))
@@ -135,7 +135,7 @@ def coerce_grounds_input(
     if legacy_openai_citations:
         try:
             # Local import avoids import cycle (openai_adapter imports Ground from this module).
-            from .openai_adapter import parse_openai_citations, grounds_from_openai_citations
+            from .openai_adapter import grounds_from_openai_citations, parse_openai_citations
 
             typed_citations = parse_openai_citations(legacy_openai_citations)
             normalized.extend(grounds_from_openai_citations(typed_citations))

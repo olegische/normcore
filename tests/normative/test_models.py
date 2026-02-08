@@ -1,9 +1,19 @@
 import pytest
 
-from normcore.normative.models import GroundSet, KnowledgeNode, License, Modality, Scope, Source, Status
+from normcore.normative.models import (
+    GroundSet,
+    KnowledgeNode,
+    License,
+    Modality,
+    Scope,
+    Source,
+    Status,
+)
 
 
-def _node(node_id: str, scope: Scope = Scope.FACTUAL, strength: str = "strong", semantic_id=None) -> KnowledgeNode:
+def _node(
+    node_id: str, scope: Scope = Scope.FACTUAL, strength: str = "strong", semantic_id=None
+) -> KnowledgeNode:
     return KnowledgeNode(
         id=node_id,
         source=Source.OBSERVED,

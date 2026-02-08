@@ -5,6 +5,7 @@ description = "NormCore is a Python library for deterministic, auditable evaluat
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
+license-files = ["LICENSE"]
 authors = [
     { name = "Oleg Romanchuk" }
 ]
@@ -35,35 +36,8 @@ classifiers = [
 ]
 
 dependencies = [
-    # LLM Clients
-    "openai==2.15.0",
-    
-    # Data Validation
-    "pydantic==2.12.5",
-    "pydantic-core==2.41.5",
-    # "pydantic-settings==2.12.0",
-    
-    # Logging & Output
-    # "rich==14.2.0",
-    
-    # HTTP
-    # "httpx==0.28.1",
-    # "aiohttp==3.13.2",
-    # "certifi==2025.11.12",
-    
-    # Utilities
-    # "python-dotenv==1.2.1",
-    # "pyyaml==6.0.3",
-    # "toml==0.10.2",
-    # "python-dateutil==2.9.0",
-    # "click==8.3.1",
-    # "jinja2==3.1.6",
-    # "deepdiff==8.6.1",
-    
-    # JSON & Data
-    # "addict==2.4.0",
-    # "pandas==2.3.3",
-    # "matplotlib==3.10.0",
+    "openai>=2.15.0,<3",
+    "pydantic>=2.12.0,<3",
 ]
 
 [project.optional-dependencies]

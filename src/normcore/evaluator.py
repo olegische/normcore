@@ -52,11 +52,24 @@ and downstream policy enforcement.
 """
 
 import json
-from typing import TYPE_CHECKING, Any, Iterable, Optional, Union
+from collections.abc import Iterable
+from typing import TYPE_CHECKING, Any
 
-from pydantic import ValidationError
+from openai.types.chat import (
+    ChatCompletionAssistantMessageParam,
+    ChatCompletionFunctionMessageParam,
+    ChatCompletionMessageParam,
+    ChatCompletionMessageToolCallUnionParam,
+    ChatCompletionToolMessageParam,
+)
 from pydantic import TypeAdapter as _TypeAdapter  # pydantic v2
+from pydantic import ValidationError
 
+from .citations import (
+    build_links_from_grounds,
+    coerce_grounds_input,
+    grounds_from_tool_call_refs,
+)
 from .logging import logger
 from .models.evaluator import (
     AdmissibilityJudgment,
@@ -80,12 +93,11 @@ from .models.messages import (
     _ToolCall,
     _ToolMessage,
 )
-from .citations import (
-    build_links_from_grounds,
-    coerce_grounds_input,
-    grounds_from_tool_call_refs,
-)
 from .normative.axiom_checker import AxiomChecker
+from .normative.ground_matcher import GroundSetMatcher
+from .normative.knowledge_builder import KnowledgeStateBuilder
+from .normative.license_deriver import LicenseDeriver
+from .normative.modality_detector import ModalityDetector
 from .normative.models import (
     EvaluationStatus,
     KnowledgeNode,
@@ -93,24 +105,13 @@ from .normative.models import (
     StatementValidationResult,
     ValidationResult,
 )
-from .normative.ground_matcher import GroundSetMatcher
-from .normative.knowledge_builder import KnowledgeStateBuilder
-from .normative.license_deriver import LicenseDeriver
-from .normative.modality_detector import ModalityDetector
 from .normative.statement_extractor import StatementExtractor
-
-from openai.types.chat import (
-    ChatCompletionAssistantMessageParam,
-    ChatCompletionMessageParam,
-    ChatCompletionMessageToolCallUnionParam,
-    ChatCompletionToolMessageParam,
-    ChatCompletionFunctionMessageParam,
-)
 
 if TYPE_CHECKING:
     from .citations import Ground
 
 from .models import LinkSet
+
 
 def _adapter(schema):
     """Create a pydantic TypeAdapter for the given schema."""
@@ -119,9 +120,9 @@ def _adapter(schema):
 
 def evaluate(
     *,
-    agent_output: Optional[str] = None,
-    conversation: Optional[list[ChatCompletionMessageParam]] = None,
-    grounds: Optional[list["Ground"]] = None,
+    agent_output: str | None = None,
+    conversation: list[ChatCompletionMessageParam] | None = None,
+    grounds: list["Ground"] | None = None,
     **kwargs: Any,
 ) -> AdmissibilityJudgment:
     """Public evaluate contract aligned with CLI parameters."""
@@ -141,7 +142,9 @@ def evaluate(
                     "Last conversation assistant content must be a string when agent_output is provided"
                 )
             if agent_message["content"] != agent_output:
-                raise ValueError("agent_output must match the last assistant content in conversation")
+                raise ValueError(
+                    "agent_output must match the last assistant content in conversation"
+                )
     else:
         agent_message = {
             "role": "assistant",
@@ -155,6 +158,7 @@ def evaluate(
         grounds=grounds,
         **kwargs,
     )
+
 
 class AdmissibilityEvaluator:
     """
@@ -172,7 +176,7 @@ class AdmissibilityEvaluator:
        d. Evaluate admissibility via axioms
     5. Aggregate results into a single admissibility judgment
     """
-    
+
     def __init__(self):
         """Initialize all components."""
         self.extractor = StatementExtractor()
@@ -184,36 +188,38 @@ class AdmissibilityEvaluator:
         self._message_adapter = _adapter(ChatCompletionMessageParam)
         self._assistant_adapter = _adapter(ChatCompletionAssistantMessageParam)
         self._content_parts_adapter = _adapter(list[_ContentPart])
-    
+
     @classmethod
     def evaluate(
         cls,
         agent_message: ChatCompletionAssistantMessageParam,
         trajectory: list[ChatCompletionMessageParam],
-        grounds: Optional[list['Ground']] = None,
+        grounds: list["Ground"] | None = None,
         **kwargs: Any,
     ) -> AdmissibilityJudgment:
         """
         Runtime evaluation of an agent message (speech act).
-        
+
         Used in orchestrator to check public speech acts before accepting them.
-        
+
         Args:
             agent_message: Single agent message to validate
             trajectory: Full message history (for building knowledge state)
             grounds: Optional grounds input (citation_key -> ground_id)
             **kwargs: Additional args (for compatibility)
-        
+
         Returns:
             AdmissibilityJudgment with status and retry guidance for agent
         """
         instance = cls()
-        
+
         # 1. Extract tool results from trajectory
         tool_results = instance._extract_tool_results(trajectory)
-        
+
         # 2. Build knowledge state + tool-call reference grounds
-        knowledge_nodes, tool_call_refs = instance.knowledge_builder.build_with_references(tool_results)
+        knowledge_nodes, tool_call_refs = instance.knowledge_builder.build_with_references(
+            tool_results
+        )
 
         # 3. Validate + map and get agent output
         validated_agent_message = instance._assistant_adapter.validate_python(agent_message)
@@ -252,7 +258,7 @@ class AdmissibilityEvaluator:
             internal_result.grounds_cited = len(cited_ground_ids)
             return instance._to_judgment(internal_result)
         agent_output = speech_act.text
-        
+
         # 4. Run evaluation core
         internal_result = instance._evaluate_core(
             agent_output=agent_output,
@@ -267,11 +273,11 @@ class AdmissibilityEvaluator:
         self,
         agent_output: str,
         knowledge_nodes: list[KnowledgeNode],
-        links: Optional['LinkSet'],
+        links: LinkSet | None,
     ) -> ValidationResult:
         """
         Evaluation core. All normative checking happens here.
-        
+
         Flow:
         1. Extract statements from agent output
         2. For each statement:
@@ -280,17 +286,17 @@ class AdmissibilityEvaluator:
            c. Derive license
            d. Check axioms
         3. Aggregate → ValidationResult
-        
+
         NEW v0.3.1:
         links parameter enables usage-based licensing:
         - If links provided → usage-based mode (only SUPPORTS links)
         - If None → v0.2 conservative mode (presence = usage)
-        
+
         Args:
             agent_output: Text to validate
             knowledge_nodes: Already built knowledge state
             links: Optional StatementGroundLinks
-        
+
         Returns:
             ValidationResult with status, feedback_hint, violations
         """
@@ -302,27 +308,27 @@ class AdmissibilityEvaluator:
                 can_retry=False,
                 explanation="No content to validate",
             )
-        
+
         statements = self.extractor.extract(agent_output)
-        
+
         if not statements:
             # NEW v0.2.1: NO_NORMATIVE_CONTENT (per FORMAL_SPEC_v0.2.1 §0.4.5)
-            # 
+            #
             # Speech Act Segmentation Layer (§0.4) produced zero normative utterances.
             # This means agent output contained ONLY protocol speech (greetings, offers).
-            # 
+            #
             # This is NOT UNDERDETERMINED (cannot judge).
             # This is NO JURISDICTION (protocol-only output, no claims to evaluate).
-            # 
+            #
             # Per §0.4.5:
             # "NO_NORMATIVE_CONTENT is a pre-evaluation filter result indicating
             #  evaluator has no jurisdiction to judge (protocol-only output)."
-            # 
+            #
             # Examples triggering this:
             # - "Hello! I'm ready to help."
             # - "Good morning! What can I do for you?"
             # - "I'm doing well, thanks. How can I assist?"
-            # 
+            #
             # After segmentation (stripping protocol speech), nothing remains.
             # No normative claims made → no axioms apply → no evaluation performed.
             logger.info(
@@ -335,22 +341,22 @@ class AdmissibilityEvaluator:
                 can_retry=False,  # Not a failure (protocol speech is acceptable)
                 explanation="Protocol-only output (greetings/offers) - no normative claims to evaluate",
             )
-        
+
         logger.info(f"AdmissibilityEvaluator: Extracted {len(statements)} statements")
-        
+
         # 2. Validate each statement
         statement_results = []
         axiom_results = []
-        
+
         from .normative.models import Modality
-        
+
         for statement in statements:
             # Detect modality and extract conditions
             self.modality_detector.detect_with_conditions(statement)
-            
+
             # Find relevant grounds
             ground_set = self.ground_matcher.match(statement, knowledge_nodes)
-            
+
             # Derive license (ONLY for normative modalities)
             # CRITICAL v0.2: DESCRIPTIVE does not require licensing
             # Skip license derivation for DESCRIPTIVE, pass empty license to axiom checker
@@ -363,7 +369,7 @@ class AdmissibilityEvaluator:
                 # ASSERTIVE/CONDITIONAL/REFUSAL require licensing
                 # v0.3.1: Pass links for usage-based mode (if available)
                 license = self.license_deriver.derive(ground_set, links=links)
-            
+
             # Check axioms
             result = self.axiom_checker.check(
                 statement,
@@ -372,7 +378,7 @@ class AdmissibilityEvaluator:
                 task_goal="task completion",
             )
             axiom_results.append(result)
-            
+
             # Build detailed statement result
             stmt_result = StatementValidationResult(
                 statement=statement,
@@ -383,7 +389,7 @@ class AdmissibilityEvaluator:
                 explanation=result.explanation,
             )
             statement_results.append(stmt_result)
-            
+
             # Log evaluation
             logger.info(f"  Statement: {statement.raw_text[:80]}...")
             logger.info(
@@ -393,13 +399,13 @@ class AdmissibilityEvaluator:
             )
             if result.violated_axiom:
                 logger.info(f"    Violated: {result.violated_axiom}")
-        
+
         # 3. Aggregate to ValidationResult (lexicographic logic)
         return self._aggregate(
             axiom_results,
             statement_results,
         )
-    
+
     def _aggregate(
         self,
         axiom_results: list,
@@ -407,7 +413,7 @@ class AdmissibilityEvaluator:
     ) -> ValidationResult:
         """
         Aggregate axiom check results to ValidationResult.
-        
+
         Normative aggregation (per LOGICAL_DAG_SPEC v0.1):
         1. if any(VIOLATES_NORM): FAIL (reward=0.0)
         2. elif any(ILL_FORMED): FAIL (reward=0.0)
@@ -415,20 +421,20 @@ class AdmissibilityEvaluator:
         4. elif any(UNSUPPORTED): PARTIAL (reward=0.0)
         5. elif any(CONDITIONALLY_ACCEPTABLE): CONDITIONAL (reward=0.8-0.9)
         6. else: ACCEPTABLE (reward=1.0)
-        
+
         One illegitimate statement makes the entire act illegitimate.
         Normative axioms are NOT additive.
-        
+
         CRITICAL: UNDERDETERMINED means:
         - Evaluator has no jurisdiction to judge
         - This is NOT a reward for good performance
         - This is a NEUTRAL pass-through (no training signal)
         - Prevents RL from optimizing "say things evaluator cannot judge"
-        
+
         Returns ValidationResult with status, feedback_hint, violations.
         """
         violations = [r.violated_axiom for r in axiom_results if r.violated_axiom]
-        
+
         # Lexicographic aggregation
         if any(r.status == EvaluationStatus.VIOLATES_NORM for r in axiom_results):
             status = EvaluationStatus.VIOLATES_NORM
@@ -439,7 +445,7 @@ class AdmissibilityEvaluator:
                 f"Please revise or refuse to answer if you lack required context."
             )
             explanation = f"Violated axioms: {violations}"
-        
+
         elif any(r.status == EvaluationStatus.ILL_FORMED for r in axiom_results):
             status = EvaluationStatus.ILL_FORMED
             licensed = False
@@ -449,14 +455,14 @@ class AdmissibilityEvaluator:
                 "Please rephrase with clear subject-predicate statements."
             )
             explanation = "Structurally ill-formed statements detected"
-        
+
         elif any(r.status == EvaluationStatus.UNDERDETERMINED for r in axiom_results):
             status = EvaluationStatus.UNDERDETERMINED
             licensed = False
             can_retry = False
             feedback_hint = None  # Validator has no jurisdiction
             explanation = "Validator has no jurisdiction to judge"
-        
+
         elif any(r.status == EvaluationStatus.UNSUPPORTED for r in axiom_results):
             status = EvaluationStatus.UNSUPPORTED
             licensed = True
@@ -466,21 +472,21 @@ class AdmissibilityEvaluator:
                 "Consider asking for more context or using conditional phrasing."
             )
             explanation = "Statements lack required grounding (A4)"
-        
+
         elif all(r.status == EvaluationStatus.CONDITIONALLY_ACCEPTABLE for r in axiom_results):
             status = EvaluationStatus.CONDITIONALLY_ACCEPTABLE
             licensed = True
             can_retry = False
             feedback_hint = None
             explanation = "All statements are conditionally acceptable"
-        
+
         elif any(r.status == EvaluationStatus.CONDITIONALLY_ACCEPTABLE for r in axiom_results):
             status = EvaluationStatus.CONDITIONALLY_ACCEPTABLE
             licensed = True
             can_retry = False
             feedback_hint = None
             explanation = "Mix of conditional and acceptable statements"
-        
+
         else:
             # All ACCEPTABLE
             status = EvaluationStatus.ACCEPTABLE
@@ -488,17 +494,18 @@ class AdmissibilityEvaluator:
             can_retry = False
             feedback_hint = None
             explanation = "All statements are normatively acceptable"
-        
+
         num_acceptable = sum(
-            1 for r in axiom_results 
+            1
+            for r in axiom_results
             if r.status in {EvaluationStatus.ACCEPTABLE, EvaluationStatus.CONDITIONALLY_ACCEPTABLE}
         )
-        
+
         logger.info(
             f"AdmissibilityEvaluator: Status={status.value}, Licensed={licensed}, "
             f"({num_acceptable}/{len(statement_results)} acceptable, {len(violations)} violations)"
         )
-        
+
         return ValidationResult(
             status=status,
             licensed=licensed,
@@ -518,6 +525,7 @@ class AdmissibilityEvaluator:
 
         Public model is stable, minimal, and audited.
         """
+
         def _status(s: EvaluationStatus) -> AdmissibilityStatus:
             try:
                 return AdmissibilityStatus(s.value)
@@ -574,26 +582,26 @@ class AdmissibilityEvaluator:
             grounds_accepted=result.grounds_accepted,
             grounds_cited=result.grounds_cited,
         )
-    
+
     def _extract_tool_results(
         self,
         trajectory: list[ChatCompletionMessageParam],
     ) -> list[ToolResultSpeechAct]:
         """
         Extract tool call results from trajectory.
-        
+
         Tool results can appear in two forms:
         1. In tool_calls with embedded results (newer format)
         2. As separate messages with role='tool' (older/current format)
-        
+
         Args:
             trajectory: List of messages
-        
+
         Returns:
             List of ToolResultSpeechAct
         """
         tool_results = []
-        
+
         tool_call_by_id: dict[str, dict] = {}
         for message in trajectory:
             validated_message = self._validate_message(message)
@@ -607,7 +615,7 @@ class AdmissibilityEvaluator:
                         "name": tool_call.name,
                         "arguments": args,
                     }
-        
+
         # Method 2: Extract from separate tool messages (role='tool')
         for message in trajectory:
             validated_message = self._validate_message(message)
@@ -615,24 +623,28 @@ class AdmissibilityEvaluator:
             if isinstance(mapped_message, _ToolMessage):
                 call_meta = tool_call_by_id.get(mapped_message.tool_call_id, {})
                 content = self._extract_text_content(mapped_message.content)
-                tool_results.append(ToolResultSpeechAct(
-                    tool_name=call_meta.get("name", "unknown"),
-                    tool_call_id=mapped_message.tool_call_id,
-                    arguments=call_meta.get("arguments", {}),
-                    result_text=content,
-                ))
+                tool_results.append(
+                    ToolResultSpeechAct(
+                        tool_name=call_meta.get("name", "unknown"),
+                        tool_call_id=mapped_message.tool_call_id,
+                        arguments=call_meta.get("arguments", {}),
+                        result_text=content,
+                    )
+                )
             elif isinstance(mapped_message, _FunctionMessage):
                 if mapped_message.name:
                     content = self._extract_text_content(mapped_message.content)
-                    tool_results.append(ToolResultSpeechAct(
-                        tool_name=mapped_message.name,
-                        result_text=content,
-                    ))
-        
+                    tool_results.append(
+                        ToolResultSpeechAct(
+                            tool_name=mapped_message.name,
+                            result_text=content,
+                        )
+                    )
+
         return tool_results
-    
+
     @staticmethod
-    def _extract_text_content(content: Union[str, list["_ContentPart"], None]) -> str:
+    def _extract_text_content(content: str | list["_ContentPart"] | None) -> str:
         """Normalize message content into a plain text string."""
         if content is None:
             return ""
@@ -674,11 +686,13 @@ class AdmissibilityEvaluator:
             return self._map_function_message(message)
         return _OtherMessage(role=role)
 
-    def _map_assistant_message(self, message: ChatCompletionAssistantMessageParam) -> "_AssistantMessage":
+    def _map_assistant_message(
+        self, message: ChatCompletionAssistantMessageParam
+    ) -> "_AssistantMessage":
         """Convert assistant message into internal assistant model."""
-        content = self._map_content(message["content"] if "content" in message else None)
+        content = self._map_content(message.get("content", None))
         tool_calls = []
-        for tool_call in (message["tool_calls"] if "tool_calls" in message else []):
+        for tool_call in message.get("tool_calls", []):
             tool_calls.append(self._map_tool_call(tool_call))
         return _AssistantMessage(content=content, tool_calls=tool_calls)
 
@@ -689,12 +703,14 @@ class AdmissibilityEvaluator:
             raise ValueError("Tool message content cannot include refusal parts")
         return _ToolMessage(tool_call_id=message["tool_call_id"], content=content)
 
-    def _map_function_message(self, message: ChatCompletionFunctionMessageParam) -> "_FunctionMessage":
+    def _map_function_message(
+        self, message: ChatCompletionFunctionMessageParam
+    ) -> "_FunctionMessage":
         """Convert function message into internal function model."""
         content = self._map_content(message["content"])
         return _FunctionMessage(name=message["name"], content=content)
 
-    def _map_content(self, content: Any) -> Union[str, list["_ContentPart"], None]:
+    def _map_content(self, content: Any) -> str | list["_ContentPart"] | None:
         """Validate and normalize message content into internal parts."""
         if content is None:
             return None
@@ -722,7 +738,9 @@ class AdmissibilityEvaluator:
             )
         raise ValueError(f"Unsupported tool call type: {tool_call['type']}")
 
-    def _to_speech_act(self, assistant_message: _AssistantMessage) -> TextSpeechAct | RefusalSpeechAct:
+    def _to_speech_act(
+        self, assistant_message: _AssistantMessage
+    ) -> TextSpeechAct | RefusalSpeechAct:
         """Convert assistant message content into a text or refusal speech act."""
         content = assistant_message.content
         if content is None:
@@ -743,10 +761,11 @@ class AdmissibilityEvaluator:
         self,
         refusal_text: str,
         knowledge_nodes: list[KnowledgeNode],
-        links: Optional['LinkSet'],
+        links: LinkSet | None,
     ) -> ValidationResult:
         """Evaluate a refusal speech act using the same axioms."""
         from .normative.models import Modality, Statement
+
         statement = Statement(
             id="refusal",
             subject="agent",

@@ -112,9 +112,7 @@ def _from_event_and_tools(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 if isinstance(message, str) and message.strip():
                     started = True
                     if pending_event_agent:
-                        conversation.append(
-                            {"role": "assistant", "content": pending_event_agent}
-                        )
+                        conversation.append({"role": "assistant", "content": pending_event_agent})
                         pending_event_agent = None
                     conversation.append({"role": "user", "content": message})
                 continue
@@ -154,9 +152,7 @@ def _from_event_and_tools(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if not isinstance(call_id, str):
                 continue
             output = _serialize_any(payload.get("output"))
-            conversation.append(
-                {"role": "tool", "tool_call_id": call_id, "content": output}
-            )
+            conversation.append({"role": "tool", "tool_call_id": call_id, "content": output})
             continue
 
         if item_type == "message" and payload.get("role") == "assistant":
@@ -204,10 +200,7 @@ def main(argv: list[str] | None = None) -> int:
     conversation = convert_rollout(args.input, include_tools=not args.messages_only)
     if not conversation:
         raise SystemExit("No user/assistant messages found in rollout.")
-    if (
-        not args.allow_non_assistant_last
-        and conversation[-1].get("role") != "assistant"
-    ):
+    if not args.allow_non_assistant_last and conversation[-1].get("role") != "assistant":
         raise SystemExit(
             "Last message is not assistant; this will fail evaluate(conversation=...)."
         )

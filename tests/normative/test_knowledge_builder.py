@@ -11,7 +11,7 @@ def _tool_result(tool_name: str, result_text: str) -> ToolResultSpeechAct:
 
 def test_non_epistemic_tool_is_filtered():
     builder = KnowledgeStateBuilder()
-    result = _tool_result("save_memory", "{\"foo\": \"bar\"}")
+    result = _tool_result("save_memory", '{"foo": "bar"}')
     assert builder._tool_result_to_knowledge(result) is None
 
 
@@ -29,10 +29,12 @@ def test_extract_semantic_id_single_dict():
 
 def test_extract_semantic_id_list_creates_multiple_nodes():
     builder = KnowledgeStateBuilder()
-    payload = json.dumps([
-        {"task_key": "T-1"},
-        {"task_key": "T-2"},
-    ])
+    payload = json.dumps(
+        [
+            {"task_key": "T-1"},
+            {"task_key": "T-2"},
+        ]
+    )
     result = _tool_result("search_tasks", payload)
     nodes = builder._tool_result_to_knowledge(result)
     assert isinstance(nodes, list)
@@ -46,7 +48,7 @@ def test_build_skips_none_and_flattens_lists():
     results = [
         _tool_result("save_memory", "{}"),
         _tool_result("get_issue", json.dumps({"issue_id": "123"})),
-        _tool_result("search_tasks", json.dumps([{ "task_key": "T-1" }]))
+        _tool_result("search_tasks", json.dumps([{"task_key": "T-1"}])),
     ]
     nodes = builder.build(results)
     assert len(nodes) == 2

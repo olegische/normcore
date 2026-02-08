@@ -4,7 +4,6 @@ from normcore.models import (
     AdmissibilityJudgment,
     AdmissibilityStatus,
     AssistantSpeechAct,
-    EvaluationResult,
     GroundRef,
     LinkRole,
     LinkSet,
@@ -54,7 +53,7 @@ def test_text_part_forbids_extra_fields():
     except ValidationError:
         assert True
     else:
-        assert False, "Expected ValidationError for extra fields"
+        raise AssertionError("Expected ValidationError for extra fields")
 
 
 def test_links_models_defaults():

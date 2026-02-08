@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Ensure src/ is on sys.path for test imports.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

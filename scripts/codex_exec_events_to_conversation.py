@@ -39,9 +39,7 @@ def _serialize_any(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
-_FILE_TOKEN_RE = re.compile(
-    r"(?P<path>(?:[A-Za-z0-9._-]+/)*[A-Za-z0-9._-]+\.[A-Za-z0-9]+)"
-)
+_FILE_TOKEN_RE = re.compile(r"(?P<path>(?:[A-Za-z0-9._-]+/)*[A-Za-z0-9._-]+\.[A-Za-z0-9]+)")
 
 
 def _normalize_repo_rel_path(path: str) -> str:
@@ -145,9 +143,7 @@ def convert_codex_exec_events(
                             "type": "function",
                             "function": {
                                 "name": "shell_command",
-                                "arguments": json.dumps(
-                                    {"command": command}, ensure_ascii=False
-                                ),
+                                "arguments": json.dumps({"command": command}, ensure_ascii=False),
                             },
                         }
                     ],
@@ -199,10 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     if not conversation:
         raise SystemExit("No convertible events found in codex exec stream.")
-    if (
-        not args.allow_non_assistant_last
-        and conversation[-1].get("role") != "assistant"
-    ):
+    if not args.allow_non_assistant_last and conversation[-1].get("role") != "assistant":
         raise SystemExit(
             "Last message is not assistant; this will fail evaluate(conversation=...)."
         )

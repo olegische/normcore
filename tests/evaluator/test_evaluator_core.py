@@ -1,6 +1,17 @@
 from normcore.evaluator import AdmissibilityEvaluator
-from normcore.normative.models import EvaluationStatus, License, Modality, Statement, StatementValidationResult, ValidationResult
-from normcore.normative.models import GroundSet, KnowledgeNode, Scope, Source, Status
+from normcore.normative.models import (
+    EvaluationStatus,
+    GroundSet,
+    KnowledgeNode,
+    License,
+    Modality,
+    Scope,
+    Source,
+    Statement,
+    StatementValidationResult,
+    Status,
+    ValidationResult,
+)
 
 
 def test_evaluate_core_empty_agent_output():

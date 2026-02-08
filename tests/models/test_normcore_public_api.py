@@ -93,14 +93,14 @@ def test_normcore_cli_evaluate_with_conversation_runs(capsys):
                 {
                     "id": "callWeatherNYC",
                     "type": "function",
-                    "function": {"name": "get_weather", "arguments": "{\"city\":\"New York\"}"},
+                    "function": {"name": "get_weather", "arguments": '{"city":"New York"}'},
                 }
             ],
         },
         {
             "role": "tool",
             "tool_call_id": "callWeatherNYC",
-            "content": "{\"weather_id\":\"nyc_2026-02-07\"}",
+            "content": '{"weather_id":"nyc_2026-02-07"}',
         },
         {
             "role": "assistant",
@@ -108,13 +108,16 @@ def test_normcore_cli_evaluate_with_conversation_runs(capsys):
         },
     ]
 
-    assert cli_main(
-        [
-            "evaluate",
-            "--conversation",
-            json.dumps(conversation),
-        ]
-    ) == 0
+    assert (
+        cli_main(
+            [
+                "evaluate",
+                "--conversation",
+                json.dumps(conversation),
+            ]
+        )
+        == 0
+    )
     output = capsys.readouterr().out
     assert '"grounding_trace"' in output
 
@@ -124,15 +127,18 @@ def test_normcore_cli_evaluate_with_matching_agent_output_and_conversation_runs(
         {"role": "user", "content": "Weather in New York?"},
         {"role": "assistant", "content": "Use umbrella [@callWeatherNYC]."},
     ]
-    assert cli_main(
-        [
-            "evaluate",
-            "--agent-output",
-            "Use umbrella [@callWeatherNYC].",
-            "--conversation",
-            json.dumps(conversation),
-        ]
-    ) == 0
+    assert (
+        cli_main(
+            [
+                "evaluate",
+                "--agent-output",
+                "Use umbrella [@callWeatherNYC].",
+                "--conversation",
+                json.dumps(conversation),
+            ]
+        )
+        == 0
+    )
     output = capsys.readouterr().out
     assert '"status"' in output
 
@@ -164,14 +170,14 @@ def test_normcore_cli_evaluate_with_external_grounds_runs(capsys):
                 {
                     "id": "callWeatherNYC",
                     "type": "function",
-                    "function": {"name": "get_weather", "arguments": "{\"city\":\"New York\"}"},
+                    "function": {"name": "get_weather", "arguments": '{"city":"New York"}'},
                 }
             ],
         },
         {
             "role": "tool",
             "tool_call_id": "callWeatherNYC",
-            "content": "{\"weather_id\":\"nyc_2026-02-07\"}",
+            "content": '{"weather_id":"nyc_2026-02-07"}',
         },
         {
             "role": "assistant",
@@ -187,15 +193,18 @@ def test_normcore_cli_evaluate_with_external_grounds_runs(capsys):
         }
     ]
 
-    assert cli_main(
-        [
-            "evaluate",
-            "--conversation",
-            json.dumps(conversation),
-            "--grounds",
-            json.dumps(grounds),
-        ]
-    ) == 0
+    assert (
+        cli_main(
+            [
+                "evaluate",
+                "--conversation",
+                json.dumps(conversation),
+                "--grounds",
+                json.dumps(grounds),
+            ]
+        )
+        == 0
+    )
     payload = json.loads(capsys.readouterr().out)
     trace = payload["statement_evaluations"][0]["grounding_trace"]
     semantic_ids = {item.get("semantic_id") for item in trace}

@@ -5,19 +5,19 @@ from .evaluator import (
     GroundRef,
     StatementEvaluation,
 )
+from .links import (
+    CreatorType,
+    EvidenceType,
+    LinkRole,
+    LinkSet,
+    Provenance,
+    StatementGroundLink,
+)
 from .messages import (
     AssistantSpeechAct,
     RefusalSpeechAct,
     TextSpeechAct,
     ToolResultSpeechAct,
-)
-from .links import (
-    LinkRole,
-    CreatorType,
-    EvidenceType,
-    Provenance,
-    StatementGroundLink,
-    LinkSet,
 )
 from .openai_citations import (
     OpenAICitation,

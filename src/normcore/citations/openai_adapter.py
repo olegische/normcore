@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import Iterable
+from collections.abc import Iterable
 
 from openai.types.responses.response_output_text import Annotation
 from pydantic import TypeAdapter

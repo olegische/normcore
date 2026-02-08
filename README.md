@@ -47,6 +47,7 @@ NormCore is:
 - form-based (statement modality drives the checks)
 - grounding-based (licensing comes only from observed evidence)
 - lexicographic (one violation makes the whole act inadmissible)
+- an **operational judgment gate** for grounded agent outputs
 
 ## What this is NOT
 
@@ -56,6 +57,7 @@ NormCore does **not**:
 - infer intent, reasoning, or “why”
 - do ranking / grading / reward modeling
 - allow agent text to license itself
+- generate code or assess code quality as such
 
 If you need “is this answer good/correct?”, this is the wrong tool.
 
@@ -66,6 +68,14 @@ NormCore answers one question only:
 **Was the agent allowed to speak in this form, given what it observed?**
 
 It does not answer whether the statement is semantically true, useful, or optimal.
+In practice, this targets **operational decision statements** grounded in observed
+tool/file evidence, not code-generation capability evaluation.
+
+## Why this framework exists
+
+NormCore is intended as part of the **control plane** for agentic systems:
+an explicit, deterministic gate on whether an agent is normatively allowed to
+make an operational claim from observed grounds.
 
 ## Hard invariants
 
@@ -232,6 +242,76 @@ Logging:
 normcore -vv evaluate --agent-output "We should deploy now."
 NORMCORE_LOG_LEVEL=INFO normcore evaluate --agent-output "We should deploy now."
 ```
+
+## Codex smoke workflow (reproducible)
+
+This repository includes a practical smoke path to evaluate a real `codex exec`
+conversation with NormCore.
+
+Quick run:
+
+```bash
+MODEL=gpt-5.3-codex REASONING_EFFORT=medium scripts/smoke_codex_pypi_normcore.sh
+```
+
+What this does:
+- runs `codex exec --json` with a release-readiness prompt
+- saves raw event stream to `context/*.jsonl`
+- converts event stream to a Chat Completions-style `conversation` JSON
+- runs `normcore.evaluate` on the converted conversation
+- writes a final `context/*.judgment.json`
+
+Required response shape for the Codex review prompt:
+- the **first sentence** must be the publish recommendation / judgment
+- all justification comes **after** that first sentence
+
+Generated artifacts:
+- `context/<run-id>.jsonl` (raw codex events)
+- `context/<run-id>.stderr.log` (codex stderr)
+- `context/<run-id>.conversation.json` (converted conversation for NormCore)
+- `context/<run-id>.judgment.json` (NormCore output)
+
+Manual step-by-step (same flow):
+
+```bash
+# 1) Run Codex and capture live event JSONL
+echo "your prompt" | codex exec \
+  --model gpt-5.3-codex \
+  --cd . \
+  --skip-git-repo-check \
+  --json \
+  -c 'effort="medium"' \
+  > context/run.jsonl 2> context/run.stderr.log
+
+# 2) Convert Codex events to NormCore conversation format
+.venv/bin/python scripts/codex_exec_events_to_conversation.py \
+  context/run.jsonl \
+  -o context/run.conversation.json
+
+# 3) Evaluate with NormCore
+scripts/evaluate_history.sh \
+  context/run.conversation.json \
+  --log-level DEBUG \
+  -o context/run.judgment.json
+```
+
+### File citation contract for grounding
+
+If you want NormCore to validate file-based claims, request explicit citations in
+assistant text using `[@key]`.
+
+Recommended key format:
+- `[@file_<hash12>]`
+- `hash12` is first 12 hex chars of `sha256(normalized_repo_relative_file_path)`
+
+Normalization rules for hashing:
+- remove leading `./`
+- use `/` separators
+- hash repo-relative path
+
+Important:
+- the model should compute keys via tools (not invent them)
+- the key in assistant text must match the grounding key exactly
 
 ## Output
 

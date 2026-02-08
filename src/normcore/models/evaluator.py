@@ -5,7 +5,6 @@ Public models for the normative admissibility evaluator.
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -35,7 +34,7 @@ class GroundRef(BaseModel):
     status: str = Field(description="Ground node status label (for example confirmed).")
     confidence: float = Field(description="Confidence score attached to the ground node.")
     strength: str = Field(description="Strength label used by licensing logic.")
-    semantic_id: Optional[str] = Field(
+    semantic_id: str | None = Field(
         default=None,
         description="Optional semantic/external identifier used for link resolution.",
     )
@@ -46,12 +45,14 @@ class StatementEvaluation(BaseModel):
     Per-statement evaluation result (spec: EvaluationResult).
     """
 
-    statement_id: str = Field(description="Stable statement identifier (for example final_response).")
+    statement_id: str = Field(
+        description="Stable statement identifier (for example final_response)."
+    )
     statement: str = Field(description="Statement text that was evaluated.")
     modality: str = Field(description="Detected modality for the statement.")
     license: set[str] = Field(description="Modalities permitted by current grounding.")
     status: AdmissibilityStatus = Field(description="Per-statement admissibility status.")
-    violated_axiom: Optional[str] = Field(
+    violated_axiom: str | None = Field(
         default=None,
         description="Violated axiom identifier when status indicates a violation.",
     )
@@ -64,11 +65,11 @@ class StatementEvaluation(BaseModel):
         description="Ground nodes considered for this statement.",
     )
 
-    subject: Optional[str] = Field(
+    subject: str | None = Field(
         default=None,
         description="Normalized statement subject used in internal statement model.",
     )
-    predicate: Optional[str] = Field(
+    predicate: str | None = Field(
         default=None,
         description="Normalized statement predicate used in internal statement model.",
     )
@@ -82,7 +83,9 @@ class AdmissibilityJudgment(BaseModel):
     Aggregated judgment for a whole message / speech act.
     """
 
-    status: AdmissibilityStatus = Field(description="Final admissibility status for whole response.")
+    status: AdmissibilityStatus = Field(
+        description="Final admissibility status for whole response."
+    )
     licensed: bool = Field(
         description="Whether grounding permitted the selected normative form(s)."
     )
@@ -92,7 +95,7 @@ class AdmissibilityJudgment(BaseModel):
         description="Per-statement evaluation traces used to build the final judgment.",
     )
 
-    feedback_hint: Optional[str] = Field(
+    feedback_hint: str | None = Field(
         default=None,
         description="Optional retry guidance for the caller/agent.",
     )

@@ -1,6 +1,13 @@
 from datetime import datetime
 
-from normcore.models.links import LinkRole, LinkSet, Provenance, StatementGroundLink, CreatorType, EvidenceType
+from normcore.models.links import (
+    CreatorType,
+    EvidenceType,
+    LinkRole,
+    LinkSet,
+    Provenance,
+    StatementGroundLink,
+)
 from normcore.normative.license_deriver import LicenseDeriver
 from normcore.normative.models import GroundSet, KnowledgeNode, Modality, Scope, Source, Status
 
@@ -17,7 +24,9 @@ def _node(node_id: str, scope: Scope = Scope.FACTUAL, strength: str = "strong") 
     )
 
 
-def _link(statement_id: str, ground_id: str, role: LinkRole = LinkRole.SUPPORTS) -> StatementGroundLink:
+def _link(
+    statement_id: str, ground_id: str, role: LinkRole = LinkRole.SUPPORTS
+) -> StatementGroundLink:
     return StatementGroundLink(
         statement_id=statement_id,
         ground_id=ground_id,

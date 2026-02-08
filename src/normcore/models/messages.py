@@ -4,8 +4,7 @@ Internal OpenAI-mapped message models and speech acts.
 
 from __future__ import annotations
 
-from typing import Optional, Union
-from typing_extensions import Literal
+from typing import Literal
 
 from pydantic import BaseModel, Field
 
@@ -18,12 +17,12 @@ class RefusalSpeechAct(BaseModel):
     refusal: str
 
 
-AssistantSpeechAct = Union[TextSpeechAct, RefusalSpeechAct]
+AssistantSpeechAct = TextSpeechAct | RefusalSpeechAct
 
 
 class ToolResultSpeechAct(BaseModel):
     tool_name: str
-    tool_call_id: Optional[str] = None
+    tool_call_id: str | None = None
     arguments: dict = Field(default_factory=dict)
     result_text: str
 
@@ -46,7 +45,7 @@ class _RefusalPart(BaseModel):
     }
 
 
-_ContentPart = Union[_TextPart, _RefusalPart]
+_ContentPart = _TextPart | _RefusalPart
 
 
 class _FunctionToolCall(BaseModel):
@@ -61,7 +60,7 @@ class _CustomToolCall(BaseModel):
     input_value: str
 
 
-_ToolCall = Union[_FunctionToolCall, _CustomToolCall]
+_ToolCall = _FunctionToolCall | _CustomToolCall
 
 
 class _AssistantMessage(BaseModel):
@@ -83,4 +82,4 @@ class _OtherMessage(BaseModel):
     role: str
 
 
-_MappedMessage = Union[_AssistantMessage, _ToolMessage, _FunctionMessage, _OtherMessage]
+_MappedMessage = _AssistantMessage | _ToolMessage | _FunctionMessage | _OtherMessage

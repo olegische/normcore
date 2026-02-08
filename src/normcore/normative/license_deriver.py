@@ -47,10 +47,9 @@ When links are absent:
 
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from ..logging import logger
-
 from .models import GroundSet, License, Modality, Scope
 
 if TYPE_CHECKING:
@@ -58,7 +57,7 @@ if TYPE_CHECKING:
 
 
 class LicenseDeriver:
-    def derive(self, ground_set: GroundSet, links: Optional["LinkSet"] = None) -> License:
+    def derive(self, ground_set: GroundSet, links: LinkSet | None = None) -> License:
         if links is not None:
             return self._derive_with_links(ground_set, links)
         return self._derive_conservative(ground_set)
@@ -82,7 +81,7 @@ class LicenseDeriver:
         logger.debug("License (conservative): CONDITIONAL, REFUSAL (weak factual)")
         return License(permitted_modalities={Modality.CONDITIONAL, Modality.REFUSAL})
 
-    def _derive_with_links(self, ground_set: GroundSet, links: "LinkSet") -> License:
+    def _derive_with_links(self, ground_set: GroundSet, links: LinkSet) -> License:
         from ..models import LinkRole
 
         support_links = [link for link in links.links if link.role == LinkRole.SUPPORTS]
@@ -116,7 +115,9 @@ class LicenseDeriver:
             return License(permitted_modalities={Modality.REFUSAL})
 
         if any(g.strength == "strong" for g in factual_grounds):
-            logger.debug("License (with links): ASSERTIVE, CONDITIONAL, REFUSAL (strong factual SUPPORTS)")
+            logger.debug(
+                "License (with links): ASSERTIVE, CONDITIONAL, REFUSAL (strong factual SUPPORTS)"
+            )
             return License(
                 permitted_modalities={Modality.ASSERTIVE, Modality.CONDITIONAL, Modality.REFUSAL}
             )
@@ -125,11 +126,13 @@ class LicenseDeriver:
         return License(permitted_modalities={Modality.CONDITIONAL, Modality.REFUSAL})
 
     def derive_with_trace(
-        self, ground_set: GroundSet, links: Optional["LinkSet"] = None
+        self, ground_set: GroundSet, links: LinkSet | None = None
     ) -> tuple[License, dict]:
         license = self.derive(ground_set, links=links)
 
-        non_factual_scopes = sorted({k.scope.value for k in ground_set.nodes if k.scope != Scope.FACTUAL})
+        non_factual_scopes = sorted(
+            {k.scope.value for k in ground_set.nodes if k.scope != Scope.FACTUAL}
+        )
 
         trace: dict = {
             "mode": "links" if links is not None else "conservative",
@@ -164,4 +167,3 @@ class LicenseDeriver:
             ]
 
         return license, trace
-

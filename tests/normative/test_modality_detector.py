@@ -1,4 +1,3 @@
-import pytest
 
 from normcore.normative.modality_detector import ModalityDetector
 from normcore.normative.models import Modality, Statement
@@ -54,7 +53,9 @@ def test_default_assertive_when_no_indicators():
 
 def test_detect_with_conditions_extracts_conditions_for_conditional():
     detector = ModalityDetector()
-    statement = Statement(id="s1", subject="agent", predicate="participation", raw_text="If X, do Y unless Z.")
+    statement = Statement(
+        id="s1", subject="agent", predicate="participation", raw_text="If X, do Y unless Z."
+    )
     detector.detect_with_conditions(statement)
     assert statement.modality == Modality.CONDITIONAL
     assert "x" in " ".join(statement.conditions).lower()
@@ -67,7 +68,7 @@ def test_detect_with_conditions_does_not_extract_for_assertive_tail_if():
         id="s2",
         subject="agent",
         predicate="participation",
-        raw_text="X is better. If you want more, ask."
+        raw_text="X is better. If you want more, ask.",
     )
     detector.detect_with_conditions(statement)
     assert statement.modality == Modality.ASSERTIVE

@@ -33,9 +33,7 @@ def configure_logging(level: str | None = None) -> None:
         return
 
     handler = logging.StreamHandler()
-    handler.setFormatter(
-        logging.Formatter("%(asctime)s | %(levelname)s | %(name)s | %(message)s")
-    )
+    handler.setFormatter(logging.Formatter("%(asctime)s | %(levelname)s | %(name)s | %(message)s"))
     pkg_logger.addHandler(handler)
     pkg_logger.setLevel(getattr(logging, resolved_level.upper(), logging.INFO))
     pkg_logger.propagate = False

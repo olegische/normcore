@@ -24,10 +24,9 @@ from __future__ import annotations
 
 import hashlib
 import json
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from ..logging import logger
-
 from ..models.messages import ToolResultSpeechAct
 from .models import KnowledgeNode, Scope, Source, Status
 
@@ -58,11 +57,7 @@ class KnowledgeStateBuilder:
             if not k:
                 continue
 
-            produced_nodes: list[KnowledgeNode]
-            if isinstance(k, list):
-                produced_nodes = k
-            else:
-                produced_nodes = [k]
+            produced_nodes: list[KnowledgeNode] = k if isinstance(k, list) else [k]
 
             nodes.extend(produced_nodes)
 
@@ -77,7 +72,7 @@ class KnowledgeStateBuilder:
     def materialize_external_grounds(
         self,
         knowledge_nodes: list[KnowledgeNode],
-        grounds: list["Ground"],
+        grounds: list[Ground],
     ) -> list[KnowledgeNode]:
         """Inject external grounds as factual observed nodes when missing."""
         if not grounds:
@@ -106,7 +101,7 @@ class KnowledgeStateBuilder:
 
     def _tool_result_to_knowledge(
         self, tool_result: ToolResultSpeechAct
-    ) -> Optional[KnowledgeNode | list[KnowledgeNode]]:
+    ) -> KnowledgeNode | list[KnowledgeNode] | None:
         """
         Map tool call result to KnowledgeNode(s).
 
@@ -143,7 +138,9 @@ class KnowledgeStateBuilder:
 
         # Single result
         semantic_id = result
-        tool_result_dump = tool_result.model_dump() if hasattr(tool_result, "model_dump") else tool_result.dict()
+        tool_result_dump = (
+            tool_result.model_dump() if hasattr(tool_result, "model_dump") else tool_result.dict()
+        )
         stable = self._stable_id_fragment(
             json.dumps(
                 {"tool": tool_name, "tool_result": tool_result_dump},
@@ -180,20 +177,23 @@ class KnowledgeStateBuilder:
         if "personalization" in name or "personal_context" in name:
             return True
 
-        if "memory" in name and any(k in name for k in ("save", "note", "notes", "load", "consolidat", "distill", "state")):
+        if "memory" in name and any(
+            k in name for k in ("save", "note", "notes", "load", "consolidat", "distill", "state")
+        ):
             return True
 
-        if "profile" in name and any(k in name for k in ("save", "set", "update", "load", "consolidat")):
+        if "profile" in name and any(
+            k in name for k in ("save", "set", "update", "load", "consolidat")
+        ):
             return True
 
         # Extra catch-alls for "memory without saying memory"
         # (best-effort until explicit tool epistemic typing is available)
-        if any(k in name for k in ("remember", "preference", "preferences", "setting", "settings")):
-            return True
+        return any(
+            k in name for k in ("remember", "preference", "preferences", "setting", "settings")
+        )
 
-        return False
-
-    def _extract_semantic_id(self, tool_result: ToolResultSpeechAct) -> Optional[str | list[str]]:
+    def _extract_semantic_id(self, tool_result: ToolResultSpeechAct) -> str | list[str] | None:
         """
         Extract semantic ID(s) from tool result for LinkSet integration.
 
@@ -226,7 +226,7 @@ class KnowledgeStateBuilder:
             return None
 
     @staticmethod
-    def _extract_entity_id(data: dict) -> Optional[str]:
+    def _extract_entity_id(data: dict) -> str | None:
         """
         Extract primary entity ID from dict via convention.
 

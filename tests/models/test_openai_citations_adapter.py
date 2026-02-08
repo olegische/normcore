@@ -1,6 +1,10 @@
+from openai.types.responses.response_output_text import (
+    AnnotationFileCitation,
+    AnnotationURLCitation,
+)
+
 from normcore.citations import link_set_from_openai_citations, parse_openai_citations
 from normcore.models import LinkRole
-from openai.types.responses.response_output_text import AnnotationFileCitation, AnnotationURLCitation
 
 
 def test_link_set_from_openai_citations_uses_ground_id():

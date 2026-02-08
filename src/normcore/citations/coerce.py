@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Iterable
+from collections.abc import Iterable
 
 from pydantic import ValidationError
 
@@ -13,6 +13,7 @@ from .openai_adapter import (
     link_set_from_openai_citations,
     parse_openai_citations,
 )
+
 
 def coerce_links_input(
     *,

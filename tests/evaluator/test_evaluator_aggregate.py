@@ -11,7 +11,10 @@ class _Result:
 
 
 def _results(*statuses):
-    return [_Result(status=s, violated_axiom=("A5" if s == EvaluationStatus.VIOLATES_NORM else None)) for s in statuses]
+    return [
+        _Result(status=s, violated_axiom=("A5" if s == EvaluationStatus.VIOLATES_NORM else None))
+        for s in statuses
+    ]
 
 
 def _statement_results(n: int):
