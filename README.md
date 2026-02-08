@@ -81,6 +81,18 @@ Grounding semantics in this project:
 - grounding is not semantic relevance matching
 - grounding is admissible observed evidence for normative licensing
 
+## Current limitations
+
+- **Language coverage is currently English-first for form detection.**
+  Normative indicator extraction and modality heuristics are implemented with
+  English lexical markers (for example `should`, `must`, `recommend`,
+  `if ... then`, refusal phrases).
+- Non-English outputs can be under-detected and may return `status="no_normative_content"` 
+  even when the utterance is normatively meaningful.
+- For now, evaluate in English when you need strict behavior, or extend
+  indicator patterns in `src/normcore/normative/statement_extractor.py` and
+  `src/normcore/normative/modality_detector.py` for your target language.
+
 ## Entry point (public API)
 
 ```python

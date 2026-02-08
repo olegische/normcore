@@ -10,6 +10,12 @@ def test_refusal_has_highest_priority():
     assert detector.detect(text) == Modality.REFUSAL
 
 
+def test_first_person_would_not_is_refusal():
+    detector = ModalityDetector()
+    text = "I would not publish to PyPI yet because there is a blocker."
+    assert detector.detect(text) == Modality.REFUSAL
+
+
 def test_goal_conditional_over_recommendation():
     detector = ModalityDetector()
     text = "If your goal is speed, X is better."

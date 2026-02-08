@@ -132,6 +132,8 @@ class ModalityDetector:
         r"please\s+(?:provide|clarify|check)",
         r"I\s+don'?t\s+(?:know|have)",
         r"hard\s+to\s+(?:say|determine)",
+        r"^i\s+(?:would|will)\s+not\s+\w+",
+        r"^i\s+(?:wouldn't|won't)\s+\w+",
     ]
     
     # Formal indicators for CONDITIONAL modality

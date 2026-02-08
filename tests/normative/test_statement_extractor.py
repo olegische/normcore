@@ -35,3 +35,11 @@ def test_personalization_is_preserved():
     statements = extractor.extract(text)
     assert len(statements) == 1
     assert "better for you" in statements[0].raw_text.lower()
+
+
+def test_first_person_would_not_is_kept_for_refusal_eval():
+    extractor = StatementExtractor()
+    text = "I would not publish this yet because evidence is insufficient."
+    statements = extractor.extract(text)
+    assert len(statements) == 1
+    assert "would not publish" in statements[0].raw_text.lower()

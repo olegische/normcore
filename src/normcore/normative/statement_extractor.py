@@ -191,7 +191,7 @@ class StatementExtractor:
         r'\bbetter\s+for\s+you\b',
         r'\bbest\s+(?:choice|option)\b',
         r'\bprefer(?:s|red)?\b',
-        
+
         # Conditional structures
         r'\bif\s+.+\s+then\b',
         
@@ -199,6 +199,8 @@ class StatementExtractor:
         r'\b(?:cannot|can\'t|unable\s+to)\s+determine\b',
         r'\bnot\s+enough\s+(?:info|information|context)\b',
         r'\b(?:need|require)\s+(?:more|additional)\b',
+        r'\bi\s+(?:would|will)\s+not\s+\w+',
+        r"\bi\s+(?:wouldn't|won't)\s+\w+",
     ]
 
     # Personalization framing (non-epistemic context markers).
