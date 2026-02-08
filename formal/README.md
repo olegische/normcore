@@ -46,9 +46,9 @@ cd formal/implementation
 tlc -deadlock -workers 1 grounding_accounting.tla -config grounding_accounting.cfg
 ```
 
-Note: `formal/implementation/spec.cfg` uses `InitOnlySpec` by default
-(fast state-space validation for current classifier-style runtime behavior).
-`Spec` (full transition graph) is available in `spec.tla` but is much more expensive.
+Note: implementation configs now use `Spec` by default (full transition graph).
+If you need fast init-only validation, switch `SPECIFICATION` to `InitOnlySpec`
+in the corresponding `.cfg`.
 
 ## Files
 

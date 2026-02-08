@@ -8,7 +8,7 @@ import argparse
 import json
 from importlib.metadata import PackageNotFoundError, version
 
-from normcore import AdmissibilityEvaluator
+from normcore.evaluator import evaluate
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -56,35 +56,12 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "evaluate":
-        if not args.agent_output and not args.conversation:
-            parser.error("evaluate requires --agent-output or --conversation")
-
-        try:
-            if args.conversation:
+        conversation = None
+        if args.conversation:
+            try:
                 conversation = json.loads(args.conversation)
-                if not isinstance(conversation, list) or not conversation:
-                    parser.error("--conversation must be a non-empty JSON array")
-                trajectory = conversation
-                agent_message = trajectory[-1]
-                if not isinstance(agent_message, dict) or agent_message.get("role") != "assistant":
-                    parser.error("Last conversation item must be an assistant message")
-                if args.agent_output is not None:
-                    if not isinstance(agent_message.get("content"), str):
-                        parser.error(
-                            "Last conversation assistant content must be a string when --agent-output is provided"
-                        )
-                    if agent_message["content"] != args.agent_output:
-                        parser.error(
-                            "--agent-output must match the last assistant content in --conversation"
-                        )
-            else:
-                agent_message = {
-                    "role": "assistant",
-                    "content": args.agent_output,
-                }
-                trajectory = [agent_message]
-        except json.JSONDecodeError as exc:
-            parser.error(f"Failed to parse --conversation JSON: {exc}")
+            except json.JSONDecodeError as exc:
+                parser.error(f"Failed to parse --conversation JSON: {exc}")
 
         grounds = None
         if args.grounds:
@@ -93,11 +70,14 @@ def main(argv: list[str] | None = None) -> int:
             except json.JSONDecodeError as exc:
                 parser.error(f"Failed to parse --grounds JSON: {exc}")
 
-        judgment = AdmissibilityEvaluator.evaluate(
-            agent_message=agent_message,
-            trajectory=trajectory,
-            grounds=grounds,
-        )
+        try:
+            judgment = evaluate(
+                agent_output=args.agent_output,
+                conversation=conversation,
+                grounds=grounds,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
         print(json.dumps(judgment.model_dump(mode="json"), ensure_ascii=False, indent=2))
         return 0
 

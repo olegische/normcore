@@ -67,16 +67,14 @@ If you need “is this answer good/correct?”, this is the wrong tool.
 - External grounds from the public API are also allowed (for example file/url evidence from an upstream RAG pipeline).
 - Grounds are linked only when the assistant text cites their `citation_key` in `[@key]` format.
 - Personalization / memory / preferences / profiles are **non-epistemic** and must not become grounding.
-- Personal context is accepted as metadata for audit purposes only.
 
 ## Entry point (public API)
 
 ```python
-from normcore import AdmissibilityEvaluator
+from normcore import evaluate
 
-judgment = AdmissibilityEvaluator.evaluate(
-    agent_message=agent_message,
-    trajectory=trajectory,
+judgment = evaluate(
+    conversation=trajectory,
 )
 ```
 
@@ -86,17 +84,20 @@ Normative pipeline: `src/normcore/normative/`
 
 ## Inputs
 
-`AdmissibilityEvaluator.evaluate()` consumes:
-- `agent_message`: the assistant message to judge (OpenAI Chat Completions schema)
-- `trajectory`: the full chat history (used only to extract tool results + build grounding)
+`evaluate()` consumes:
+- `agent_output` (optional): assistant output string
+- `conversation` (optional): full chat history as OpenAI Chat Completions message list; last message must be assistant
 - `grounds` (optional): external grounds as OpenAI annotations (file/url citations)
+
+At least one of `agent_output` or `conversation` is required.
+If both are provided, `agent_output` must exactly match last assistant `content` in `conversation`.
 
 Grounding is built from trajectory tool results plus optional external grounds.
 
 ## Usage
 
 ```python
-from normcore import AdmissibilityEvaluator
+from normcore import evaluate
 
 agent_message = {
     "role": "assistant",
@@ -122,7 +123,7 @@ trajectory = [
     agent_message,
 ]
 
-judgment = AdmissibilityEvaluator.evaluate(agent_message=agent_message, trajectory=trajectory)
+judgment = evaluate(conversation=trajectory)
 print(judgment.status)
 print(judgment.licensed)
 ```
@@ -164,23 +165,6 @@ Version:
 ```bash
 normcore --version
 ```
-
-### Personal context (non-epistemic)
-
-```python
-judgment = AdmissibilityEvaluator.evaluate(
-    agent_message=agent_message,
-    trajectory=trajectory,
-    personal_context="prefers concise format",
-    personal_context_scope="session",
-    personal_context_source="user",
-)
-```
-
-Personal context:
-- does **not** create grounding
-- does **not** permit assertive claims
-- is carried for audit/trace metadata only
 
 ## Output
 

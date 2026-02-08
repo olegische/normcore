@@ -75,8 +75,5 @@ class AdmissibilityJudgment(BaseModel):
 
     num_statements: int = 0
     num_acceptable: int = 0
-    personal_context_source: str = "unknown"
-    personal_context_scope: str = "unknown"
-    personal_context_present: bool = False
     grounds_accepted: int = 0
     grounds_cited: int = 0

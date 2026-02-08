@@ -23,9 +23,6 @@ def test_aggregate_violates_norm_has_priority():
     result = evaluator._aggregate(
         _results(EvaluationStatus.VIOLATES_NORM, EvaluationStatus.ACCEPTABLE),
         _statement_results(2),
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.VIOLATES_NORM
     assert result.can_retry is True
@@ -36,9 +33,6 @@ def test_aggregate_ill_formed_next_priority():
     result = evaluator._aggregate(
         _results(EvaluationStatus.ILL_FORMED, EvaluationStatus.ACCEPTABLE),
         _statement_results(2),
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.ILL_FORMED
 
@@ -48,9 +42,6 @@ def test_aggregate_underdetermined():
     result = evaluator._aggregate(
         _results(EvaluationStatus.UNDERDETERMINED),
         _statement_results(1),
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.UNDERDETERMINED
     assert result.licensed is False
@@ -61,9 +52,6 @@ def test_aggregate_unsupported():
     result = evaluator._aggregate(
         _results(EvaluationStatus.UNSUPPORTED),
         _statement_results(1),
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.UNSUPPORTED
     assert result.can_retry is True
@@ -74,9 +62,6 @@ def test_aggregate_conditionally_acceptable():
     result = evaluator._aggregate(
         _results(EvaluationStatus.CONDITIONALLY_ACCEPTABLE),
         _statement_results(1),
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.CONDITIONALLY_ACCEPTABLE
 
@@ -86,9 +71,6 @@ def test_aggregate_accepts_all_acceptable():
     result = evaluator._aggregate(
         _results(EvaluationStatus.ACCEPTABLE, EvaluationStatus.ACCEPTABLE),
         _statement_results(2),
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.ACCEPTABLE
     assert result.num_acceptable == 2

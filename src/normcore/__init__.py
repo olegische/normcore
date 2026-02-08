@@ -2,7 +2,7 @@
 Public API for the NormCore package.
 """
 
-from .evaluator import AdmissibilityEvaluator
+from .evaluator import AdmissibilityEvaluator, evaluate
 from .models import (
     AdmissibilityJudgment,
     AdmissibilityStatus,
@@ -12,6 +12,7 @@ from .models import (
 
 __all__ = [
     "AdmissibilityEvaluator",
+    "evaluate",
     "AdmissibilityJudgment",
     "AdmissibilityStatus",
     "GroundRef",

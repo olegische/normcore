@@ -9,9 +9,6 @@ def test_evaluate_core_empty_agent_output():
         agent_output="",
         knowledge_nodes=[],
         links=None,
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.UNDERDETERMINED
     assert result.licensed is False
@@ -29,9 +26,6 @@ def test_evaluate_core_no_normative_statements_returns_no_normative_content():
         agent_output="hello",
         knowledge_nodes=[],
         links=None,
-        personal_context=None,
-        personal_context_scope="unknown",
-        personal_context_source="unknown",
     )
     assert result.status == EvaluationStatus.NO_NORMATIVE_CONTENT
 

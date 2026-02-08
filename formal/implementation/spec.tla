@@ -46,7 +46,7 @@ VARIABLES
     conditionsDeclared,
     licenseMode,
     factualStrength,
-    linksFactualStrength,
+    effectiveSupportsPresent,
     statementStatus,
     statementStatuses,
     coreStatus,
@@ -56,30 +56,30 @@ VARIABLES
 vars ==
     <<evaluationMode, path, hasAgentOutput, hasNormativeContent,
       modality, conditionsDeclared, licenseMode, factualStrength,
-      linksFactualStrength, statementStatus, statementStatuses,
+      effectiveSupportsPresent, statementStatus, statementStatuses,
       coreStatus, licensed, canRetry>>
 
 Contains(seq, value) ==
     \E i \in 1..Len(seq): seq[i] = value
 
-AssertiveLicensed(mode, factual, linksFactual) ==
+AssertiveLicensed(mode, supportsPresent) ==
     /\ mode = "links"
-    /\ linksFactual = "strong"
+    /\ supportsPresent
 
-ConditionalAcceptable(conds, mode, factual, linksFactual) ==
-    AssertiveLicensed(mode, factual, linksFactual) \/ conds
+ConditionalAcceptable(conds, mode, supportsPresent) ==
+    AssertiveLicensed(mode, supportsPresent) \/ conds
 
 HasFactualGround(factual) ==
     factual # "none"
 
-EvalStatementStatus(m, conds, mode, factual, linksFactual) ==
+EvalStatementStatus(m, conds, mode, factual, supportsPresent) ==
     IF m = "REFUSAL"
     THEN "ACCEPTABLE"
-    ELSE IF m = "ASSERTIVE" /\ ~AssertiveLicensed(mode, factual, linksFactual)
+    ELSE IF m = "ASSERTIVE" /\ ~AssertiveLicensed(mode, supportsPresent)
     THEN "VIOLATES_NORM"
-    ELSE IF m = "CONDITIONAL" /\ ConditionalAcceptable(conds, mode, factual, linksFactual)
+    ELSE IF m = "CONDITIONAL" /\ ConditionalAcceptable(conds, mode, supportsPresent)
     THEN "CONDITIONALLY_ACCEPTABLE"
-    ELSE IF m = "CONDITIONAL" /\ ~ConditionalAcceptable(conds, mode, factual, linksFactual)
+    ELSE IF m = "CONDITIONAL" /\ ~ConditionalAcceptable(conds, mode, supportsPresent)
     THEN "UNSUPPORTED"
     ELSE IF m \in {"ASSERTIVE", "CONDITIONAL"} /\ ~HasFactualGround(factual)
     THEN "UNSUPPORTED"
@@ -87,7 +87,7 @@ EvalStatementStatus(m, conds, mode, factual, linksFactual) ==
     THEN "ACCEPTABLE"
     ELSE IF m = "DESCRIPTIVE" /\ ~HasFactualGround(factual)
     THEN "UNSUPPORTED"
-    ELSE IF m = "ASSERTIVE" /\ AssertiveLicensed(mode, factual, linksFactual)
+    ELSE IF m = "ASSERTIVE" /\ AssertiveLicensed(mode, supportsPresent)
     THEN "ACCEPTABLE"
     ELSE "UNDERDETERMINED"
 
@@ -124,16 +124,17 @@ AggregateCanRetry(seqStatuses) ==
     THEN TRUE
     ELSE FALSE
 
-\* In core model, linksFactualStrength is an abstract effective value.
-LinksStrengthFeasible(mode, m, factual, linksFactual) ==
+\* In core model, links effectiveness is modeled as a binary predicate:
+\* at least one assertive-eligible SUPPORTS link (strong factual) resolves.
+SupportsFeasible(mode, m, factual, supportsPresent) ==
     mode = "links" /\
     IF m = "REFUSAL"
-    THEN linksFactual = "none"
+    THEN ~supportsPresent
     ELSE IF factual = "none"
-    THEN linksFactual = "none"
+    THEN ~supportsPresent
     ELSE IF factual = "weak"
-    THEN linksFactual \in {"none", "weak"}
-    ELSE linksFactual \in {"none", "weak", "strong"}
+    THEN ~supportsPresent
+    ELSE supportsPresent \in BOOLEAN
 
 CoreFlowConsistent ==
     IF evaluationMode = "assistant_refusal"
@@ -145,7 +146,7 @@ CoreFlowConsistent ==
         /\ conditionsDeclared = FALSE
         /\ licenseMode = "links"
         /\ factualStrength = "none"
-        /\ linksFactualStrength = "none"
+        /\ ~effectiveSupportsPresent
         /\ statementStatus = "ACCEPTABLE"
         /\ statementStatuses = <<statementStatus>>
         /\ coreStatus = "ACCEPTABLE"
@@ -159,7 +160,7 @@ CoreFlowConsistent ==
                /\ conditionsDeclared = FALSE
                /\ licenseMode = "links"
                /\ factualStrength = "none"
-               /\ linksFactualStrength = "none"
+               /\ ~effectiveSupportsPresent
                /\ statementStatus = "UNDERDETERMINED"
                /\ hasAgentOutput = FALSE
                /\ hasNormativeContent = FALSE
@@ -173,7 +174,7 @@ CoreFlowConsistent ==
                /\ conditionsDeclared = FALSE
                /\ licenseMode = "links"
                /\ factualStrength = "none"
-               /\ linksFactualStrength = "none"
+               /\ ~effectiveSupportsPresent
                /\ statementStatus = "UNDERDETERMINED"
                /\ hasAgentOutput = TRUE
                /\ hasNormativeContent = FALSE
@@ -187,7 +188,7 @@ CoreFlowConsistent ==
                /\ hasNormativeContent = TRUE
                /\ statementStatus =
                     EvalStatementStatus(
-                        modality, conditionsDeclared, licenseMode, factualStrength, linksFactualStrength
+                        modality, conditionsDeclared, licenseMode, factualStrength, effectiveSupportsPresent
                     )
                /\ statementStatuses = <<statementStatus>>
                /\ coreStatus = AggregateStatuses(statementStatuses)
@@ -203,13 +204,13 @@ TypeOK ==
     /\ conditionsDeclared \in BOOLEAN
     /\ licenseMode \in LicenseModes
     /\ factualStrength \in StrengthValues
-    /\ linksFactualStrength \in StrengthValues
+    /\ effectiveSupportsPresent \in BOOLEAN
     /\ statementStatus \in AggregateInputStatuses
     /\ statementStatuses \in StatementStatusSeqs
     /\ coreStatus \in CoreStatuses
     /\ licensed \in BOOLEAN
     /\ canRetry \in BOOLEAN
-    /\ LinksStrengthFeasible(licenseMode, modality, factualStrength, linksFactualStrength)
+    /\ SupportsFeasible(licenseMode, modality, factualStrength, effectiveSupportsPresent)
 
 Init ==
     /\ evaluationMode \in EvaluationModes
@@ -220,7 +221,7 @@ Init ==
     /\ conditionsDeclared \in BOOLEAN
     /\ licenseMode \in LicenseModes
     /\ factualStrength \in StrengthValues
-    /\ linksFactualStrength \in StrengthValues
+    /\ effectiveSupportsPresent \in BOOLEAN
     /\ statementStatus \in AggregateInputStatuses
     /\ statementStatuses \in StatementStatusSeqs
     /\ coreStatus \in CoreStatuses
@@ -238,7 +239,7 @@ Next ==
     /\ conditionsDeclared' \in BOOLEAN
     /\ licenseMode' \in LicenseModes
     /\ factualStrength' \in StrengthValues
-    /\ linksFactualStrength' \in StrengthValues
+    /\ effectiveSupportsPresent' \in BOOLEAN
     /\ statementStatus' \in AggregateInputStatuses
     /\ statementStatuses' \in StatementStatusSeqs
     /\ coreStatus' \in CoreStatuses
@@ -286,7 +287,7 @@ InvRefusalEntryAlwaysAcceptable ==
        /\ canRetry = FALSE
 
 InvLinksFeasible ==
-    LinksStrengthFeasible(licenseMode, modality, factualStrength, linksFactualStrength)
+    SupportsFeasible(licenseMode, modality, factualStrength, effectiveSupportsPresent)
 
 InvA6 ==
     /\ path = "evaluated"
@@ -296,19 +297,19 @@ InvA6 ==
 InvA5 ==
     /\ path = "evaluated"
     /\ modality = "ASSERTIVE"
-    /\ ~AssertiveLicensed(licenseMode, factualStrength, linksFactualStrength)
+    /\ ~AssertiveLicensed(licenseMode, effectiveSupportsPresent)
     => statementStatus = "VIOLATES_NORM"
 
 InvA7 ==
     /\ path = "evaluated"
     /\ modality = "CONDITIONAL"
-    /\ ConditionalAcceptable(conditionsDeclared, licenseMode, factualStrength, linksFactualStrength)
+    /\ ConditionalAcceptable(conditionsDeclared, licenseMode, effectiveSupportsPresent)
     => statementStatus = "CONDITIONALLY_ACCEPTABLE"
 
 InvA7Unsupported ==
     /\ path = "evaluated"
     /\ modality = "CONDITIONAL"
-    /\ ~ConditionalAcceptable(conditionsDeclared, licenseMode, factualStrength, linksFactualStrength)
+    /\ ~ConditionalAcceptable(conditionsDeclared, licenseMode, effectiveSupportsPresent)
     => statementStatus = "UNSUPPORTED"
 
 InvDescriptive ==

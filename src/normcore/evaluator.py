@@ -36,10 +36,8 @@ GROUNDING AND CONTEXT
 ---------------------
 
 - GroundSet is constructed exclusively from externally observable tool results.
-- Personal or personalization context is treated as non-epistemic context:
-  it MUST NOT contribute KnowledgeNodes or grant ASSERTIVE licenses.
-- Personal context may influence modality framing (e.g. CONDITIONAL),
-  but never grounding or license derivation.
+- Personalization and memory artifacts are non-epistemic:
+  they MUST NOT contribute KnowledgeNodes or grant ASSERTIVE licenses.
 
 OUTPUT
 ------
@@ -118,6 +116,46 @@ def _adapter(schema):
     """Create a pydantic TypeAdapter for the given schema."""
     return _TypeAdapter(schema)
 
+
+def evaluate(
+    *,
+    agent_output: Optional[str] = None,
+    conversation: Optional[list[ChatCompletionMessageParam]] = None,
+    grounds: Optional[list["Ground"]] = None,
+    **kwargs: Any,
+) -> AdmissibilityJudgment:
+    """Public evaluate contract aligned with CLI parameters."""
+    if agent_output is None and conversation is None:
+        raise ValueError("evaluate requires agent_output or conversation")
+
+    if conversation is not None:
+        if not isinstance(conversation, list) or not conversation:
+            raise ValueError("conversation must be a non-empty list")
+        trajectory = conversation
+        agent_message = trajectory[-1]
+        if not isinstance(agent_message, dict) or agent_message.get("role") != "assistant":
+            raise ValueError("Last conversation item must be an assistant message")
+        if agent_output is not None:
+            if not isinstance(agent_message.get("content"), str):
+                raise ValueError(
+                    "Last conversation assistant content must be a string when agent_output is provided"
+                )
+            if agent_message["content"] != agent_output:
+                raise ValueError("agent_output must match the last assistant content in conversation")
+    else:
+        agent_message = {
+            "role": "assistant",
+            "content": agent_output,
+        }
+        trajectory = [agent_message]
+
+    return AdmissibilityEvaluator.evaluate(
+        agent_message=agent_message,
+        trajectory=trajectory,
+        grounds=grounds,
+        **kwargs,
+    )
+
 class AdmissibilityEvaluator:
     """
     Evaluator implementing the Normative Admissibility Framework
@@ -152,9 +190,6 @@ class AdmissibilityEvaluator:
         cls,
         agent_message: ChatCompletionAssistantMessageParam,
         trajectory: list[ChatCompletionMessageParam],
-        personal_context: Optional[str] = None,
-        personal_context_scope: str = "unknown",
-        personal_context_source: str = "unknown",
         grounds: Optional[list['Ground']] = None,
         **kwargs: Any,
     ) -> AdmissibilityJudgment:
@@ -166,9 +201,6 @@ class AdmissibilityEvaluator:
         Args:
             agent_message: Single agent message to validate
             trajectory: Full message history (for building knowledge state)
-            personal_context: Optional non-epistemic personalization context (YAML/JSON string)
-            personal_context_scope: "global" | "session" | "unknown"
-            personal_context_source: "user" | "system" | "memory" | "unknown"
             grounds: Optional grounds input (citation_key -> ground_id)
             **kwargs: Additional args (for compatibility)
         
@@ -215,9 +247,6 @@ class AdmissibilityEvaluator:
                 speech_act.refusal,
                 knowledge_nodes,
                 links,
-                personal_context=personal_context,
-                personal_context_scope=personal_context_scope,
-                personal_context_source=personal_context_source,
             )
             internal_result.grounds_accepted = len(accepted_ground_ids)
             internal_result.grounds_cited = len(cited_ground_ids)
@@ -229,9 +258,6 @@ class AdmissibilityEvaluator:
             agent_output=agent_output,
             knowledge_nodes=knowledge_nodes,
             links=links,
-            personal_context=personal_context,
-            personal_context_scope=personal_context_scope,
-            personal_context_source=personal_context_source,
         )
         internal_result.grounds_accepted = len(accepted_ground_ids)
         internal_result.grounds_cited = len(cited_ground_ids)
@@ -242,9 +268,6 @@ class AdmissibilityEvaluator:
         agent_output: str,
         knowledge_nodes: list[KnowledgeNode],
         links: Optional['LinkSet'],
-        personal_context: Optional[str],
-        personal_context_scope: str,
-        personal_context_source: str,
     ) -> ValidationResult:
         """
         Evaluation core. All normative checking happens here.
@@ -267,9 +290,6 @@ class AdmissibilityEvaluator:
             agent_output: Text to validate
             knowledge_nodes: Already built knowledge state
             links: Optional StatementGroundLinks
-            personal_context: Optional non-epistemic personalization context (YAML/JSON string)
-            personal_context_scope: "global" | "session" | "unknown"
-            personal_context_source: "user" | "system" | "memory" | "unknown"
         
         Returns:
             ValidationResult with status, feedback_hint, violations
@@ -281,9 +301,6 @@ class AdmissibilityEvaluator:
                 licensed=False,
                 can_retry=False,
                 explanation="No content to validate",
-                personal_context_source=personal_context_source,
-                personal_context_scope=personal_context_scope,
-                personal_context_present=bool(personal_context),
             )
         
         statements = self.extractor.extract(agent_output)
@@ -317,9 +334,6 @@ class AdmissibilityEvaluator:
                 licensed=False,  # Not licensed (no normative claim to license)
                 can_retry=False,  # Not a failure (protocol speech is acceptable)
                 explanation="Protocol-only output (greetings/offers) - no normative claims to evaluate",
-                personal_context_source=personal_context_source,
-                personal_context_scope=personal_context_scope,
-                personal_context_present=bool(personal_context),
             )
         
         logger.info(f"AdmissibilityEvaluator: Extracted {len(statements)} statements")
@@ -384,18 +398,12 @@ class AdmissibilityEvaluator:
         return self._aggregate(
             axiom_results,
             statement_results,
-            personal_context=personal_context,
-            personal_context_scope=personal_context_scope,
-            personal_context_source=personal_context_source,
         )
     
     def _aggregate(
         self,
         axiom_results: list,
         statement_results: list[StatementValidationResult],
-        personal_context: Optional[str],
-        personal_context_scope: str,
-        personal_context_source: str,
     ) -> ValidationResult:
         """
         Aggregate axiom check results to ValidationResult.
@@ -501,9 +509,6 @@ class AdmissibilityEvaluator:
             explanation=explanation,
             num_statements=len(statement_results),
             num_acceptable=num_acceptable,
-            personal_context_source=personal_context_source,
-            personal_context_scope=personal_context_scope,
-            personal_context_present=bool(personal_context),
         )
 
     @staticmethod
@@ -566,9 +571,6 @@ class AdmissibilityEvaluator:
             explanation=result.explanation,
             num_statements=result.num_statements,
             num_acceptable=result.num_acceptable,
-            personal_context_source=result.personal_context_source,
-            personal_context_scope=result.personal_context_scope,
-            personal_context_present=result.personal_context_present,
             grounds_accepted=result.grounds_accepted,
             grounds_cited=result.grounds_cited,
         )
@@ -742,9 +744,6 @@ class AdmissibilityEvaluator:
         refusal_text: str,
         knowledge_nodes: list[KnowledgeNode],
         links: Optional['LinkSet'],
-        personal_context: Optional[str],
-        personal_context_scope: str,
-        personal_context_source: str,
     ) -> ValidationResult:
         """Evaluate a refusal speech act using the same axioms."""
         from .normative.models import Modality, Statement
@@ -775,7 +774,4 @@ class AdmissibilityEvaluator:
         return self._aggregate(
             [result],
             [stmt_result],
-            personal_context=personal_context,
-            personal_context_scope=personal_context_scope,
-            personal_context_source=personal_context_source,
         )

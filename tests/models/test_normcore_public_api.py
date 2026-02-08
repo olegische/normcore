@@ -3,13 +3,18 @@ import sys
 
 import pytest
 
-from normcore import AdmissibilityEvaluator
+from normcore import AdmissibilityEvaluator, evaluate
 from normcore.cli import main as cli_main
 from normcore.evaluator import AdmissibilityEvaluator as NamespacedEvaluator
+from normcore.evaluator import evaluate as namespaced_evaluate
 
 
 def test_normcore_namespace_exports_evaluator():
     assert NamespacedEvaluator is AdmissibilityEvaluator
+
+
+def test_normcore_namespace_exports_evaluate():
+    assert namespaced_evaluate is evaluate
 
 
 def test_normcore_cli_help_runs(monkeypatch, capsys):
@@ -156,3 +161,24 @@ def test_normcore_cli_evaluate_with_external_grounds_runs(capsys):
 def test_normcore_cli_evaluate_with_invalid_grounds_json_fails():
     with pytest.raises(SystemExit):
         cli_main(["evaluate", "--agent-output", "Text", "--grounds", "{bad json}"])
+
+
+def test_normcore_programmatic_evaluate_matches_cli_contract(capsys):
+    conversation = [
+        {"role": "user", "content": "Weather in New York?"},
+        {"role": "assistant", "content": "Use umbrella [@callWeatherNYC]."},
+    ]
+    assert cli_main(["evaluate", "--conversation", json.dumps(conversation)]) == 0
+    cli_payload = json.loads(capsys.readouterr().out)
+
+    api_payload = evaluate(conversation=conversation).model_dump(mode="json")
+    assert cli_payload == api_payload
+
+
+def test_normcore_programmatic_evaluate_mismatched_agent_output_fails():
+    conversation = [
+        {"role": "user", "content": "Weather in New York?"},
+        {"role": "assistant", "content": "Use umbrella [@callWeatherNYC]."},
+    ]
+    with pytest.raises(ValueError):
+        evaluate(agent_output="Different output", conversation=conversation)
