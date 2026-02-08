@@ -132,7 +132,7 @@ class KnowledgeNode:
     strength: str = "strong"  # "strong" | "weak"
     semantic_id: str | None = None  # NEW v0.3.1: For LinkSet integration
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Validate confidence range and strength."""
         if not 0.0 <= self.confidence <= 1.0:
             raise ValueError(f"Confidence must be in [0.0, 1.0], got {self.confidence}")

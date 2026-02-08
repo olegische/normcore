@@ -121,8 +121,8 @@ class KnowledgeStateBuilder:
         # Array results (search_issues, search_transactions, etc.)
         if isinstance(result, list):
             nodes: list[KnowledgeNode] = []
-            for idx, semantic_id in enumerate(result):
-                stable = self._stable_id_fragment(f"{tool_name}:{semantic_id}")
+            for idx, sid in enumerate(result):
+                stable = self._stable_id_fragment(f"{tool_name}:{sid}")
                 nodes.append(
                     KnowledgeNode(
                         id=f"tool_{tool_name}_item{idx}_{stable}",
@@ -131,7 +131,7 @@ class KnowledgeStateBuilder:
                         confidence=1.0,
                         scope=Scope.FACTUAL,
                         strength="strong",
-                        semantic_id=semantic_id,
+                        semantic_id=sid,
                     )
                 )
             return nodes if nodes else None

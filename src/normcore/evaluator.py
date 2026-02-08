@@ -53,7 +53,7 @@ and downstream policy enforcement.
 
 import json
 from collections.abc import Iterable
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from openai.types.chat import (
     ChatCompletionAssistantMessageParam,
@@ -113,7 +113,7 @@ if TYPE_CHECKING:
 from .models import LinkSet
 
 
-def _adapter(schema):
+def _adapter(schema: Any) -> _TypeAdapter[Any]:
     """Create a pydantic TypeAdapter for the given schema."""
     return _TypeAdapter(schema)
 
@@ -136,6 +136,7 @@ def evaluate(
         agent_message = trajectory[-1]
         if not isinstance(agent_message, dict) or agent_message.get("role") != "assistant":
             raise ValueError("Last conversation item must be an assistant message")
+        agent_message = cast(ChatCompletionAssistantMessageParam, agent_message)
         if agent_output is not None:
             if not isinstance(agent_message.get("content"), str):
                 raise ValueError(
@@ -177,7 +178,7 @@ class AdmissibilityEvaluator:
     5. Aggregate results into a single admissibility judgment
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize all components."""
         self.extractor = StatementExtractor()
         self.modality_detector = ModalityDetector()
@@ -392,8 +393,9 @@ class AdmissibilityEvaluator:
 
             # Log evaluation
             logger.info(f"  Statement: {statement.raw_text[:80]}...")
+            modality_label = statement.modality.value if statement.modality is not None else "unknown"
             logger.info(
-                f"    Modality: {statement.modality.value}, "
+                f"    Modality: {modality_label}, "
                 f"License: {[m.value for m in license.permitted_modalities]}, "
                 f"Status: {result.status.value}"
             )
@@ -655,7 +657,7 @@ class AdmissibilityEvaluator:
         raise ValueError(f"Unsupported content type: {type(content)}")
 
     @staticmethod
-    def _parse_tool_args(arguments: Any) -> dict:
+    def _parse_tool_args(arguments: Any) -> dict[str, Any]:
         """Parse tool call arguments into a dict, handling JSON strings."""
         if arguments is None:
             return {}
@@ -663,7 +665,8 @@ class AdmissibilityEvaluator:
             return arguments
         if isinstance(arguments, str):
             try:
-                return json.loads(arguments)
+                parsed = json.loads(arguments)
+                return parsed if isinstance(parsed, dict) else {}
             except json.JSONDecodeError:
                 return {}
         return {}
@@ -671,7 +674,7 @@ class AdmissibilityEvaluator:
     def _validate_message(self, message: ChatCompletionMessageParam) -> ChatCompletionMessageParam:
         """Validate a raw message against the OpenAI message schema."""
         try:
-            return self._message_adapter.validate_python(message)
+            return cast(ChatCompletionMessageParam, self._message_adapter.validate_python(message))
         except ValidationError as exc:  # pragma: no cover
             raise ValueError(f"Invalid OpenAI ChatCompletionMessageParam: {exc}") from exc
 
@@ -679,11 +682,11 @@ class AdmissibilityEvaluator:
         """Map a validated message into an internal message model."""
         role = message["role"]
         if role == "assistant":
-            return self._map_assistant_message(message)
+            return self._map_assistant_message(cast(ChatCompletionAssistantMessageParam, message))
         if role == "tool":
-            return self._map_tool_message(message)
+            return self._map_tool_message(cast(ChatCompletionToolMessageParam, message))
         if role == "function":
-            return self._map_function_message(message)
+            return self._map_function_message(cast(ChatCompletionFunctionMessageParam, message))
         return _OtherMessage(role=role)
 
     def _map_assistant_message(
@@ -717,7 +720,7 @@ class AdmissibilityEvaluator:
         if isinstance(content, str):
             return content
         if isinstance(content, Iterable):
-            return self._content_parts_adapter.validate_python(content)
+            return cast(list[_ContentPart], self._content_parts_adapter.validate_python(content))
         raise ValueError(f"Unsupported content type: {type(content)}")
 
     def _map_tool_call(self, tool_call: ChatCompletionMessageToolCallUnionParam) -> "_ToolCall":

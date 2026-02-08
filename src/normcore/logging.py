@@ -21,7 +21,9 @@ def configure_logging(level: str | None = None) -> None:
     This is intentionally opt-in. If neither ``level`` nor
     ``NORMCORE_LOG_LEVEL`` is provided, configuration is skipped.
     """
-    resolved_level = (level or os.getenv("NORMCORE_LOG_LEVEL", "")).strip()
+    env_level = os.getenv("NORMCORE_LOG_LEVEL", "")
+    raw_level = level if level is not None else (env_level or "")
+    resolved_level = raw_level.strip()
     pkg_logger = logging.getLogger(LOGGER_NAME)
     # Always reset handlers to avoid stale stderr streams across repeated CLI calls.
     pkg_logger.handlers = []

@@ -13,11 +13,15 @@ from normcore.logging import configure_logging
 
 
 def _resolve_log_level(args: argparse.Namespace) -> str | None:
-    if args.log_level:
-        return args.log_level
-    if args.verbose >= 2:
+    log_level = getattr(args, "log_level", None)
+    if isinstance(log_level, str) and log_level:
+        return log_level
+    verbose = getattr(args, "verbose", 0)
+    if not isinstance(verbose, int):
+        return None
+    if verbose >= 2:
         return "DEBUG"
-    if args.verbose == 1:
+    if verbose == 1:
         return "INFO"
     return None
 

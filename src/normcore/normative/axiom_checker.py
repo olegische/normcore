@@ -260,12 +260,23 @@ class AxiomChecker:
                     explanation="Descriptive statement without factual grounding",
                 )
 
+        modality = statement.modality
+        if modality is None:
+            return AxiomCheckResult(
+                status=EvaluationStatus.UNDERDETERMINED,
+                violated_axiom=None,
+                explanation=(
+                    "Cannot determine status (modality=None, "
+                    f"license={[m.value for m in license.permitted_modalities]})"
+                ),
+            )
+
         # Default: ACCEPTABLE if modality matches license
-        if license.permits(statement.modality):
+        if license.permits(modality):
             return AxiomCheckResult(
                 status=EvaluationStatus.ACCEPTABLE,
                 violated_axiom=None,
-                explanation=f"Statement modality ({statement.modality.value}) permitted by license",
+                explanation=f"Statement modality ({modality.value}) permitted by license",
             )
 
         # Fallback: UNDERDETERMINED
@@ -281,7 +292,10 @@ class AxiomChecker:
         return AxiomCheckResult(
             status=EvaluationStatus.UNDERDETERMINED,
             violated_axiom=None,
-            explanation=f"Cannot determine status (modality={statement.modality.value}, license={[m.value for m in license.permitted_modalities]})",
+            explanation=(
+                f"Cannot determine status (modality={modality.value}, "
+                f"license={[m.value for m in license.permitted_modalities]})"
+            ),
         )
 
     # ========================================================================

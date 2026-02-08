@@ -200,7 +200,7 @@ class ModalityDetector:
         r"\b(?:finish|complete)\s+\w+\s+first\b",  # "Finish X first"
     ]
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize detector with compiled formal indicators."""
         self._refusal_re = [re.compile(ind, re.IGNORECASE) for ind in self.REFUSAL_FORM_INDICATORS]
         self._conditional_re = [
