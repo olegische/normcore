@@ -1,0 +1,25 @@
+[package]
+name = "normcore-rs"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "Rust implementation baseline for NormCore normative admissibility evaluator"
+
+[lib]
+name = "normcore_rs"
+path = "src/lib.rs"
+
+[lints.clippy]
+collapsible_if = "deny"
+redundant_closure_for_method_calls = "deny"
+uninlined_format_args = "deny"
+
+[profile.release]
+lto = "fat"
+strip = "symbols"
+codegen-units = 1
+
+[profile.ci-test]
+debug = 1
+inherits = "test"
+opt-level = 0

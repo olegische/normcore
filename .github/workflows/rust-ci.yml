@@ -1,0 +1,27 @@
+name: rust-ci
+
+on:
+  pull_request:
+    paths:
+      - 'src/normcore-rs/**'
+      - 'rustfmt.toml'
+      - 'justfile'
+      - '.github/workflows/rust-ci.yml'
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/normcore-rs/**'
+      - 'rustfmt.toml'
+      - 'justfile'
+      - '.github/workflows/rust-ci.yml'
+
+jobs:
+  fast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check --manifest-path src/normcore-rs/Cargo.toml
+      - run: cargo clippy --all-targets --all-features --manifest-path src/normcore-rs/Cargo.toml -- -D warnings
+      - run: cargo test --all-features --manifest-path src/normcore-rs/Cargo.toml
