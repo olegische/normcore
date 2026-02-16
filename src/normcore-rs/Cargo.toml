@@ -2,8 +2,23 @@
 name = "normcore-rs"
 version = "0.1.0"
 edition = "2024"
-license = "MIT"
+license = "Apache-2.0"
 description = "Rust implementation baseline for NormCore normative admissibility evaluator"
+readme = "README.md"
+repository = "https://github.com/olegische/normcore"
+homepage = "https://github.com/olegische/normcore"
+documentation = "https://github.com/olegische/normcore#readme"
+keywords = [
+    "llm",
+    "ai-agents",
+    "grounding",
+    "admissibility",
+    "deterministic",
+]
+categories = [
+    "development-tools",
+    "science",
+]
 
 [lib]
 name = "normcore_rs"
