@@ -211,3 +211,37 @@ fn extract_after_keyword(text: &str, keyword: &str) -> Option<String> {
 fn contains_any(text: &str, needles: &[&str]) -> bool {
     needles.iter().any(|n| text.contains(n))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::ModalityDetector;
+    use crate::normative::models::Modality;
+    use crate::normative::models::Statement;
+
+    #[test]
+    fn detector_goal_conditional_over_recommendation() {
+        let d = ModalityDetector;
+        assert_eq!(
+            d.detect("If your goal is speed, X is better."),
+            Modality::Conditional
+        );
+    }
+
+    #[test]
+    fn detector_populates_conditions() {
+        let d = ModalityDetector;
+        let mut statement = Statement {
+            id: "s1".to_string(),
+            subject: "agent".to_string(),
+            predicate: "participation".to_string(),
+            raw_text: "If latency matters, choose A.".to_string(),
+            modality: None,
+            conditions: vec![],
+        };
+
+        d.detect_with_conditions(&mut statement);
+
+        assert_eq!(statement.modality, Some(Modality::Conditional));
+        assert_eq!(statement.conditions, vec!["latency matters".to_string()]);
+    }
+}

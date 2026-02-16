@@ -152,3 +152,62 @@ fn license_from<const N: usize>(modalities: [Modality; N]) -> License {
         permitted_modalities: set,
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::LicenseDeriver;
+    use crate::models::CreatorType;
+    use crate::models::EvidenceType;
+    use crate::models::LinkRole;
+    use crate::models::LinkSet;
+    use crate::models::Provenance;
+    use crate::models::StatementGroundLink;
+    use crate::normative::models::GroundSet;
+    use crate::normative::models::KnowledgeNode;
+    use crate::normative::models::Modality;
+    use crate::normative::models::Scope;
+    use crate::normative::models::Source;
+    use crate::normative::models::Status;
+
+    fn node(id: &str, scope: Scope, strength: &str) -> KnowledgeNode {
+        KnowledgeNode::new(
+            id.to_string(),
+            Source::Observed,
+            Status::Confirmed,
+            1.0,
+            scope,
+            strength.to_string(),
+            Some(format!("sem_{id}")),
+        )
+        .expect("must create node")
+    }
+
+    #[test]
+    fn license_with_links_strong_supports_assertive() {
+        let deriver = LicenseDeriver;
+        let ground_set = GroundSet {
+            nodes: vec![node("n1", Scope::Factual, "strong")],
+        };
+        let link = StatementGroundLink {
+            statement_id: "s1".to_string(),
+            ground_id: "n1".to_string(),
+            role: LinkRole::Supports,
+            provenance: Provenance {
+                creator: CreatorType::Human,
+                evidence_type: EvidenceType::Explicit,
+                evidence_content: None,
+                signature: None,
+            },
+        };
+        let license = deriver.derive(&ground_set, Some(&LinkSet { links: vec![link] }));
+        assert!(license.permits(Modality::Assertive));
+    }
+
+    #[test]
+    fn conservative_empty_only_refusal() {
+        let deriver = LicenseDeriver;
+        let license = deriver.derive(&GroundSet { nodes: vec![] }, None);
+        assert!(license.permits(Modality::Refusal));
+        assert!(!license.permits(Modality::Assertive));
+    }
+}

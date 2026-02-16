@@ -354,3 +354,68 @@ pub struct TextSpeechAct {
 pub struct RefusalSpeechAct {
     pub refusal: String,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::AdmissibilityJudgment;
+    use super::AdmissibilityStatus;
+    use super::LinkRole;
+    use super::StatementEvaluation;
+    use crate::json::JsonValue;
+    use std::collections::BTreeSet;
+
+    #[test]
+    fn link_role_from_str_parses_supported_values() {
+        assert_eq!("supports".parse::<LinkRole>(), Ok(LinkRole::Supports));
+        assert_eq!(
+            "disambiguates".parse::<LinkRole>(),
+            Ok(LinkRole::Disambiguates)
+        );
+        assert_eq!(
+            "contextualizes".parse::<LinkRole>(),
+            Ok(LinkRole::Contextualizes)
+        );
+    }
+
+    #[test]
+    fn link_role_from_str_rejects_unknown_value() {
+        assert!("unknown".parse::<LinkRole>().is_err());
+    }
+
+    #[test]
+    fn judgment_to_json_contains_status_field() {
+        let judgment = AdmissibilityJudgment {
+            status: AdmissibilityStatus::Acceptable,
+            licensed: true,
+            can_retry: false,
+            statement_evaluations: vec![StatementEvaluation {
+                statement_id: "s1".to_string(),
+                statement: "text".to_string(),
+                modality: "assertive".to_string(),
+                license: BTreeSet::from(["assertive".to_string()]),
+                status: AdmissibilityStatus::Acceptable,
+                violated_axiom: None,
+                explanation: "ok".to_string(),
+                grounding_trace: vec![],
+                subject: None,
+                predicate: None,
+            }],
+            feedback_hint: None,
+            violated_axioms: vec![],
+            explanation: "ok".to_string(),
+            num_statements: 1,
+            num_acceptable: 1,
+            grounds_accepted: 1,
+            grounds_cited: 1,
+        };
+
+        let value = judgment.to_json_value();
+        let JsonValue::Object(map) = value else {
+            panic!("expected json object");
+        };
+        assert_eq!(
+            map.get("status"),
+            Some(&JsonValue::String("acceptable".to_string()))
+        );
+    }
+}

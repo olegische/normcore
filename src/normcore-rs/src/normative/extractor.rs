@@ -209,3 +209,22 @@ fn split_sentences(text: &str) -> Vec<String> {
 fn contains_any(text: &str, needles: &[&str]) -> bool {
     needles.iter().any(|n| text.contains(n))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::StatementExtractor;
+
+    #[test]
+    fn extractor_protocol_only_returns_empty() {
+        let ex = StatementExtractor;
+        assert!(ex.extract("Hello! How can I help you today?").is_empty());
+    }
+
+    #[test]
+    fn extractor_removes_protocol_suffix() {
+        let ex = StatementExtractor;
+        let statements = ex.extract("You should prioritize issue A. Let me know if you want more.");
+        assert_eq!(statements.len(), 1);
+        assert_eq!(statements[0].raw_text, "You should prioritize issue A");
+    }
+}

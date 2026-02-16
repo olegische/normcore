@@ -241,3 +241,80 @@ fn stable_id_fragment(value: &str) -> String {
     let hex = format!("{hash:016x}");
     hex[..10].to_string()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::KnowledgeStateBuilder;
+    use crate::json::JsonValue;
+    use crate::models::CreatorType;
+    use crate::models::EvidenceType;
+    use crate::models::Ground;
+    use crate::models::LinkRole;
+    use crate::models::ToolResultSpeechAct;
+    use crate::normative::models::KnowledgeNode;
+    use crate::normative::models::Scope;
+    use crate::normative::models::Source;
+    use crate::normative::models::Status;
+    use std::collections::BTreeMap;
+
+    fn node(id: &str, scope: Scope, strength: &str) -> KnowledgeNode {
+        KnowledgeNode::new(
+            id.to_string(),
+            Source::Observed,
+            Status::Confirmed,
+            1.0,
+            scope,
+            strength.to_string(),
+            Some(format!("sem_{id}")),
+        )
+        .expect("must create node")
+    }
+
+    #[test]
+    fn knowledge_builder_extracts_semantic_id() {
+        let builder = KnowledgeStateBuilder;
+        let result = ToolResultSpeechAct {
+            tool_name: "get_issue".to_string(),
+            tool_call_id: None,
+            arguments: BTreeMap::new(),
+            result_text: "{\"issue_id\":\"123\"}".to_string(),
+        };
+        let node = builder
+            .tool_result_to_knowledge(&result)
+            .expect("must produce node");
+        assert_eq!(node[0].semantic_id, Some("issue_123".to_string()));
+    }
+
+    #[test]
+    fn materialize_external_grounds_injects_missing() {
+        let builder = KnowledgeStateBuilder;
+        let initial = vec![node("tool_weather", Scope::Factual, "strong")];
+        let grounds = vec![Ground {
+            citation_key: "file_hist".to_string(),
+            ground_id: "archive_nyc_weather_2025-02-07".to_string(),
+            role: LinkRole::Supports,
+            creator: CreatorType::UpstreamPipeline,
+            evidence_type: EvidenceType::Observation,
+            evidence_content: None,
+            signature: None,
+        }];
+
+        let out = builder.materialize_external_grounds(&initial, &grounds);
+        assert!(
+            out.iter()
+                .any(|node| node.id == "archive_nyc_weather_2025-02-07")
+        );
+    }
+
+    #[test]
+    fn non_epistemic_tool_is_ignored() {
+        let builder = KnowledgeStateBuilder;
+        let result = ToolResultSpeechAct {
+            tool_name: "save_memory".to_string(),
+            tool_call_id: Some("call_1".to_string()),
+            arguments: BTreeMap::from([("k".to_string(), JsonValue::String("v".to_string()))]),
+            result_text: "{\"ok\":true}".to_string(),
+        };
+        assert_eq!(builder.tool_result_to_knowledge(&result), None);
+    }
+}

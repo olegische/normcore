@@ -203,3 +203,70 @@ pub struct ValidationResult {
     pub grounds_accepted: usize,
     pub grounds_cited: usize,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::GroundSet;
+    use super::KnowledgeNode;
+    use super::Scope;
+    use super::Source;
+    use super::Status;
+
+    fn node(id: &str, scope: Scope, strength: &str, semantic_id: Option<&str>) -> KnowledgeNode {
+        KnowledgeNode::new(
+            id.to_string(),
+            Source::Observed,
+            Status::Confirmed,
+            1.0,
+            scope,
+            strength.to_string(),
+            semantic_id.map(ToString::to_string),
+        )
+        .expect("must create node")
+    }
+
+    #[test]
+    fn knowledge_node_new_rejects_invalid_strength() {
+        let result = KnowledgeNode::new(
+            "id".to_string(),
+            Source::Observed,
+            Status::Confirmed,
+            1.0,
+            Scope::Factual,
+            "medium".to_string(),
+            None,
+        );
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn ground_set_resolves_by_semantic_id() {
+        let ground_set = GroundSet {
+            nodes: vec![node(
+                "internal_1",
+                Scope::Factual,
+                "strong",
+                Some("issue_123"),
+            )],
+        };
+        let resolved = ground_set.resolve_ground("issue_123");
+        assert_eq!(
+            resolved.expect("must resolve by semantic id").id,
+            "internal_1"
+        );
+    }
+
+    #[test]
+    fn scope_strength_prefers_strong_over_weak() {
+        let ground_set = GroundSet {
+            nodes: vec![
+                node("n1", Scope::Factual, "weak", None),
+                node("n2", Scope::Factual, "strong", None),
+            ],
+        };
+        assert_eq!(
+            ground_set.get_scope_strength(Scope::Factual),
+            Some("strong".to_string())
+        );
+    }
+}

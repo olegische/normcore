@@ -123,3 +123,54 @@ impl AxiomChecker {
         )
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::AxiomChecker;
+    use crate::normative::models::EvaluationStatus;
+    use crate::normative::models::GroundSet;
+    use crate::normative::models::License;
+    use crate::normative::models::Modality;
+    use crate::normative::models::Statement;
+    use std::collections::BTreeSet;
+
+    #[test]
+    fn axiom_assertive_without_license_violates_a5() {
+        let checker = AxiomChecker;
+        let statement = Statement {
+            id: "s1".to_string(),
+            subject: "agent".to_string(),
+            predicate: "participation".to_string(),
+            raw_text: "text".to_string(),
+            modality: Some(Modality::Assertive),
+            conditions: vec![],
+        };
+        let mut permitted = BTreeSet::new();
+        permitted.insert(Modality::Refusal);
+        let license = License {
+            permitted_modalities: permitted,
+        };
+        let result = checker.check(&statement, &license, &GroundSet { nodes: vec![] }, "goal");
+        assert_eq!(result.status, EvaluationStatus::ViolatesNorm);
+        assert_eq!(result.violated_axiom, Some("A5".to_string()));
+    }
+
+    #[test]
+    fn refusal_is_always_acceptable() {
+        let checker = AxiomChecker;
+        let statement = Statement {
+            id: "s1".to_string(),
+            subject: "agent".to_string(),
+            predicate: "participation".to_string(),
+            raw_text: "cannot determine".to_string(),
+            modality: Some(Modality::Refusal),
+            conditions: vec![],
+        };
+        let license = License {
+            permitted_modalities: BTreeSet::new(),
+        };
+        let result = checker.check(&statement, &license, &GroundSet { nodes: vec![] }, "goal");
+        assert_eq!(result.status, EvaluationStatus::Acceptable);
+        assert_eq!(result.violated_axiom, None);
+    }
+}
