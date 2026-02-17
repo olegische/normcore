@@ -1,0 +1,64 @@
+--- src/evaluator.rs
++++ replace evaluate -> Result<AdmissibilityJudgment, EvaluateError> with Ok(Default::default())
+@@ -42,60 +42,17 @@
+     LastMessageNotAssistant,
+     LastAssistantContentNotString,
+     AgentOutputMismatch,
+     InvalidJson(String),
+     InvalidMessage(String),
+ }
+ 
+ pub fn evaluate(input: EvaluateInput) -> Result<AdmissibilityJudgment, EvaluateError> {
+-    if input.agent_output.is_none() && input.conversation.is_none() {
+-        return Err(EvaluateError::MissingInput);
+-    }
+-
+-    let (agent_message, trajectory): (ConversationMessage, Vec<ConversationMessage>) =
+-        if let Some(conversation) = input.conversation.clone() {
+-            if conversation.is_empty() {
+-                return Err(EvaluateError::InvalidConversation);
+-            }
+-            let last = conversation
+-                .last()
+-                .cloned()
+-                .ok_or(EvaluateError::InvalidConversation)?;
+-            if last.role != "assistant" {
+-                return Err(EvaluateError::LastMessageNotAssistant);
+-            }
+-
+-            if let Some(expected_output) = &input.agent_output {
+-                let actual = extract_text_content(last.content.as_ref())?;
+-                if &actual != expected_output {
+-                    return Err(EvaluateError::AgentOutputMismatch);
+-                }
+-            }
+-
+-            (last, conversation)
+-        } else {
+-            let msg = ConversationMessage {
+-                role: "assistant".to_string(),
+-                content: Some(JsonValue::String(
+-                    input.agent_output.clone().unwrap_or_default(),
+-                )),
+-                tool_call_id: None,
+-                tool_calls: Vec::new(),
+-                function_name: None,
+-            };
+-            (msg.clone(), vec![msg])
+-        };
+-
+-    let evaluator = AdmissibilityEvaluator::new();
+-    evaluator.evaluate_message(
+-        &agent_message,
+-        &trajectory,
+-        input.grounds.unwrap_or_default(),
+-    )
++    Ok(Default::default()) /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ pub fn evaluate_from_json(input: &str) -> Result<AdmissibilityJudgment, EvaluateError> {
+     let value = parse_json(input).map_err(|e| EvaluateError::InvalidJson(e.message))?;
+     let obj = value
+         .as_object()
+         .ok_or_else(|| EvaluateError::InvalidJson("payload must be object".to_string()))?;
+ 

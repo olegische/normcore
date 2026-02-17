@@ -49,5 +49,20 @@ rust-lint:
 rust-test:
     cargo test --all-features
 
+rust-mutants *args:
+    ../../scripts/rust/run_mutants_rs.sh "$@"
+
+rust-fuzz *args:
+    ../../scripts/rust/run_fuzz_rs.sh "$@"
+
+formal-check:
+    (cd ../../formal/implementation && tlc -deadlock -workers 1 spec.tla && tlc -deadlock -workers 1 grounding_accounting.tla -config grounding_accounting.cfg)
+
+formal-trace-export input output:
+    python3 ../../scripts/formal/tlc_trace_to_json.py --input "{{input}}" --output "{{output}}"
+
+formal-replay trace_json:
+    TRACE_REPLAY_JSON="{{trace_json}}" cargo test --test trace_replay replay_generated_formal_trace
+
 check: fmt-check clippy-strict test
 rust-check: rust-fmt-check rust-lint rust-test

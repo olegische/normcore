@@ -213,6 +213,7 @@ fn contains_any(text: &str, needles: &[&str]) -> bool {
 #[cfg(test)]
 mod tests {
     use super::StatementExtractor;
+    use super::split_sentences;
 
     #[test]
     fn extractor_protocol_only_returns_empty() {
@@ -226,5 +227,37 @@ mod tests {
         let statements = ex.extract("You should prioritize issue A. Let me know if you want more.");
         assert_eq!(statements.len(), 1);
         assert_eq!(statements[0].raw_text, "You should prioritize issue A");
+    }
+
+    #[test]
+    fn extractor_strips_protocol_prefix_and_keeps_normative_tail() {
+        let ex = StatementExtractor;
+        let statements = ex.extract("Thanks for the context. You should prioritize issue A.");
+        assert_eq!(statements.len(), 1);
+        assert_eq!(statements[0].raw_text, "You should prioritize issue A.");
+    }
+
+    #[test]
+    fn split_sentences_handles_punctuation_and_tail() {
+        assert_eq!(
+            split_sentences("One. Two! Three? tail"),
+            vec![
+                "One.".to_string(),
+                "Two!".to_string(),
+                "Three?".to_string(),
+                "tail".to_string()
+            ]
+        );
+    }
+
+    #[test]
+    fn extractor_keeps_refusal_content() {
+        let ex = StatementExtractor;
+        let statements = ex.extract("Cannot determine this without logs.");
+        assert_eq!(statements.len(), 1);
+        assert_eq!(
+            statements[0].raw_text,
+            "Cannot determine this without logs."
+        );
     }
 }

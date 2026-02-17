@@ -46,6 +46,29 @@ cd formal/implementation
 tlc -deadlock -workers 1 grounding_accounting.tla -config grounding_accounting.cfg
 ```
 
+Run both implementation models from repo root via `just`:
+
+```bash
+just formal-check
+```
+
+## TLC Trace Export to Rust Replay JSON
+
+If TLC prints a counterexample trace that includes `log = <<...>>`, you can convert
+that trace into Rust replay input JSON:
+
+```bash
+just formal-trace-export /path/to/tlc_output.txt /path/to/trace_replay.generated.json
+```
+
+Then replay it in Rust:
+
+```bash
+just formal-replay /path/to/trace_replay.generated.json
+```
+
+`formal-replay` runs `tests/trace_replay.rs::replay_generated_formal_trace`.
+
 Note: implementation configs now use `Spec` by default (full transition graph).
 If you need fast init-only validation, switch `SPECIFICATION` to `InitOnlySpec`
 in the corresponding `.cfg`.

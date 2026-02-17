@@ -1,0 +1,21 @@
+--- src/main.rs
++++ delete match arm "-v" | "-vv" in run
+@@ -41,17 +41,17 @@
+     let mut conversation_json: Option<String> = None;
+     let mut grounds_json: Option<String> = None;
+ 
+     while i < args.len() {
+         match args[i].as_str() {
+             "--log-level" => {
+                 i += 1;
+             }
+-            "-v" | "-vv" => {}
++             /* ~ changed by cargo-mutants ~ */
+             "evaluate" => {
+                 command = "evaluate".to_string();
+             }
+             "--agent-output" => {
+                 i += 1;
+                 if let Some(v) = args.get(i) {
+                     agent_output = Some(v.clone());
+                 } else {

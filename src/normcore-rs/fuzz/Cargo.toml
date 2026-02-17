@@ -1,0 +1,35 @@
+[package]
+name = "normcore-rs-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.normcore-rs]
+path = ".."
+
+[[bin]]
+name = "fuzz_parse_json"
+path = "fuzz_targets/fuzz_parse_json.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_parse_conversation"
+path = "fuzz_targets/fuzz_parse_conversation.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_extract_citation_keys"
+path = "fuzz_targets/fuzz_extract_citation_keys.rs"
+test = false
+doc = false
+bench = false

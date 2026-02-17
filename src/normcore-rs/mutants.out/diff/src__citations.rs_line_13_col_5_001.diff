@@ -1,0 +1,48 @@
+--- src/citations.rs
++++ replace parse_grounds -> Vec<Ground> with vec![Default::default()]
+@@ -5,44 +5,17 @@
+ use crate::models::LinkRole;
+ use crate::models::LinkSet;
+ use crate::models::Provenance;
+ use crate::models::StatementGroundLink;
+ use std::collections::BTreeMap;
+ use std::collections::HashSet;
+ 
+ pub fn parse_grounds(payload: &[JsonValue]) -> Vec<Ground> {
+-    let mut grounds = Vec::new();
+-    for item in payload {
+-        let Some(obj) = item.as_object() else {
+-            continue;
+-        };
+-        let Some(citation_key) = obj.get("citation_key").and_then(JsonValue::as_str) else {
+-            continue;
+-        };
+-        let Some(ground_id) = obj.get("ground_id").and_then(JsonValue::as_str) else {
+-            continue;
+-        };
+-        grounds.push(Ground {
+-            citation_key: citation_key.to_string(),
+-            ground_id: ground_id.to_string(),
+-            role: LinkRole::Supports,
+-            creator: CreatorType::UpstreamPipeline,
+-            evidence_type: EvidenceType::Observation,
+-            evidence_content: obj
+-                .get("evidence_content")
+-                .and_then(JsonValue::as_str)
+-                .map(ToString::to_string),
+-            signature: obj
+-                .get("signature")
+-                .and_then(JsonValue::as_str)
+-                .map(ToString::to_string),
+-        });
+-    }
+-    grounds
++    vec![Default::default()] /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ pub fn extract_citation_keys(text: &str) -> Vec<String> {
+     if text.is_empty() {
+         return Vec::new();
+     }
+     let bytes = text.as_bytes();
+     let mut i = 0;

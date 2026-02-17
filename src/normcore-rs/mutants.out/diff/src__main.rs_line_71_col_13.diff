@@ -1,0 +1,29 @@
+--- src/main.rs
++++ delete match arm "--grounds" in run
+@@ -63,25 +63,17 @@
+                 i += 1;
+                 if let Some(v) = args.get(i) {
+                     conversation_json = Some(v.clone());
+                 } else {
+                     eprintln!("error: --conversation requires value");
+                     return 2;
+                 }
+             }
+-            "--grounds" => {
+-                i += 1;
+-                if let Some(v) = args.get(i) {
+-                    grounds_json = Some(v.clone());
+-                } else {
+-                    eprintln!("error: --grounds requires value");
+-                    return 2;
+-                }
+-            }
++             /* ~ changed by cargo-mutants ~ */
+             _ => {}
+         }
+         i += 1;
+     }
+ 
+     if command != "evaluate" {
+         print_help();
+         return 0;

@@ -1,0 +1,24 @@
+--- src/citations.rs
++++ delete match arm "url_citation" in extract_ground_id
+@@ -207,20 +207,17 @@
+ fn extract_ground_id(citation: &JsonValue) -> Option<String> {
+     let obj = citation.as_object()?;
+     let kind = obj.get("type")?.as_str()?;
+     match kind {
+         "file_citation" | "container_file_citation" | "file_path" => obj
+             .get("file_id")
+             .and_then(JsonValue::as_str)
+             .map(ToString::to_string),
+-        "url_citation" => obj
+-            .get("url")
+-            .and_then(JsonValue::as_str)
+-            .map(ToString::to_string),
++         /* ~ changed by cargo-mutants ~ */
+         _ => None,
+     }
+ }
+ 
+ pub fn coerce_grounds_input(
+     grounds_payload: Option<&[JsonValue]>,
+     legacy_openai_citations: Option<&[JsonValue]>,
+     _legacy_links: Option<&JsonValue>,

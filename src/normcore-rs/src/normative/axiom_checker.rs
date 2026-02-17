@@ -173,4 +173,42 @@ mod tests {
         assert_eq!(result.status, EvaluationStatus::Acceptable);
         assert_eq!(result.violated_axiom, None);
     }
+
+    #[test]
+    fn normative_assertive_with_license_but_no_ground_is_unsupported() {
+        let checker = AxiomChecker;
+        let statement = Statement {
+            id: "s1".to_string(),
+            subject: "agent".to_string(),
+            predicate: "participation".to_string(),
+            raw_text: "You should proceed.".to_string(),
+            modality: Some(Modality::Assertive),
+            conditions: vec![],
+        };
+        let license = License {
+            permitted_modalities: BTreeSet::from([Modality::Assertive]),
+        };
+        let result = checker.check(&statement, &license, &GroundSet { nodes: vec![] }, "goal");
+        assert_eq!(result.status, EvaluationStatus::Unsupported);
+        assert_eq!(result.violated_axiom, Some("A4".to_string()));
+    }
+
+    #[test]
+    fn missing_modality_is_underdetermined_not_unsupported() {
+        let checker = AxiomChecker;
+        let statement = Statement {
+            id: "s1".to_string(),
+            subject: "agent".to_string(),
+            predicate: "participation".to_string(),
+            raw_text: "ambiguous".to_string(),
+            modality: None,
+            conditions: vec![],
+        };
+        let license = License {
+            permitted_modalities: BTreeSet::new(),
+        };
+        let result = checker.check(&statement, &license, &GroundSet { nodes: vec![] }, "goal");
+        assert_eq!(result.status, EvaluationStatus::Underdetermined);
+        assert_eq!(result.violated_axiom, None);
+    }
 }

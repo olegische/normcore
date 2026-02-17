@@ -171,4 +171,44 @@ mod tests {
             0
         );
     }
+
+    #[test]
+    fn evaluate_invalid_conversation_json_returns_error() {
+        assert_eq!(
+            run(vec![
+                "normcore-rs".to_string(),
+                "evaluate".to_string(),
+                "--conversation".to_string(),
+                "{bad json}".to_string(),
+            ]),
+            2
+        );
+    }
+
+    #[test]
+    fn evaluate_invalid_grounds_json_returns_error() {
+        assert_eq!(
+            run(vec![
+                "normcore-rs".to_string(),
+                "evaluate".to_string(),
+                "--agent-output".to_string(),
+                "Use source".to_string(),
+                "--grounds".to_string(),
+                "{bad json}".to_string(),
+            ]),
+            2
+        );
+    }
+
+    #[test]
+    fn evaluate_missing_agent_output_value_returns_error() {
+        assert_eq!(
+            run(vec![
+                "normcore-rs".to_string(),
+                "evaluate".to_string(),
+                "--agent-output".to_string(),
+            ]),
+            2
+        );
+    }
 }

@@ -13,3 +13,18 @@
 | ApplyA7 | `AxiomChecker` | modality + conditions + license | modality is `CONDITIONAL` | `CONDITIONALLY_ACCEPTABLE` if assertive license exists or conditions declared; else `UNSUPPORTED` | `EvalStatementStatus` |
 | EvaluateDescriptive | `AxiomChecker` | modality + ground set | modality is `DESCRIPTIVE` | `ACCEPTABLE` with factual ground, else `UNSUPPORTED` | `EvalStatementStatus` |
 | AggregateOutcome | Evaluator (`_aggregate`) | statement status sequence | Evaluated path only | Final `status`, `licensed`, `can_retry` via lexicographic branch order | `AggregateStatuses`, `AggregateLicensed`, `AggregateCanRetry` |
+
+## Action Log Schema (TLA `log` variable)
+
+The implementation model appends one trace event per transition (`Len(log) <= 1` in this model).
+
+Record shape:
+
+```tla
+[op |-> TraceOps,
+ args |-> [mode |-> EvaluationModes, path |-> CorePaths, replayCase |-> ReplayCases],
+ expect |-> [coreStatus |-> CoreStatuses, licensed |-> BOOLEAN, canRetry |-> BOOLEAN, numStatements |-> 0..1]]
+```
+
+`replayCase` is intentionally implementation-oriented and is used by
+`scripts/formal/tlc_trace_to_json.py` to materialize concrete Rust replay inputs.

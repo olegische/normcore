@@ -1,0 +1,21 @@
+--- src/evaluator.rs
++++ replace == with != in AdmissibilityEvaluator::aggregate
+@@ -417,17 +417,17 @@
+                 EvaluationStatus::Underdetermined,
+                 false,
+                 false,
+                 None,
+                 "Validator has no jurisdiction to judge".to_string(),
+             )
+         } else if axiom_results
+             .iter()
+-            .any(|r| r.status == EvaluationStatus::Unsupported)
++            .any(|r| r.status != /* ~ changed by cargo-mutants ~ */ EvaluationStatus::Unsupported)
+         {
+             (
+                 EvaluationStatus::Unsupported,
+                 true,
+                 true,
+                 Some(
+                     "Your statements lack required grounding. Consider asking for more context or using conditional phrasing."
+                         .to_string(),

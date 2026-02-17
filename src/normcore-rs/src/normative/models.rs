@@ -208,6 +208,7 @@ pub struct ValidationResult {
 mod tests {
     use super::GroundSet;
     use super::KnowledgeNode;
+    use super::Modality;
     use super::Scope;
     use super::Source;
     use super::Status;
@@ -268,5 +269,41 @@ mod tests {
             ground_set.get_scope_strength(Scope::Factual),
             Some("strong".to_string())
         );
+    }
+
+    #[test]
+    fn modality_as_str_maps_all_variants() {
+        assert_eq!(Modality::Assertive.as_str(), "assertive");
+        assert_eq!(Modality::Conditional.as_str(), "conditional");
+        assert_eq!(Modality::Refusal.as_str(), "refusal");
+        assert_eq!(Modality::Descriptive.as_str(), "descriptive");
+    }
+
+    #[test]
+    fn ground_set_scope_helpers_cover_true_false_paths() {
+        let empty = GroundSet { nodes: vec![] };
+        assert!(empty.is_empty());
+        assert!(!empty.has_factual());
+        assert!(!empty.has_scope(Scope::Factual));
+        assert!(!empty.has_scope(Scope::Contextual));
+        assert_eq!(empty.get_scope_strength(Scope::Factual), None);
+        assert!(!empty.has_strong_in_scope(Scope::Factual));
+
+        let mixed = GroundSet {
+            nodes: vec![
+                node("n1", Scope::Factual, "weak", None),
+                node("n2", Scope::Contextual, "strong", None),
+            ],
+        };
+        assert!(!mixed.is_empty());
+        assert!(mixed.has_factual());
+        assert!(mixed.has_scope(Scope::Factual));
+        assert!(mixed.has_scope(Scope::Contextual));
+        assert_eq!(
+            mixed.get_scope_strength(Scope::Factual),
+            Some("weak".to_string())
+        );
+        assert!(!mixed.has_strong_in_scope(Scope::Factual));
+        assert!(mixed.has_strong_in_scope(Scope::Contextual));
     }
 }

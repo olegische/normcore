@@ -1,0 +1,21 @@
+--- src/evaluator.rs
++++ replace && with || in AdmissibilityEvaluator::aggregate
+@@ -430,17 +430,17 @@
+                 true,
+                 Some(
+                     "Your statements lack required grounding. Consider asking for more context or using conditional phrasing."
+                         .to_string(),
+                 ),
+                 "Statements lack required grounding (A4)".to_string(),
+             )
+         } else if !axiom_results.is_empty()
+-            && axiom_results
++            || /* ~ changed by cargo-mutants ~ */ axiom_results
+                 .iter()
+                 .all(|r| r.status == EvaluationStatus::ConditionallyAcceptable)
+         {
+             (
+                 EvaluationStatus::ConditionallyAcceptable,
+                 true,
+                 false,
+                 None,

@@ -1,0 +1,21 @@
+--- src/main.rs
++++ replace main with ()
+@@ -10,17 +10,17 @@
+     println!("NormCore CLI.");
+     println!("\nUsage:");
+     println!(
+         "  normcore-rs [--version] [--log-level LEVEL] [-v|-vv] evaluate [--agent-output TEXT] [--conversation JSON] [--grounds JSON]"
+     );
+ }
+ 
+ fn main() {
+-    std::process::exit(run(std::env::args().collect()));
++    () /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ fn run(argv: Vec<String>) -> i32 {
+     let args = if argv.is_empty() {
+         Vec::new()
+     } else {
+         argv[1..].to_vec()
+     };

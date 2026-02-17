@@ -1,0 +1,6840 @@
+{
+  "outcomes": [
+    {
+      "scenario": "Baseline",
+      "summary": "Success",
+      "log_path": "log/baseline.log",
+      "diff_path": null,
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 5.180733667,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 2.7481234580000002,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:10:5: replace print_help with ()",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "print_help",
+            "return_type": "",
+            "span": {
+              "start": {
+                "line": 9,
+                "column": 1
+              },
+              "end": {
+                "line": 15,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 10,
+              "column": 5
+            },
+            "end": {
+              "line": 14,
+              "column": 7
+            }
+          },
+          "replacement": "()",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_10_col_5.log",
+      "diff_path": "diff/src__main.rs_line_10_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.219169792,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.033535417,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:18:5: replace main with ()",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "main",
+            "return_type": "",
+            "span": {
+              "start": {
+                "line": 17,
+                "column": 1
+              },
+              "end": {
+                "line": 19,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 18,
+              "column": 5
+            },
+            "end": {
+              "line": 18,
+              "column": 57
+            }
+          },
+          "replacement": "()",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_18_col_5.log",
+      "diff_path": "diff/src__main.rs_line_18_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.216034542,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.0328893749999999,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:22:5: replace run -> i32 with 0",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 22,
+              "column": 5
+            },
+            "end": {
+              "line": 142,
+              "column": 6
+            }
+          },
+          "replacement": "0",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_22_col_5.log",
+      "diff_path": "diff/src__main.rs_line_22_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.162646625,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.021571291,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:22:5: replace run -> i32 with 1",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 22,
+              "column": 5
+            },
+            "end": {
+              "line": 142,
+              "column": 6
+            }
+          },
+          "replacement": "1",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__main.rs_line_22_col_5_001.log",
+      "diff_path": "diff/src__main.rs_line_22_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.164882959,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.431428958,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:22:5: replace run -> i32 with -1",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 22,
+              "column": 5
+            },
+            "end": {
+              "line": 142,
+              "column": 6
+            }
+          },
+          "replacement": "-1",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__main.rs_line_22_col_5_002.log",
+      "diff_path": "diff/src__main.rs_line_22_col_5_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.168275292,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.378563875,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:33:30: replace == with != in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 33,
+              "column": 30
+            },
+            "end": {
+              "line": 33,
+              "column": 32
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_33_col_30.log",
+      "diff_path": "diff/src__main.rs_line_33_col_30.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.215560833,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.031306458,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:44:13: replace < with == in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 44,
+              "column": 13
+            },
+            "end": {
+              "line": 44,
+              "column": 14
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_44_col_13.log",
+      "diff_path": "diff/src__main.rs_line_44_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.167962291,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.031017958,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:44:13: replace < with > in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 44,
+              "column": 13
+            },
+            "end": {
+              "line": 44,
+              "column": 14
+            }
+          },
+          "replacement": ">",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_44_col_13_001.log",
+      "diff_path": "diff/src__main.rs_line_44_col_13_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.222363667,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.034020166,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:44:13: replace < with <= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 44,
+              "column": 13
+            },
+            "end": {
+              "line": 44,
+              "column": 14
+            }
+          },
+          "replacement": "<=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__main.rs_line_44_col_13_002.log",
+      "diff_path": "diff/src__main.rs_line_44_col_13_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.222579042,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.437377292,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:46:13: delete match arm \"--log-level\" in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 46,
+              "column": 13
+            },
+            "end": {
+              "line": 48,
+              "column": 14
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_46_col_13.log",
+      "diff_path": "diff/src__main.rs_line_46_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.217798583,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.033834875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:49:13: delete match arm \"-v\" | \"-vv\" in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 49,
+              "column": 13
+            },
+            "end": {
+              "line": 49,
+              "column": 31
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_49_col_13.log",
+      "diff_path": "diff/src__main.rs_line_49_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.165541875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.027490666,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:50:13: delete match arm \"evaluate\" in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 50,
+              "column": 13
+            },
+            "end": {
+              "line": 52,
+              "column": 14
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_50_col_13.log",
+      "diff_path": "diff/src__main.rs_line_50_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.219403166,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.038060542,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:53:13: delete match arm \"--agent-output\" in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 53,
+              "column": 13
+            },
+            "end": {
+              "line": 61,
+              "column": 14
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__main.rs_line_53_col_13.log",
+      "diff_path": "diff/src__main.rs_line_53_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.223026,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.43883975,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:62:13: delete match arm \"--conversation\" in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 62,
+              "column": 13
+            },
+            "end": {
+              "line": 70,
+              "column": 14
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_62_col_13.log",
+      "diff_path": "diff/src__main.rs_line_62_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.216210042,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.030530042,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:71:13: delete match arm \"--grounds\" in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 71,
+              "column": 13
+            },
+            "end": {
+              "line": 79,
+              "column": 14
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_71_col_13.log",
+      "diff_path": "diff/src__main.rs_line_71_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.222224208,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.042851416,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:47:19: replace += with -= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 47,
+              "column": 19
+            },
+            "end": {
+              "line": 47,
+              "column": 21
+            }
+          },
+          "replacement": "-=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_47_col_19.log",
+      "diff_path": "diff/src__main.rs_line_47_col_19.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.219698583,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.089968292,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:47:19: replace += with *= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 47,
+              "column": 19
+            },
+            "end": {
+              "line": 47,
+              "column": 21
+            }
+          },
+          "replacement": "*=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_47_col_19_001.log",
+      "diff_path": "diff/src__main.rs_line_47_col_19_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.222394708,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.028000125,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:54:19: replace += with -= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 54,
+              "column": 19
+            },
+            "end": {
+              "line": 54,
+              "column": 21
+            }
+          },
+          "replacement": "-=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "Timeout",
+      "log_path": "log/src__main.rs_line_54_col_19.log",
+      "diff_path": "diff/src__main.rs_line_54_col_19.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.218402375,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 20.01796525,
+          "process_status": "Timeout",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:54:19: replace += with *= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 54,
+              "column": 19
+            },
+            "end": {
+              "line": 54,
+              "column": 21
+            }
+          },
+          "replacement": "*=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_54_col_19_001.log",
+      "diff_path": "diff/src__main.rs_line_54_col_19_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.212050792,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.086268708,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:63:19: replace += with -= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 63,
+              "column": 19
+            },
+            "end": {
+              "line": 63,
+              "column": 21
+            }
+          },
+          "replacement": "-=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_63_col_19.log",
+      "diff_path": "diff/src__main.rs_line_63_col_19.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.220487584,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.088676041,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:63:19: replace += with *= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 63,
+              "column": 19
+            },
+            "end": {
+              "line": 63,
+              "column": 21
+            }
+          },
+          "replacement": "*=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_63_col_19_001.log",
+      "diff_path": "diff/src__main.rs_line_63_col_19_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.222005459,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.03674425,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:72:19: replace += with -= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 72,
+              "column": 19
+            },
+            "end": {
+              "line": 72,
+              "column": 21
+            }
+          },
+          "replacement": "-=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_72_col_19.log",
+      "diff_path": "diff/src__main.rs_line_72_col_19.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.221326083,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.165041917,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:72:19: replace += with *= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 72,
+              "column": 19
+            },
+            "end": {
+              "line": 72,
+              "column": 21
+            }
+          },
+          "replacement": "*=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_72_col_19_001.log",
+      "diff_path": "diff/src__main.rs_line_72_col_19_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.218821875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.1282545,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:82:11: replace += with -= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 82,
+              "column": 11
+            },
+            "end": {
+              "line": 82,
+              "column": 13
+            }
+          },
+          "replacement": "-=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__main.rs_line_82_col_11.log",
+      "diff_path": "diff/src__main.rs_line_82_col_11.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.217134958,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.428445125,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:82:11: replace += with *= in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 82,
+              "column": 11
+            },
+            "end": {
+              "line": 82,
+              "column": 13
+            }
+          },
+          "replacement": "*=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "Timeout",
+      "log_path": "log/src__main.rs_line_82_col_11_001.log",
+      "diff_path": "diff/src__main.rs_line_82_col_11_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.162136375,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 20.019309375,
+          "process_status": "Timeout",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/main.rs:85:16: replace != with == in run",
+          "package": "normcore-rs",
+          "file": "src/main.rs",
+          "function": {
+            "function_name": "run",
+            "return_type": "-> i32",
+            "span": {
+              "start": {
+                "line": 21,
+                "column": 1
+              },
+              "end": {
+                "line": 143,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 85,
+              "column": 16
+            },
+            "end": {
+              "line": 85,
+              "column": 18
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__main.rs_line_85_col_16.log",
+      "diff_path": "diff/src__main.rs_line_85_col_16.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.214438042,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.090310583,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:13:5: replace parse_grounds -> Vec<Ground> with vec![]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "parse_grounds",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 12,
+                "column": 1
+              },
+              "end": {
+                "line": 41,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 13,
+              "column": 5
+            },
+            "end": {
+              "line": 40,
+              "column": 12
+            }
+          },
+          "replacement": "vec![]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_13_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_13_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.652703458,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 2.8744415,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:13:5: replace parse_grounds -> Vec<Ground> with vec![Default::default()]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "parse_grounds",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 12,
+                "column": 1
+              },
+              "end": {
+                "line": 41,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 13,
+              "column": 5
+            },
+            "end": {
+              "line": 40,
+              "column": 12
+            }
+          },
+          "replacement": "vec![Default::default()]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__citations.rs_line_13_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_13_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.221246125,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:44:5: replace extract_citation_keys -> Vec<String> with vec![]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 44,
+              "column": 5
+            },
+            "end": {
+              "line": 71,
+              "column": 9
+            }
+          },
+          "replacement": "vec![]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_44_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_44_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.600227792,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.430060458,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:44:5: replace extract_citation_keys -> Vec<String> with vec![String::new()]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 44,
+              "column": 5
+            },
+            "end": {
+              "line": 71,
+              "column": 9
+            }
+          },
+          "replacement": "vec![String::new()]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_44_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_44_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.653386208,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.434295875,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:44:5: replace extract_citation_keys -> Vec<String> with vec![\"xyzzy\".into()]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 44,
+              "column": 5
+            },
+            "end": {
+              "line": 71,
+              "column": 9
+            }
+          },
+          "replacement": "vec![\"xyzzy\".into()]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_44_col_5_002.log",
+      "diff_path": "diff/src__citations.rs_line_44_col_5_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.641402125,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.43740975,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:52:17: replace < with == in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 52,
+              "column": 17
+            },
+            "end": {
+              "line": 52,
+              "column": 18
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_52_col_17.log",
+      "diff_path": "diff/src__citations.rs_line_52_col_17.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.760473875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.42858175,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:52:17: replace < with > in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 52,
+              "column": 17
+            },
+            "end": {
+              "line": 52,
+              "column": 18
+            }
+          },
+          "replacement": ">",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_52_col_17_001.log",
+      "diff_path": "diff/src__citations.rs_line_52_col_17_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.588265666,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.427171458,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:52:17: replace < with <= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 52,
+              "column": 17
+            },
+            "end": {
+              "line": 52,
+              "column": 18
+            }
+          },
+          "replacement": "<=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_52_col_17_002.log",
+      "diff_path": "diff/src__citations.rs_line_52_col_17_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.605698625,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 2.936761875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:52:13: replace + with - in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 52,
+              "column": 13
+            },
+            "end": {
+              "line": 52,
+              "column": 14
+            }
+          },
+          "replacement": "-",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_52_col_13.log",
+      "diff_path": "diff/src__citations.rs_line_52_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.605173208,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.438394917,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:52:13: replace + with * in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 52,
+              "column": 13
+            },
+            "end": {
+              "line": 52,
+              "column": 14
+            }
+          },
+          "replacement": "*",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_52_col_13_001.log",
+      "diff_path": "diff/src__citations.rs_line_52_col_13_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.603016916,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.436970458,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:53:29: replace && with || in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 53,
+              "column": 29
+            },
+            "end": {
+              "line": 53,
+              "column": 31
+            }
+          },
+          "replacement": "||",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_53_col_29.log",
+      "diff_path": "diff/src__citations.rs_line_53_col_29.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.592885167,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 2.055845667,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:53:21: replace == with != in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 53,
+              "column": 21
+            },
+            "end": {
+              "line": 53,
+              "column": 23
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_53_col_21.log",
+      "diff_path": "diff/src__citations.rs_line_53_col_21.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.536801375,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.436917417,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:53:45: replace == with != in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 53,
+              "column": 45
+            },
+            "end": {
+              "line": 53,
+              "column": 47
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_53_col_45.log",
+      "diff_path": "diff/src__citations.rs_line_53_col_45.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.604304916,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.436648333,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:53:40: replace + with - in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 53,
+              "column": 40
+            },
+            "end": {
+              "line": 53,
+              "column": 41
+            }
+          },
+          "replacement": "-",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_53_col_40.log",
+      "diff_path": "diff/src__citations.rs_line_53_col_40.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.60279475,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.432180583,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:53:40: replace + with * in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 53,
+              "column": 40
+            },
+            "end": {
+              "line": 53,
+              "column": 41
+            }
+          },
+          "replacement": "*",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_53_col_40_001.log",
+      "diff_path": "diff/src__citations.rs_line_53_col_40_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.650875041,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.433988666,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:54:27: replace + with - in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 54,
+              "column": 27
+            },
+            "end": {
+              "line": 54,
+              "column": 28
+            }
+          },
+          "replacement": "-",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_54_col_27.log",
+      "diff_path": "diff/src__citations.rs_line_54_col_27.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.597697875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.439299541,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:54:27: replace + with * in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 54,
+              "column": 27
+            },
+            "end": {
+              "line": 54,
+              "column": 28
+            }
+          },
+          "replacement": "*",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_54_col_27_001.log",
+      "diff_path": "diff/src__citations.rs_line_54_col_27_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.650885292,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.432207375,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:56:37: replace && with || in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 56,
+              "column": 37
+            },
+            "end": {
+              "line": 56,
+              "column": 39
+            }
+          },
+          "replacement": "||",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_56_col_37.log",
+      "diff_path": "diff/src__citations.rs_line_56_col_37.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.594883,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.441676125,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:56:23: replace < with == in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 56,
+              "column": 23
+            },
+            "end": {
+              "line": 56,
+              "column": 24
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_56_col_23.log",
+      "diff_path": "diff/src__citations.rs_line_56_col_23.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.649417875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.430979958,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:56:23: replace < with > in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 56,
+              "column": 23
+            },
+            "end": {
+              "line": 56,
+              "column": 24
+            }
+          },
+          "replacement": ">",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_56_col_23_001.log",
+      "diff_path": "diff/src__citations.rs_line_56_col_23_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.660656833,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.435178041,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:56:23: replace < with <= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 56,
+              "column": 23
+            },
+            "end": {
+              "line": 56,
+              "column": 24
+            }
+          },
+          "replacement": "<=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_56_col_23_002.log",
+      "diff_path": "diff/src__citations.rs_line_56_col_23_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.694857042,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.162377334,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:56:51: replace != with == in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 56,
+              "column": 51
+            },
+            "end": {
+              "line": 56,
+              "column": 53
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_56_col_51.log",
+      "diff_path": "diff/src__citations.rs_line_56_col_51.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.656351542,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.435779292,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:57:21: replace += with -= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 57,
+              "column": 21
+            },
+            "end": {
+              "line": 57,
+              "column": 23
+            }
+          },
+          "replacement": "-=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_57_col_21.log",
+      "diff_path": "diff/src__citations.rs_line_57_col_21.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.712667666,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.435375875,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:57:21: replace += with *= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 57,
+              "column": 21
+            },
+            "end": {
+              "line": 57,
+              "column": 23
+            }
+          },
+          "replacement": "*=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "Timeout",
+      "log_path": "log/src__citations.rs_line_57_col_21_001.log",
+      "diff_path": "diff/src__citations.rs_line_57_col_21_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.698025583,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 20.052559625,
+          "process_status": "Timeout",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:59:34: replace && with || in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 59,
+              "column": 34
+            },
+            "end": {
+              "line": 59,
+              "column": 36
+            }
+          },
+          "replacement": "||",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_59_col_34.log",
+      "diff_path": "diff/src__citations.rs_line_59_col_34.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.639358166,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.264260916,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:59:20: replace < with == in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 59,
+              "column": 20
+            },
+            "end": {
+              "line": 59,
+              "column": 21
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_59_col_20.log",
+      "diff_path": "diff/src__citations.rs_line_59_col_20.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.706656166,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.436390125,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:59:20: replace < with > in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 59,
+              "column": 20
+            },
+            "end": {
+              "line": 59,
+              "column": 21
+            }
+          },
+          "replacement": ">",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_59_col_20_001.log",
+      "diff_path": "diff/src__citations.rs_line_59_col_20_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.704592333,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.489927959,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:59:20: replace < with <= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 59,
+              "column": 20
+            },
+            "end": {
+              "line": 59,
+              "column": 21
+            }
+          },
+          "replacement": "<=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_59_col_20_002.log",
+      "diff_path": "diff/src__citations.rs_line_59_col_20_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.691798917,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.289680917,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:59:41: replace > with == in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 59,
+              "column": 41
+            },
+            "end": {
+              "line": 59,
+              "column": 42
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_59_col_41.log",
+      "diff_path": "diff/src__citations.rs_line_59_col_41.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.704918416,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.48652525,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:59:41: replace > with < in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 59,
+              "column": 41
+            },
+            "end": {
+              "line": 59,
+              "column": 42
+            }
+          },
+          "replacement": "<",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_59_col_41_001.log",
+      "diff_path": "diff/src__citations.rs_line_59_col_41_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.751232625,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.484094667,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:59:41: replace > with >= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 59,
+              "column": 41
+            },
+            "end": {
+              "line": 59,
+              "column": 42
+            }
+          },
+          "replacement": ">=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_59_col_41_002.log",
+      "diff_path": "diff/src__citations.rs_line_59_col_41_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.699581375,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.237715917,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:61:53: replace && with || in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 61,
+              "column": 53
+            },
+            "end": {
+              "line": 61,
+              "column": 55
+            }
+          },
+          "replacement": "||",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_61_col_53.log",
+      "diff_path": "diff/src__citations.rs_line_61_col_53.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.661201292,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.480285917,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:61:56: delete ! in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 61,
+              "column": 56
+            },
+            "end": {
+              "line": 61,
+              "column": 57
+            }
+          },
+          "replacement": "",
+          "genre": "UnaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_61_col_56.log",
+      "diff_path": "diff/src__citations.rs_line_61_col_56.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.700220625,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.488849791,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:68:11: replace += with -= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 68,
+              "column": 11
+            },
+            "end": {
+              "line": 68,
+              "column": 13
+            }
+          },
+          "replacement": "-=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_68_col_11.log",
+      "diff_path": "diff/src__citations.rs_line_68_col_11.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.645189792,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.493172541,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:68:11: replace += with *= in extract_citation_keys",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_citation_keys",
+            "return_type": "-> Vec<String>",
+            "span": {
+              "start": {
+                "line": 43,
+                "column": 1
+              },
+              "end": {
+                "line": 72,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 68,
+              "column": 11
+            },
+            "end": {
+              "line": 68,
+              "column": 13
+            }
+          },
+          "replacement": "*=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "Timeout",
+      "log_path": "log/src__citations.rs_line_68_col_11_001.log",
+      "diff_path": "diff/src__citations.rs_line_68_col_11_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.705041791,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 20.036799,
+          "process_status": "Timeout",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:75:5: replace is_valid_citation_key -> bool with true",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "is_valid_citation_key",
+            "return_type": "-> bool",
+            "span": {
+              "start": {
+                "line": 74,
+                "column": 1
+              },
+              "end": {
+                "line": 83,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 75,
+              "column": 5
+            },
+            "end": {
+              "line": 82,
+              "column": 69
+            }
+          },
+          "replacement": "true",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_75_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_75_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.65918775,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.388790208,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:75:5: replace is_valid_citation_key -> bool with false",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "is_valid_citation_key",
+            "return_type": "-> bool",
+            "span": {
+              "start": {
+                "line": 74,
+                "column": 1
+              },
+              "end": {
+                "line": 83,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 75,
+              "column": 5
+            },
+            "end": {
+              "line": 82,
+              "column": 69
+            }
+          },
+          "replacement": "false",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_75_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_75_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.697559625,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.533091,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:79:8: delete ! in is_valid_citation_key",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "is_valid_citation_key",
+            "return_type": "-> bool",
+            "span": {
+              "start": {
+                "line": 74,
+                "column": 1
+              },
+              "end": {
+                "line": 83,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 79,
+              "column": 8
+            },
+            "end": {
+              "line": 79,
+              "column": 9
+            }
+          },
+          "replacement": "",
+          "genre": "UnaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_79_col_8.log",
+      "diff_path": "diff/src__citations.rs_line_79_col_8.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.702358959,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.482721291,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:82:57: replace || with && in is_valid_citation_key",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "is_valid_citation_key",
+            "return_type": "-> bool",
+            "span": {
+              "start": {
+                "line": 74,
+                "column": 1
+              },
+              "end": {
+                "line": 83,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 82,
+              "column": 57
+            },
+            "end": {
+              "line": 82,
+              "column": 59
+            }
+          },
+          "replacement": "&&",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_82_col_57.log",
+      "diff_path": "diff/src__citations.rs_line_82_col_57.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.757562333,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.323221625,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:82:45: replace || with && in is_valid_citation_key",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "is_valid_citation_key",
+            "return_type": "-> bool",
+            "span": {
+              "start": {
+                "line": 74,
+                "column": 1
+              },
+              "end": {
+                "line": 83,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 82,
+              "column": 45
+            },
+            "end": {
+              "line": 82,
+              "column": 47
+            }
+          },
+          "replacement": "&&",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_82_col_45.log",
+      "diff_path": "diff/src__citations.rs_line_82_col_45.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.697398375,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.485577208,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:82:50: replace == with != in is_valid_citation_key",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "is_valid_citation_key",
+            "return_type": "-> bool",
+            "span": {
+              "start": {
+                "line": 74,
+                "column": 1
+              },
+              "end": {
+                "line": 83,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 82,
+              "column": 50
+            },
+            "end": {
+              "line": 82,
+              "column": 52
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_82_col_50.log",
+      "diff_path": "diff/src__citations.rs_line_82_col_50.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.707889875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.341275083,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:82:62: replace == with != in is_valid_citation_key",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "is_valid_citation_key",
+            "return_type": "-> bool",
+            "span": {
+              "start": {
+                "line": 74,
+                "column": 1
+              },
+              "end": {
+                "line": 83,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 82,
+              "column": 62
+            },
+            "end": {
+              "line": 82,
+              "column": 64
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_82_col_62.log",
+      "diff_path": "diff/src__citations.rs_line_82_col_62.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.707251375,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 2.325147833,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:86:5: replace build_links_from_grounds -> LinkSet with Default::default()",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "build_links_from_grounds",
+            "return_type": "-> LinkSet",
+            "span": {
+              "start": {
+                "line": 85,
+                "column": 1
+              },
+              "end": {
+                "line": 119,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 86,
+              "column": 5
+            },
+            "end": {
+              "line": 118,
+              "column": 22
+            }
+          },
+          "replacement": "Default::default()",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__citations.rs_line_86_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_86_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.270035333,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:124:5: replace grounds_from_tool_call_refs -> Vec<Ground> with vec![]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "grounds_from_tool_call_refs",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 121,
+                "column": 1
+              },
+              "end": {
+                "line": 139,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 124,
+              "column": 5
+            },
+            "end": {
+              "line": 138,
+              "column": 8
+            }
+          },
+          "replacement": "vec![]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_124_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_124_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.754675041,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.484805417,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:124:5: replace grounds_from_tool_call_refs -> Vec<Ground> with vec![Default::default()]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "grounds_from_tool_call_refs",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 121,
+                "column": 1
+              },
+              "end": {
+                "line": 139,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 124,
+              "column": 5
+            },
+            "end": {
+              "line": 138,
+              "column": 8
+            }
+          },
+          "replacement": "vec![Default::default()]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__citations.rs_line_124_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_124_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.273161625,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:142:5: replace parse_openai_citations -> Vec<JsonValue> with vec![]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "parse_openai_citations",
+            "return_type": "-> Vec<JsonValue>",
+            "span": {
+              "start": {
+                "line": 141,
+                "column": 1
+              },
+              "end": {
+                "line": 165,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 142,
+              "column": 5
+            },
+            "end": {
+              "line": 164,
+              "column": 8
+            }
+          },
+          "replacement": "vec![]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_142_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_142_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.760537208,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.488364542,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:142:5: replace parse_openai_citations -> Vec<JsonValue> with vec![Default::default()]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "parse_openai_citations",
+            "return_type": "-> Vec<JsonValue>",
+            "span": {
+              "start": {
+                "line": 141,
+                "column": 1
+              },
+              "end": {
+                "line": 165,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 142,
+              "column": 5
+            },
+            "end": {
+              "line": 164,
+              "column": 8
+            }
+          },
+          "replacement": "vec![Default::default()]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__citations.rs_line_142_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_142_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.273258166,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:151:13: delete match arm \"file_citation\" | \"container_file_citation\" | \"file_path\" in parse_openai_citations",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "parse_openai_citations",
+            "return_type": "-> Vec<JsonValue>",
+            "span": {
+              "start": {
+                "line": 141,
+                "column": 1
+              },
+              "end": {
+                "line": 165,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 151,
+              "column": 13
+            },
+            "end": {
+              "line": 155,
+              "column": 14
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_151_col_13.log",
+      "diff_path": "diff/src__citations.rs_line_151_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.758818416,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.540633125,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:156:13: delete match arm \"url_citation\" in parse_openai_citations",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "parse_openai_citations",
+            "return_type": "-> Vec<JsonValue>",
+            "span": {
+              "start": {
+                "line": 141,
+                "column": 1
+              },
+              "end": {
+                "line": 165,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 156,
+              "column": 13
+            },
+            "end": {
+              "line": 160,
+              "column": 14
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_156_col_13.log",
+      "diff_path": "diff/src__citations.rs_line_156_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.861154792,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.5300970830000002,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:168:5: replace grounds_from_openai_citations -> Vec<Ground> with vec![]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "grounds_from_openai_citations",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 167,
+                "column": 1
+              },
+              "end": {
+                "line": 184,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 168,
+              "column": 5
+            },
+            "end": {
+              "line": 183,
+              "column": 12
+            }
+          },
+          "replacement": "vec![]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_168_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_168_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.867194916,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.8252396659999999,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:168:5: replace grounds_from_openai_citations -> Vec<Ground> with vec![Default::default()]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "grounds_from_openai_citations",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 167,
+                "column": 1
+              },
+              "end": {
+                "line": 184,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 168,
+              "column": 5
+            },
+            "end": {
+              "line": 183,
+              "column": 12
+            }
+          },
+          "replacement": "vec![Default::default()]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__citations.rs_line_168_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_168_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.318901875,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:187:5: replace link_set_from_openai_citations -> LinkSet with Default::default()",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "link_set_from_openai_citations",
+            "return_type": "-> LinkSet",
+            "span": {
+              "start": {
+                "line": 186,
+                "column": 1
+              },
+              "end": {
+                "line": 205,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 187,
+              "column": 5
+            },
+            "end": {
+              "line": 204,
+              "column": 22
+            }
+          },
+          "replacement": "Default::default()",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__citations.rs_line_187_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_187_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.220520791,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:208:5: replace extract_ground_id -> Option<String> with None",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_ground_id",
+            "return_type": "-> Option<String>",
+            "span": {
+              "start": {
+                "line": 207,
+                "column": 1
+              },
+              "end": {
+                "line": 221,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 208,
+              "column": 5
+            },
+            "end": {
+              "line": 220,
+              "column": 6
+            }
+          },
+          "replacement": "None",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_208_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_208_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.705086416,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.867907458,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:208:5: replace extract_ground_id -> Option<String> with Some(String::new())",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_ground_id",
+            "return_type": "-> Option<String>",
+            "span": {
+              "start": {
+                "line": 207,
+                "column": 1
+              },
+              "end": {
+                "line": 221,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 208,
+              "column": 5
+            },
+            "end": {
+              "line": 220,
+              "column": 6
+            }
+          },
+          "replacement": "Some(String::new())",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_208_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_208_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.732731584,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.874965875,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:208:5: replace extract_ground_id -> Option<String> with Some(\"xyzzy\".into())",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_ground_id",
+            "return_type": "-> Option<String>",
+            "span": {
+              "start": {
+                "line": 207,
+                "column": 1
+              },
+              "end": {
+                "line": 221,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 208,
+              "column": 5
+            },
+            "end": {
+              "line": 220,
+              "column": 6
+            }
+          },
+          "replacement": "Some(\"xyzzy\".into())",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_208_col_5_002.log",
+      "diff_path": "diff/src__citations.rs_line_208_col_5_002.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.819453958,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.8672195,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:211:9: delete match arm \"file_citation\" | \"container_file_citation\" | \"file_path\" in extract_ground_id",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_ground_id",
+            "return_type": "-> Option<String>",
+            "span": {
+              "start": {
+                "line": 207,
+                "column": 1
+              },
+              "end": {
+                "line": 221,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 211,
+              "column": 9
+            },
+            "end": {
+              "line": 214,
+              "column": 39
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_211_col_9.log",
+      "diff_path": "diff/src__citations.rs_line_211_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.761334208,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.8615875,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:215:9: delete match arm \"url_citation\" in extract_ground_id",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "extract_ground_id",
+            "return_type": "-> Option<String>",
+            "span": {
+              "start": {
+                "line": 207,
+                "column": 1
+              },
+              "end": {
+                "line": 221,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 215,
+              "column": 9
+            },
+            "end": {
+              "line": 218,
+              "column": 39
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__citations.rs_line_215_col_9.log",
+      "diff_path": "diff/src__citations.rs_line_215_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.814367167,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.718065208,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:228:5: replace coerce_grounds_input -> Vec<Ground> with vec![]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "coerce_grounds_input",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 223,
+                "column": 1
+              },
+              "end": {
+                "line": 246,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 228,
+              "column": 5
+            },
+            "end": {
+              "line": 245,
+              "column": 15
+            }
+          },
+          "replacement": "vec![]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_228_col_5.log",
+      "diff_path": "diff/src__citations.rs_line_228_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.757532333,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.9830631250000001,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:228:5: replace coerce_grounds_input -> Vec<Ground> with vec![Default::default()]",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "coerce_grounds_input",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 223,
+                "column": 1
+              },
+              "end": {
+                "line": 246,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 228,
+              "column": 5
+            },
+            "end": {
+              "line": 245,
+              "column": 15
+            }
+          },
+          "replacement": "vec![Default::default()]",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__citations.rs_line_228_col_5_001.log",
+      "diff_path": "diff/src__citations.rs_line_228_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.269802709,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/citations.rs:232:12: delete ! in coerce_grounds_input",
+          "package": "normcore-rs",
+          "file": "src/citations.rs",
+          "function": {
+            "function_name": "coerce_grounds_input",
+            "return_type": "-> Vec<Ground>",
+            "span": {
+              "start": {
+                "line": 223,
+                "column": 1
+              },
+              "end": {
+                "line": 246,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 232,
+              "column": 12
+            },
+            "end": {
+              "line": 232,
+              "column": 13
+            }
+          },
+          "replacement": "",
+          "genre": "UnaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__citations.rs_line_232_col_12.log",
+      "diff_path": "diff/src__citations.rs_line_232_col_12.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.709530541,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 1.8109045419999998,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:50:5: replace evaluate -> Result<AdmissibilityJudgment, EvaluateError> with Ok(Default::default())",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 49,
+                "column": 1
+              },
+              "end": {
+                "line": 94,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 50,
+              "column": 5
+            },
+            "end": {
+              "line": 93,
+              "column": 6
+            }
+          },
+          "replacement": "Ok(Default::default())",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__evaluator.rs_line_50_col_5.log",
+      "diff_path": "diff/src__evaluator.rs_line_50_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.330465292,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:50:37: replace && with || in evaluate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 49,
+                "column": 1
+              },
+              "end": {
+                "line": 94,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 50,
+              "column": 37
+            },
+            "end": {
+              "line": 50,
+              "column": 39
+            }
+          },
+          "replacement": "||",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_50_col_37.log",
+      "diff_path": "diff/src__evaluator.rs_line_50_col_37.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.704746875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.592238417,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:63:26: replace != with == in evaluate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 49,
+                "column": 1
+              },
+              "end": {
+                "line": 94,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 63,
+              "column": 26
+            },
+            "end": {
+              "line": 63,
+              "column": 28
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_63_col_26.log",
+      "diff_path": "diff/src__evaluator.rs_line_63_col_26.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.870422625,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.691460917,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:69:28: replace != with == in evaluate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 49,
+                "column": 1
+              },
+              "end": {
+                "line": 94,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 69,
+              "column": 28
+            },
+            "end": {
+              "line": 69,
+              "column": 30
+            }
+          },
+          "replacement": "==",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_69_col_28.log",
+      "diff_path": "diff/src__evaluator.rs_line_69_col_28.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.807718875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.536603791,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:97:5: replace evaluate_from_json -> Result<AdmissibilityJudgment, EvaluateError> with Ok(Default::default())",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate_from_json",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 96,
+                "column": 1
+              },
+              "end": {
+                "line": 132,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 97,
+              "column": 5
+            },
+            "end": {
+              "line": 131,
+              "column": 7
+            }
+          },
+          "replacement": "Ok(Default::default())",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__evaluator.rs_line_97_col_5.log",
+      "diff_path": "diff/src__evaluator.rs_line_97_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.333255125,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:108:9: delete match arm Some(JsonValue::Array(arr)) in evaluate_from_json",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate_from_json",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 96,
+                "column": 1
+              },
+              "end": {
+                "line": 132,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 108,
+              "column": 9
+            },
+            "end": {
+              "line": 108,
+              "column": 71
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__evaluator.rs_line_108_col_9.log",
+      "diff_path": "diff/src__evaluator.rs_line_108_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.803751542,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.955549875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:109:9: delete match arm Some(JsonValue::Null) | None in evaluate_from_json",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate_from_json",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 96,
+                "column": 1
+              },
+              "end": {
+                "line": 132,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 109,
+              "column": 9
+            },
+            "end": {
+              "line": 109,
+              "column": 46
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_109_col_9.log",
+      "diff_path": "diff/src__evaluator.rs_line_109_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.915297417,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 2.469051291,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:118:9: delete match arm Some(JsonValue::Array(arr)) in evaluate_from_json",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate_from_json",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 96,
+                "column": 1
+              },
+              "end": {
+                "line": 132,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 118,
+              "column": 9
+            },
+            "end": {
+              "line": 118,
+              "column": 90
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__evaluator.rs_line_118_col_9.log",
+      "diff_path": "diff/src__evaluator.rs_line_118_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.703882625,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.989654667,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:119:9: delete match arm Some(JsonValue::Null) | None in evaluate_from_json",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "evaluate_from_json",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 96,
+                "column": 1
+              },
+              "end": {
+                "line": 132,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 119,
+              "column": 9
+            },
+            "end": {
+              "line": 119,
+              "column": 46
+            }
+          },
+          "replacement": "",
+          "genre": "MatchArm"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_119_col_9.log",
+      "diff_path": "diff/src__evaluator.rs_line_119_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.755393792,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 2.5224720830000003,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:137:5: replace parse_conversation -> Result<Vec<ConversationMessage>, EvaluateError> with Ok(vec![])",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "parse_conversation",
+            "return_type": "-> Result<Vec<ConversationMessage>, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 134,
+                "column": 1
+              },
+              "end": {
+                "line": 171,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 137,
+              "column": 5
+            },
+            "end": {
+              "line": 170,
+              "column": 12
+            }
+          },
+          "replacement": "Ok(vec![])",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_137_col_5.log",
+      "diff_path": "diff/src__evaluator.rs_line_137_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.831165708,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.593016666,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:137:5: replace parse_conversation -> Result<Vec<ConversationMessage>, EvaluateError> with Ok(vec![Default::default()])",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "parse_conversation",
+            "return_type": "-> Result<Vec<ConversationMessage>, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 134,
+                "column": 1
+              },
+              "end": {
+                "line": 171,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 137,
+              "column": 5
+            },
+            "end": {
+              "line": 170,
+              "column": 12
+            }
+          },
+          "replacement": "Ok(vec![Default::default()])",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__evaluator.rs_line_137_col_5_001.log",
+      "diff_path": "diff/src__evaluator.rs_line_137_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.320763875,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:174:5: replace parse_tool_calls -> Result<Vec<ToolCall>, EvaluateError> with Ok(vec![])",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "parse_tool_calls",
+            "return_type": "-> Result<Vec<ToolCall>, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 173,
+                "column": 1
+              },
+              "end": {
+                "line": 231,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 174,
+              "column": 5
+            },
+            "end": {
+              "line": 230,
+              "column": 12
+            }
+          },
+          "replacement": "Ok(vec![])",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/src__evaluator.rs_line_174_col_5.log",
+      "diff_path": "diff/src__evaluator.rs_line_174_col_5.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 1.05547425,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 3.888411833,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:174:5: replace parse_tool_calls -> Result<Vec<ToolCall>, EvaluateError> with Ok(vec![Default::default()])",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "parse_tool_calls",
+            "return_type": "-> Result<Vec<ToolCall>, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 173,
+                "column": 1
+              },
+              "end": {
+                "line": 231,
+                "column": 2
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 174,
+              "column": 5
+            },
+            "end": {
+              "line": 230,
+              "column": 12
+            }
+          },
+          "replacement": "Ok(vec![Default::default()])",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__evaluator.rs_line_174_col_5_001.log",
+      "diff_path": "diff/src__evaluator.rs_line_174_col_5_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.272043,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:266:9: replace AdmissibilityEvaluator::evaluate_message -> Result<AdmissibilityJudgment, EvaluateError> with Ok(Default::default())",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::evaluate_message",
+            "return_type": "-> Result<AdmissibilityJudgment, EvaluateError>",
+            "span": {
+              "start": {
+                "line": 260,
+                "column": 5
+              },
+              "end": {
+                "line": 298,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 266,
+              "column": 9
+            },
+            "end": {
+              "line": 297,
+              "column": 46
+            }
+          },
+          "replacement": "Ok(Default::default())",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__evaluator.rs_line_266_col_9.log",
+      "diff_path": "diff/src__evaluator.rs_line_266_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.267202334,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:306:9: replace AdmissibilityEvaluator::evaluate_core -> ValidationResult with Default::default()",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::evaluate_core",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 300,
+                "column": 5
+              },
+              "end": {
+                "line": 372,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 306,
+              "column": 9
+            },
+            "end": {
+              "line": 371,
+              "column": 59
+            }
+          },
+          "replacement": "Default::default()",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__evaluator.rs_line_306_col_9.log",
+      "diff_path": "diff/src__evaluator.rs_line_306_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.269883625,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:348:49: replace == with != in AdmissibilityEvaluator::evaluate_core",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::evaluate_core",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 300,
+                "column": 5
+              },
+              "end": {
+                "line": 372,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 348,
+              "column": 49
+            },
+            "end": {
+              "line": 348,
+              "column": 51
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_348_col_49.log",
+      "diff_path": "diff/src__evaluator.rs_line_348_col_49.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.810647459,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.536969292,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:379:9: replace AdmissibilityEvaluator::aggregate -> ValidationResult with Default::default()",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::aggregate",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 374,
+                "column": 5
+              },
+              "end": {
+                "line": 491,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 379,
+              "column": 9
+            },
+            "end": {
+              "line": 490,
+              "column": 10
+            }
+          },
+          "replacement": "Default::default()",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/src__evaluator.rs_line_379_col_9.log",
+      "diff_path": "diff/src__evaluator.rs_line_379_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.324817584,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:386:31: replace == with != in AdmissibilityEvaluator::aggregate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::aggregate",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 374,
+                "column": 5
+              },
+              "end": {
+                "line": 491,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 386,
+              "column": 31
+            },
+            "end": {
+              "line": 386,
+              "column": 33
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_386_col_31.log",
+      "diff_path": "diff/src__evaluator.rs_line_386_col_31.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.751847417,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.538399792,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:400:31: replace == with != in AdmissibilityEvaluator::aggregate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::aggregate",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 374,
+                "column": 5
+              },
+              "end": {
+                "line": 491,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 400,
+              "column": 31
+            },
+            "end": {
+              "line": 400,
+              "column": 33
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_400_col_31.log",
+      "diff_path": "diff/src__evaluator.rs_line_400_col_31.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.804731792,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.534311,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:414:31: replace == with != in AdmissibilityEvaluator::aggregate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::aggregate",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 374,
+                "column": 5
+              },
+              "end": {
+                "line": 491,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 414,
+              "column": 31
+            },
+            "end": {
+              "line": 414,
+              "column": 33
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_414_col_31.log",
+      "diff_path": "diff/src__evaluator.rs_line_414_col_31.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.808866875,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.539585833,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:425:31: replace == with != in AdmissibilityEvaluator::aggregate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::aggregate",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 374,
+                "column": 5
+              },
+              "end": {
+                "line": 491,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 425,
+              "column": 31
+            },
+            "end": {
+              "line": 425,
+              "column": 33
+            }
+          },
+          "replacement": "!=",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_425_col_31.log",
+      "diff_path": "diff/src__evaluator.rs_line_425_col_31.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 1.052815833,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.582499292,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "src/evaluator.rs:438:13: replace && with || in AdmissibilityEvaluator::aggregate",
+          "package": "normcore-rs",
+          "file": "src/evaluator.rs",
+          "function": {
+            "function_name": "AdmissibilityEvaluator::aggregate",
+            "return_type": "-> ValidationResult",
+            "span": {
+              "start": {
+                "line": 374,
+                "column": 5
+              },
+              "end": {
+                "line": 491,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 438,
+              "column": 13
+            },
+            "end": {
+              "line": 438,
+              "column": 15
+            }
+          },
+          "replacement": "||",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/src__evaluator.rs_line_438_col_13.log",
+      "diff_path": "diff/src__evaluator.rs_line_438_col_13.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.808301667,
+          "process_status": "Success",
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.543173042,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/opt/homebrew/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=normcore-rs@0.1.0"
+          ]
+        }
+      ]
+    }
+  ],
+  "total_mutants": 108,
+  "missed": 31,
+  "caught": 59,
+  "timeout": 4,
+  "unviable": 14,
+  "success": 0,
+  "start_time": "2026-02-17T18:20:08.002822Z",
+  "end_time": null,
+  "cargo_mutants_version": "26.2.0"
+}

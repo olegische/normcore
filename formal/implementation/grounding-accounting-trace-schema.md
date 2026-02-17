@@ -7,3 +7,17 @@
 | BuildToolGroundRefs | `KnowledgeStateBuilder.build_with_references` + `grounds_from_tool_call_refs` | tool results with `tool_call_id` | Tool results extracted from conversation | Tool-based grounds accepted for citation keys | `toolGroundsAccepted` |
 | MergeAcceptedGrounds | `AdmissibilityEvaluator.evaluate` | external grounds + tool grounds | Both sources available | `groundsAccepted` represents unique union of accepted grounds | `UnionCountFeasible` |
 | BuildLinksFromCitations | `build_links_from_grounds` | assistant text with `[@key]` + accepted grounds | Citation keys found in assistant output | `groundsCited` bounded by accepted grounds | `InvCitedBounded` |
+
+## Action Log Schema (TLA `log` variable)
+
+The grounding-accounting model appends one event per transition (`Len(log) <= 1`).
+
+Record shape:
+
+```tla
+[op |-> "GroundingAccountingStep",
+ args |-> [toolGroundsAccepted |-> GroundCountValues,
+           externalGroundsAccepted |-> GroundCountValues,
+           externalGroundInputFormat |-> ExternalGroundInputFormats],
+ expect |-> [groundsAccepted |-> GroundCountValues, groundsCited |-> GroundCountValues]]
+```

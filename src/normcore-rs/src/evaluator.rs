@@ -856,4 +856,130 @@ mod tests {
         assert_eq!(messages.len(), 1);
         assert_eq!(messages[0].role, "assistant");
     }
+
+    #[test]
+    fn evaluate_from_json_parses_conversation_and_grounds_arrays() {
+        let payload = r#"{
+            "conversation": [
+                {
+                    "role": "assistant",
+                    "content": "",
+                    "tool_calls": [
+                        {
+                            "id":"callWeatherNYC",
+                            "type":"function",
+                            "function":{"name":"get_weather","arguments":"{\"city\":\"New York\"}"}
+                        }
+                    ]
+                },
+                {
+                    "role":"tool",
+                    "tool_call_id":"callWeatherNYC",
+                    "content":"{\"weather_id\":\"nyc_2026-02-07\"}"
+                },
+                {
+                    "role":"assistant",
+                    "content":"You should carry an umbrella [@callWeatherNYC] [@file_weather_2025]."
+                }
+            ],
+            "grounds": [
+                {"type":"file_citation","file_id":"file_weather_2025","filename":"weather.txt","index":0}
+            ]
+        }"#;
+
+        let judgment = evaluate_from_json(payload).expect("must evaluate");
+        assert_eq!(judgment.status, AdmissibilityStatus::Acceptable);
+        assert!(judgment.grounds_accepted >= 2);
+        assert!(judgment.grounds_cited >= 2);
+    }
+
+    #[test]
+    fn parse_conversation_parses_tool_call_payload() {
+        let input = parse_json(
+            r#"[{
+                "role":"assistant",
+                "content":"",
+                "tool_calls":[
+                    {
+                        "id":"call1",
+                        "type":"function",
+                        "function":{"name":"search","arguments":"{\"q\":\"x\"}"}
+                    }
+                ]
+            }]"#,
+        )
+        .expect("json parses");
+        let JsonValue::Array(arr) = input else {
+            panic!("array expected")
+        };
+        let messages = parse_conversation(&arr).expect("conversation parses");
+        assert_eq!(messages.len(), 1);
+        assert_eq!(messages[0].tool_calls.len(), 1);
+        assert_eq!(messages[0].tool_calls[0].id, "call1");
+        assert_eq!(
+            messages[0].tool_calls[0].function_name.as_deref(),
+            Some("search")
+        );
+    }
+
+    #[test]
+    fn extract_text_content_accepts_text_parts_and_rejects_mixed_parts() {
+        let text_parts = JsonValue::Array(vec![JsonValue::Object(BTreeMap::from([
+            ("type".to_string(), JsonValue::String("text".to_string())),
+            (
+                "text".to_string(),
+                JsonValue::String("answer from parts".to_string()),
+            ),
+        ]))]);
+        let extracted = extract_text_content(Some(&text_parts)).expect("must parse text parts");
+        assert_eq!(extracted, "answer from parts");
+
+        let mixed_parts = JsonValue::Array(vec![
+            JsonValue::Object(BTreeMap::from([
+                ("type".to_string(), JsonValue::String("text".to_string())),
+                ("text".to_string(), JsonValue::String("x".to_string())),
+            ])),
+            JsonValue::Object(BTreeMap::from([
+                ("type".to_string(), JsonValue::String("refusal".to_string())),
+                ("refusal".to_string(), JsonValue::String("no".to_string())),
+            ])),
+        ]);
+        let err = extract_text_content(Some(&mixed_parts)).expect_err("must reject mixed parts");
+        assert_eq!(
+            err,
+            EvaluateError::InvalidMessage(
+                "Assistant content cannot mix text and refusal parts".to_string()
+            )
+        );
+    }
+
+    #[test]
+    fn aggregate_counts_acceptable_and_conditional() {
+        let evaluator = AdmissibilityEvaluator::new();
+        let axiom_results = vec![
+            crate::normative::AxiomCheckResult {
+                status: EvaluationStatus::Acceptable,
+                violated_axiom: None,
+                explanation: "ok".to_string(),
+            },
+            crate::normative::AxiomCheckResult {
+                status: EvaluationStatus::ConditionallyAcceptable,
+                violated_axiom: None,
+                explanation: "cond".to_string(),
+            },
+        ];
+        let out = evaluator.aggregate(&axiom_results, &[]);
+        assert_eq!(out.status, EvaluationStatus::ConditionallyAcceptable);
+        assert_eq!(out.num_acceptable, 2);
+        assert_eq!(out.num_statements, 0);
+    }
+
+    #[test]
+    fn aggregate_empty_results_is_acceptable() {
+        let evaluator = AdmissibilityEvaluator::new();
+        let out = evaluator.aggregate(&[], &[]);
+        assert_eq!(out.status, EvaluationStatus::Acceptable);
+        assert_eq!(out.num_acceptable, 0);
+        assert!(out.licensed);
+    }
 }

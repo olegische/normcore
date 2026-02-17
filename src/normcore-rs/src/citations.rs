@@ -299,4 +299,40 @@ mod tests {
         let out = parse_openai_citations(&arr);
         assert_eq!(out.len(), 1);
     }
+
+    #[test]
+    fn parse_grounds_reads_explicit_payload() {
+        let value = parse_json(
+            r#"[{"citation_key":"docA","ground_id":"file_1","evidence_content":"ctx"}]"#,
+        )
+        .expect("json parses");
+        let JsonValue::Array(arr) = value else {
+            panic!("array expected")
+        };
+        let grounds = parse_grounds(&arr);
+        assert_eq!(grounds.len(), 1);
+        assert_eq!(grounds[0].citation_key, "docA");
+        assert_eq!(grounds[0].ground_id, "file_1");
+    }
+
+    #[test]
+    fn extract_citation_keys_ignores_invalid_or_unclosed_patterns() {
+        let text = "bad [@1bad] good [@Doc_1] unclosed [@NoEnd and tail [@Also-Good].";
+        assert_eq!(extract_citation_keys(text), vec!["Doc_1"]);
+    }
+
+    #[test]
+    fn parse_openai_citations_accepts_url_citation() {
+        let value =
+            parse_json(r#"[{"type":"url_citation","url":"https://example.com","index":0}]"#)
+                .expect("json parses");
+        let JsonValue::Array(arr) = value else {
+            panic!("array expected")
+        };
+        let out = parse_openai_citations(&arr);
+        assert_eq!(out.len(), 1);
+        let grounds = grounds_from_openai_citations(&out);
+        assert_eq!(grounds.len(), 1);
+        assert_eq!(grounds[0].ground_id, "https://example.com");
+    }
 }

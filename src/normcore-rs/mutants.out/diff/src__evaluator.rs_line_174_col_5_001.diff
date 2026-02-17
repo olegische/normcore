@@ -1,0 +1,77 @@
+--- src/evaluator.rs
++++ replace parse_tool_calls -> Result<Vec<ToolCall>, EvaluateError> with Ok(vec![Default::default()])
+@@ -166,73 +166,17 @@
+             tool_calls,
+             function_name,
+         });
+     }
+     Ok(out)
+ }
+ 
+ fn parse_tool_calls(value: Option<&JsonValue>) -> Result<Vec<ToolCall>, EvaluateError> {
+-    let Some(value) = value else {
+-        return Ok(Vec::new());
+-    };
+-    let Some(arr) = value.as_array() else {
+-        return Err(EvaluateError::InvalidMessage(
+-            "tool_calls must be an array".to_string(),
+-        ));
+-    };
+-
+-    let mut out = Vec::new();
+-    for item in arr {
+-        let Some(obj) = item.as_object() else {
+-            continue;
+-        };
+-        let Some(id) = obj.get("id").and_then(JsonValue::as_str) else {
+-            continue;
+-        };
+-        let kind = obj
+-            .get("type")
+-            .and_then(JsonValue::as_str)
+-            .unwrap_or("function")
+-            .to_string();
+-
+-        let mut function_name = None;
+-        let mut function_arguments = None;
+-        if let Some(function_obj) = obj.get("function").and_then(JsonValue::as_object) {
+-            function_name = function_obj
+-                .get("name")
+-                .and_then(JsonValue::as_str)
+-                .map(ToString::to_string);
+-            function_arguments = function_obj.get("arguments").cloned();
+-        }
+-
+-        let mut custom_name = None;
+-        let mut custom_input = None;
+-        if let Some(custom_obj) = obj.get("custom").and_then(JsonValue::as_object) {
+-            custom_name = custom_obj
+-                .get("name")
+-                .and_then(JsonValue::as_str)
+-                .map(ToString::to_string);
+-            custom_input = custom_obj
+-                .get("input")
+-                .and_then(JsonValue::as_str)
+-                .map(ToString::to_string);
+-        }
+-
+-        out.push(ToolCall {
+-            id: id.to_string(),
+-            kind,
+-            function_name,
+-            function_arguments,
+-            custom_name,
+-            custom_input,
+-        });
+-    }
+-
+-    Ok(out)
++    Ok(vec![Default::default()]) /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ pub struct AdmissibilityEvaluator {
+     extractor: StatementExtractor,
+     modality_detector: ModalityDetector,
+     knowledge_builder: KnowledgeStateBuilder,
+     ground_matcher: GroundSetMatcher,
+     license_deriver: LicenseDeriver,

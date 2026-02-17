@@ -373,4 +373,38 @@ mod tests {
         let rendered = to_pretty_json(&value);
         assert!(rendered.contains("\"status\""));
     }
+
+    #[test]
+    fn json_value_get_reads_object_fields() {
+        let value = parse_json(r#"{"a":1,"b":2}"#).expect("must parse");
+        assert_eq!(value.get("a"), Some(&JsonValue::Number(1.0)));
+        assert_eq!(value.get("missing"), None);
+    }
+
+    #[test]
+    fn parse_json_supports_escaped_controls_and_unicode() {
+        let value = parse_json(r#"{"s":"line\n\t\u0041"}"#).expect("must parse");
+        let JsonValue::Object(map) = value else {
+            panic!("expected object")
+        };
+        assert_eq!(
+            map.get("s"),
+            Some(&JsonValue::String("line\n\tA".to_string()))
+        );
+    }
+
+    #[test]
+    fn parse_json_rejects_invalid_escape_sequences() {
+        assert!(parse_json(r#"{"s":"\q"}"#).is_err());
+    }
+
+    #[test]
+    fn pretty_print_preserves_multiple_entries_and_commas() {
+        let value = parse_json(r#"{"a":[1,2,3],"b":{"x":true,"y":false}}"#).expect("must parse");
+        let rendered = to_pretty_json(&value);
+        assert!(rendered.contains("\"a\": ["));
+        assert!(rendered.contains("1,"));
+        assert!(rendered.contains("2,"));
+        assert!(rendered.contains("\"x\": true,"));
+    }
 }

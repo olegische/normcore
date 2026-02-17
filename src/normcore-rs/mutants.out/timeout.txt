@@ -1,0 +1,4 @@
+src/main.rs:54:19: replace += with -= in run
+src/main.rs:82:11: replace += with *= in run
+src/citations.rs:57:21: replace += with *= in extract_citation_keys
+src/citations.rs:68:11: replace += with *= in extract_citation_keys

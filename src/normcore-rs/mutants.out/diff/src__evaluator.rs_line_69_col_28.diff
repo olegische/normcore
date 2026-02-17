@@ -1,0 +1,21 @@
+--- src/evaluator.rs
++++ replace != with == in evaluate
+@@ -61,17 +61,17 @@
+                 .cloned()
+                 .ok_or(EvaluateError::InvalidConversation)?;
+             if last.role != "assistant" {
+                 return Err(EvaluateError::LastMessageNotAssistant);
+             }
+ 
+             if let Some(expected_output) = &input.agent_output {
+                 let actual = extract_text_content(last.content.as_ref())?;
+-                if &actual != expected_output {
++                if &actual == /* ~ changed by cargo-mutants ~ */ expected_output {
+                     return Err(EvaluateError::AgentOutputMismatch);
+                 }
+             }
+ 
+             (last, conversation)
+         } else {
+             let msg = ConversationMessage {
+                 role: "assistant".to_string(),

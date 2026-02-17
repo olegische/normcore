@@ -245,6 +245,7 @@ fn stable_id_fragment(value: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::KnowledgeStateBuilder;
+    use super::stable_id_fragment;
     use crate::json::JsonValue;
     use crate::models::CreatorType;
     use crate::models::EvidenceType;
@@ -316,5 +317,64 @@ mod tests {
             result_text: "{\"ok\":true}".to_string(),
         };
         assert_eq!(builder.tool_result_to_knowledge(&result), None);
+    }
+
+    #[test]
+    fn build_returns_nodes_for_epistemic_tools() {
+        let builder = KnowledgeStateBuilder;
+        let tool_results = vec![ToolResultSpeechAct {
+            tool_name: "get_issue".to_string(),
+            tool_call_id: Some("call_1".to_string()),
+            arguments: BTreeMap::new(),
+            result_text: "{\"issue_id\":\"123\"}".to_string(),
+        }];
+        let nodes = builder.build(&tool_results);
+        assert_eq!(nodes.len(), 1);
+        assert_eq!(nodes[0].semantic_id.as_deref(), Some("issue_123"));
+    }
+
+    #[test]
+    fn materialize_external_grounds_deduplicates_by_semantic_id() {
+        let builder = KnowledgeStateBuilder;
+        let initial = vec![node("tool_weather", Scope::Factual, "strong")];
+        let grounds = vec![Ground {
+            citation_key: "sem_tool_weather".to_string(),
+            ground_id: "sem_tool_weather".to_string(),
+            role: LinkRole::Supports,
+            creator: CreatorType::UpstreamPipeline,
+            evidence_type: EvidenceType::Observation,
+            evidence_content: None,
+            signature: None,
+        }];
+        let out = builder.materialize_external_grounds(&initial, &grounds);
+        assert_eq!(out.len(), 1);
+    }
+
+    #[test]
+    fn extract_semantic_id_from_array_emits_many_nodes() {
+        let builder = KnowledgeStateBuilder;
+        let result = ToolResultSpeechAct {
+            tool_name: "list_issues".to_string(),
+            tool_call_id: Some("call_list".to_string()),
+            arguments: BTreeMap::new(),
+            result_text: "[{\"issue_id\":\"1\"},{\"issue_id\":\"2\"}]".to_string(),
+        };
+        let nodes = builder
+            .tool_result_to_knowledge(&result)
+            .expect("must produce nodes");
+        assert_eq!(nodes.len(), 2);
+        assert_eq!(nodes[0].semantic_id.as_deref(), Some("issue_1"));
+        assert_eq!(nodes[1].semantic_id.as_deref(), Some("issue_2"));
+    }
+
+    #[test]
+    fn stable_id_fragment_is_deterministic_and_non_empty() {
+        let a = stable_id_fragment("hello");
+        let b = stable_id_fragment("hello");
+        let c = stable_id_fragment("world");
+        assert_eq!(a, b);
+        assert_ne!(a, c);
+        assert_eq!(a.len(), 10);
+        assert!(!a.is_empty());
     }
 }

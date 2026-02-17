@@ -1,0 +1,21 @@
+--- src/evaluator.rs
++++ replace == with != in AdmissibilityEvaluator::aggregate
+@@ -406,17 +406,17 @@
+                 Some(
+                     "Your response is structurally ill-formed. Please rephrase with clear subject-predicate statements."
+                         .to_string(),
+                 ),
+                 "Structurally ill-formed statements detected".to_string(),
+             )
+         } else if axiom_results
+             .iter()
+-            .any(|r| r.status == EvaluationStatus::Underdetermined)
++            .any(|r| r.status != /* ~ changed by cargo-mutants ~ */ EvaluationStatus::Underdetermined)
+         {
+             (
+                 EvaluationStatus::Underdetermined,
+                 false,
+                 false,
+                 None,
+                 "Validator has no jurisdiction to judge".to_string(),
+             )

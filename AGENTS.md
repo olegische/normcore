@@ -22,6 +22,30 @@ Run these automatically after any Rust code change:
 
 For targeted local iteration, you may run crate-level commands directly in `src/normcore-rs`, but final verification should still pass through the commands above.
 
+## Extended Test Tracks (Mutation + Fuzz)
+
+These tracks are intentionally heavier than regular tests and are not required on every change.
+
+When to run:
+- Run `cargo mutants` after behavior-affecting logic changes in evaluator/normative/citations modules, especially before merge/release.
+- Run `cargo fuzz` after parser/input-surface changes (`json`, `parse_conversation`, citations parsing/extraction) and periodically as a deep robustness check.
+- Prefer short smoke budgets during normal development and longer runs in scheduled/nightly checks.
+
+Recommended commands from repo root:
+1. `just rust-mutants`
+2. `just rust-fuzz fuzz_parse_json 5000`
+3. `just rust-fuzz fuzz_parse_conversation 5000`
+4. `just rust-fuzz fuzz_extract_citation_keys 5000`
+
+Longer fuzz budgets (optional):
+1. `just rust-fuzz fuzz_parse_json 50000`
+2. `just rust-fuzz fuzz_parse_conversation 50000`
+3. `just rust-fuzz fuzz_extract_citation_keys 50000`
+
+Agent reporting requirement:
+- After finishing `just fmt`, `just clippy-strict`, and `just test`, the agent must explicitly report whether mutation/fuzz checks were run.
+- If mutation/fuzz checks were not run, the agent must provide exact commands to run next.
+
 ## Lint and Style Rules
 
 - Clippy warnings are treated as errors in Rust CI (`-D warnings`).

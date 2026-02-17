@@ -1,0 +1,21 @@
+--- src/evaluator.rs
++++ delete match arm Some(JsonValue::Null) | None in evaluate_from_json
+@@ -101,17 +101,17 @@
+ 
+     let agent_output = obj
+         .get("agent_output")
+         .and_then(JsonValue::as_str)
+         .map(ToString::to_string);
+ 
+     let conversation = match obj.get("conversation") {
+         Some(JsonValue::Array(arr)) => Some(parse_conversation(arr)?),
+-        Some(JsonValue::Null) | None => None,
++         /* ~ changed by cargo-mutants ~ */
+         _ => {
+             return Err(EvaluateError::InvalidJson(
+                 "conversation must be an array".to_string(),
+             ));
+         }
+     };
+ 
+     let grounds = match obj.get("grounds") {

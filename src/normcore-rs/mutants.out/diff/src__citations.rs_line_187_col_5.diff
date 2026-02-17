@@ -1,0 +1,38 @@
+--- src/citations.rs
++++ replace link_set_from_openai_citations -> LinkSet with Default::default()
+@@ -179,34 +179,17 @@
+             evidence_content: Some("openai_citation".to_string()),
+             signature: None,
+         });
+     }
+     grounds
+ }
+ 
+ pub fn link_set_from_openai_citations(citations: &[JsonValue], statement_id: &str) -> LinkSet {
+-    let mut links = Vec::new();
+-    for (idx, citation) in citations.iter().enumerate() {
+-        let Some(ground_id) = extract_ground_id(citation) else {
+-            continue;
+-        };
+-        links.push(StatementGroundLink {
+-            statement_id: statement_id.to_string(),
+-            ground_id,
+-            role: LinkRole::Supports,
+-            provenance: Provenance {
+-                creator: CreatorType::UpstreamPipeline,
+-                evidence_type: EvidenceType::Observation,
+-                evidence_content: Some(format!("openai_citation[{idx}]")),
+-                signature: None,
+-            },
+-        });
+-    }
+-    LinkSet { links }
++    Default::default() /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ fn extract_ground_id(citation: &JsonValue) -> Option<String> {
+     let obj = citation.as_object()?;
+     let kind = obj.get("type")?.as_str()?;
+     match kind {
+         "file_citation" | "container_file_citation" | "file_path" => obj
+             .get("file_id")

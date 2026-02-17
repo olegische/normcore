@@ -1,0 +1,43 @@
+--- src/citations.rs
++++ replace parse_openai_citations -> Vec<JsonValue> with vec![Default::default()]
+@@ -134,39 +134,17 @@
+                 signature: None,
+             });
+         }
+     }
+     out
+ }
+ 
+ pub fn parse_openai_citations(citations: &[JsonValue]) -> Vec<JsonValue> {
+-    let mut out = Vec::new();
+-    for item in citations {
+-        let Some(obj) = item.as_object() else {
+-            continue;
+-        };
+-        let Some(kind) = obj.get("type").and_then(JsonValue::as_str) else {
+-            continue;
+-        };
+-        match kind {
+-            "file_citation" | "container_file_citation" | "file_path" => {
+-                if obj.get("file_id").and_then(JsonValue::as_str).is_some() {
+-                    out.push(item.clone());
+-                }
+-            }
+-            "url_citation" => {
+-                if obj.get("url").and_then(JsonValue::as_str).is_some() {
+-                    out.push(item.clone());
+-                }
+-            }
+-            _ => {}
+-        }
+-    }
+-    out
++    vec![Default::default()] /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ pub fn grounds_from_openai_citations(citations: &[JsonValue]) -> Vec<Ground> {
+     let mut grounds = Vec::new();
+     for citation in citations {
+         let Some(ground_id) = extract_ground_id(citation) else {
+             continue;
+         };

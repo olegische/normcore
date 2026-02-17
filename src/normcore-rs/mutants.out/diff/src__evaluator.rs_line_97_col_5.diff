@@ -1,0 +1,55 @@
+--- src/evaluator.rs
++++ replace evaluate_from_json -> Result<AdmissibilityJudgment, EvaluateError> with Ok(Default::default())
+@@ -89,51 +89,17 @@
+     evaluator.evaluate_message(
+         &agent_message,
+         &trajectory,
+         input.grounds.unwrap_or_default(),
+     )
+ }
+ 
+ pub fn evaluate_from_json(input: &str) -> Result<AdmissibilityJudgment, EvaluateError> {
+-    let value = parse_json(input).map_err(|e| EvaluateError::InvalidJson(e.message))?;
+-    let obj = value
+-        .as_object()
+-        .ok_or_else(|| EvaluateError::InvalidJson("payload must be object".to_string()))?;
+-
+-    let agent_output = obj
+-        .get("agent_output")
+-        .and_then(JsonValue::as_str)
+-        .map(ToString::to_string);
+-
+-    let conversation = match obj.get("conversation") {
+-        Some(JsonValue::Array(arr)) => Some(parse_conversation(arr)?),
+-        Some(JsonValue::Null) | None => None,
+-        _ => {
+-            return Err(EvaluateError::InvalidJson(
+-                "conversation must be an array".to_string(),
+-            ));
+-        }
+-    };
+-
+-    let grounds = match obj.get("grounds") {
+-        Some(JsonValue::Array(arr)) => Some(coerce_grounds_input(Some(arr), None, None)),
+-        Some(JsonValue::Null) | None => None,
+-        _ => {
+-            return Err(EvaluateError::InvalidJson(
+-                "grounds must be an array".to_string(),
+-            ));
+-        }
+-    };
+-
+-    evaluate(EvaluateInput {
+-        agent_output,
+-        conversation,
+-        grounds,
+-    })
++    Ok(Default::default()) /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ pub fn parse_conversation(
+     messages: &[JsonValue],
+ ) -> Result<Vec<ConversationMessage>, EvaluateError> {
+     let mut out = Vec::new();
+     for msg in messages {
+         let obj = msg

@@ -1,0 +1,117 @@
+{
+  "cases": [
+    {
+      "name": "assertive_without_grounding_violates_a5",
+      "agent_output": "We should deploy now.",
+      "expect": {
+        "status": "violates_norm",
+        "licensed": false,
+        "can_retry": true,
+        "violated_axioms": ["A5"],
+        "num_statements": 1
+      }
+    },
+    {
+      "name": "conditional_with_if_is_conditionally_acceptable",
+      "agent_output": "If latency matters, choose A.",
+      "expect": {
+        "status": "conditionally_acceptable",
+        "licensed": true,
+        "can_retry": false,
+        "violated_axioms": [],
+        "num_statements": 1
+      }
+    },
+    {
+      "name": "descriptive_without_factual_ground_is_unsupported",
+      "agent_output": "The deployment is blocked by missing migration.",
+      "expect": {
+        "status": "unsupported",
+        "licensed": true,
+        "can_retry": true,
+        "violated_axioms": ["A4"],
+        "num_statements": 1
+      }
+    },
+    {
+      "name": "tool_grounded_conversation_is_acceptable",
+      "conversation": [
+        {
+          "role": "assistant",
+          "content": "",
+          "tool_calls": [
+            {
+              "id": "callWeatherNYC",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\":\"New York\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "callWeatherNYC",
+          "content": "{\"weather_id\":\"nyc_2026-02-07\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "You should carry an umbrella [@callWeatherNYC]."
+        }
+      ],
+      "expect": {
+        "status": "acceptable",
+        "licensed": true,
+        "can_retry": false,
+        "violated_axioms": [],
+        "num_statements": 1,
+        "grounds_accepted_at_least": 1,
+        "grounds_cited_at_least": 1
+      }
+    },
+    {
+      "name": "external_ground_citation_is_acceptable",
+      "agent_output": "You should compare with archive [@file_weather_2025].",
+      "grounds": [
+        {
+          "type": "file_citation",
+          "file_id": "file_weather_2025",
+          "filename": "weather_2025.txt",
+          "index": 0
+        }
+      ],
+      "expect": {
+        "status": "acceptable",
+        "licensed": true,
+        "can_retry": false,
+        "violated_axioms": [],
+        "num_statements": 1,
+        "grounds_accepted_at_least": 1,
+        "grounds_cited_at_least": 1
+      }
+    },
+    {
+      "name": "protocol_only_is_no_normative_content",
+      "agent_output": "Hello! How can I help you today?",
+      "expect": {
+        "status": "no_normative_content",
+        "licensed": false,
+        "can_retry": false,
+        "violated_axioms": [],
+        "num_statements": 0
+      }
+    },
+    {
+      "name": "empty_output_is_underdetermined",
+      "agent_output": "",
+      "expect": {
+        "status": "underdetermined",
+        "licensed": false,
+        "can_retry": false,
+        "violated_axioms": [],
+        "num_statements": 0
+      }
+    }
+  ]
+}

@@ -214,3 +214,6 @@ secrets/
 # TLA+/TLC state snapshots
 /states/
 /formal/**/states/
+
+# Mutation testing artifacts
+/artifacts/mutation/

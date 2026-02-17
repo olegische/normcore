@@ -1,0 +1,21 @@
+--- src/citations.rs
++++ delete ! in coerce_grounds_input
+@@ -224,17 +224,17 @@
+     grounds_payload: Option<&[JsonValue]>,
+     legacy_openai_citations: Option<&[JsonValue]>,
+     _legacy_links: Option<&JsonValue>,
+ ) -> Vec<Ground> {
+     let mut normalized = Vec::new();
+ 
+     if let Some(payload) = grounds_payload {
+         let explicit = parse_grounds(payload);
+-        if !explicit.is_empty() {
++        if  /* ~ changed by cargo-mutants ~ */explicit.is_empty() {
+             normalized.extend(explicit);
+         } else {
+             let typed = parse_openai_citations(payload);
+             normalized.extend(grounds_from_openai_citations(&typed));
+         }
+     }
+ 
+     if let Some(citations) = legacy_openai_citations {

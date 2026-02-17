@@ -244,4 +244,52 @@ mod tests {
         assert_eq!(statement.modality, Some(Modality::Conditional));
         assert_eq!(statement.conditions, vec!["latency matters".to_string()]);
     }
+
+    #[test]
+    fn detector_classifies_refusal() {
+        let d = ModalityDetector;
+        assert_eq!(
+            d.detect("I cannot determine the answer from current data."),
+            Modality::Refusal
+        );
+    }
+
+    #[test]
+    fn detector_goal_conditional_variants() {
+        let d = ModalityDetector;
+        assert_eq!(
+            d.detect("If you want reliability, use strategy A."),
+            Modality::Conditional
+        );
+        assert_eq!(
+            d.detect("If you're optimizing throughput, use strategy B."),
+            Modality::Conditional
+        );
+    }
+
+    #[test]
+    fn detector_personalization_conditional_over_recommendation() {
+        let d = ModalityDetector;
+        assert_eq!(
+            d.detect("Based on your constraints, A is better."),
+            Modality::Conditional
+        );
+        assert_eq!(
+            d.detect("For you, this is the best option."),
+            Modality::Conditional
+        );
+    }
+
+    #[test]
+    fn detector_descriptive_vs_normative() {
+        let d = ModalityDetector;
+        assert_eq!(
+            d.detect("The deployment is blocked by migration."),
+            Modality::Descriptive
+        );
+        assert_eq!(
+            d.detect("The deployment is blocked, so you should pause rollout."),
+            Modality::Assertive
+        );
+    }
 }

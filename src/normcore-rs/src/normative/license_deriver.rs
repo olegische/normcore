@@ -156,6 +156,7 @@ fn license_from<const N: usize>(modalities: [Modality; N]) -> License {
 #[cfg(test)]
 mod tests {
     use super::LicenseDeriver;
+    use crate::json::JsonValue;
     use crate::models::CreatorType;
     use crate::models::EvidenceType;
     use crate::models::LinkRole;
@@ -209,5 +210,41 @@ mod tests {
         let license = deriver.derive(&GroundSet { nodes: vec![] }, None);
         assert!(license.permits(Modality::Refusal));
         assert!(!license.permits(Modality::Assertive));
+    }
+
+    #[test]
+    fn derive_with_trace_sets_mode_from_links_presence() {
+        let deriver = LicenseDeriver;
+        let ground_set = GroundSet { nodes: vec![] };
+        let (_, trace_no_links) = deriver.derive_with_trace(&ground_set, None);
+        let JsonValue::Object(no_links_obj) = trace_no_links else {
+            panic!("trace object expected")
+        };
+        assert_eq!(
+            no_links_obj.get("mode"),
+            Some(&JsonValue::String("conservative".to_string()))
+        );
+
+        let links = LinkSet {
+            links: vec![StatementGroundLink {
+                statement_id: "s1".to_string(),
+                ground_id: "missing".to_string(),
+                role: LinkRole::Supports,
+                provenance: Provenance {
+                    creator: CreatorType::Human,
+                    evidence_type: EvidenceType::Explicit,
+                    evidence_content: None,
+                    signature: None,
+                },
+            }],
+        };
+        let (_, trace_links) = deriver.derive_with_trace(&ground_set, Some(&links));
+        let JsonValue::Object(links_obj) = trace_links else {
+            panic!("trace object expected")
+        };
+        assert_eq!(
+            links_obj.get("mode"),
+            Some(&JsonValue::String("links".to_string()))
+        );
     }
 }

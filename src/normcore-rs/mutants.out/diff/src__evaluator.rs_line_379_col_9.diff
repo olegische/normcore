@@ -1,0 +1,132 @@
+--- src/evaluator.rs
++++ replace AdmissibilityEvaluator::aggregate -> ValidationResult with Default::default()
+@@ -371,128 +371,17 @@
+         self.aggregate(&axiom_results, &statement_results)
+     }
+ 
+     fn aggregate(
+         &self,
+         axiom_results: &[crate::normative::AxiomCheckResult],
+         statement_results: &[StatementValidationResult],
+     ) -> ValidationResult {
+-        let violations: Vec<String> = axiom_results
+-            .iter()
+-            .filter_map(|r| r.violated_axiom.clone())
+-            .collect();
+-
+-        let (status, licensed, can_retry, feedback_hint, explanation) = if axiom_results
+-            .iter()
+-            .any(|r| r.status == EvaluationStatus::ViolatesNorm)
+-        {
+-            (
+-                EvaluationStatus::ViolatesNorm,
+-                false,
+-                true,
+-                Some(format!(
+-                    "Your response violates normative axioms: {}. Please revise or refuse to answer if you lack required context.",
+-                    violations.join(", ")
+-                )),
+-                format!("Violated axioms: {violations:?}"),
+-            )
+-        } else if axiom_results
+-            .iter()
+-            .any(|r| r.status == EvaluationStatus::IllFormed)
+-        {
+-            (
+-                EvaluationStatus::IllFormed,
+-                false,
+-                true,
+-                Some(
+-                    "Your response is structurally ill-formed. Please rephrase with clear subject-predicate statements."
+-                        .to_string(),
+-                ),
+-                "Structurally ill-formed statements detected".to_string(),
+-            )
+-        } else if axiom_results
+-            .iter()
+-            .any(|r| r.status == EvaluationStatus::Underdetermined)
+-        {
+-            (
+-                EvaluationStatus::Underdetermined,
+-                false,
+-                false,
+-                None,
+-                "Validator has no jurisdiction to judge".to_string(),
+-            )
+-        } else if axiom_results
+-            .iter()
+-            .any(|r| r.status == EvaluationStatus::Unsupported)
+-        {
+-            (
+-                EvaluationStatus::Unsupported,
+-                true,
+-                true,
+-                Some(
+-                    "Your statements lack required grounding. Consider asking for more context or using conditional phrasing."
+-                        .to_string(),
+-                ),
+-                "Statements lack required grounding (A4)".to_string(),
+-            )
+-        } else if !axiom_results.is_empty()
+-            && axiom_results
+-                .iter()
+-                .all(|r| r.status == EvaluationStatus::ConditionallyAcceptable)
+-        {
+-            (
+-                EvaluationStatus::ConditionallyAcceptable,
+-                true,
+-                false,
+-                None,
+-                "All statements are conditionally acceptable".to_string(),
+-            )
+-        } else if axiom_results
+-            .iter()
+-            .any(|r| r.status == EvaluationStatus::ConditionallyAcceptable)
+-        {
+-            (
+-                EvaluationStatus::ConditionallyAcceptable,
+-                true,
+-                false,
+-                None,
+-                "Mix of conditional and acceptable statements".to_string(),
+-            )
+-        } else {
+-            (
+-                EvaluationStatus::Acceptable,
+-                true,
+-                false,
+-                None,
+-                "All statements are normatively acceptable".to_string(),
+-            )
+-        };
+-
+-        let num_acceptable = axiom_results
+-            .iter()
+-            .filter(|r| {
+-                r.status == EvaluationStatus::Acceptable
+-                    || r.status == EvaluationStatus::ConditionallyAcceptable
+-            })
+-            .count();
+-
+-        ValidationResult {
+-            status,
+-            licensed,
+-            can_retry,
+-            feedback_hint,
+-            violated_axioms: violations,
+-            statement_results: statement_results.to_vec(),
+-            explanation,
+-            num_statements: statement_results.len(),
+-            num_acceptable,
+-            grounds_accepted: 0,
+-            grounds_cited: 0,
+-        }
++        Default::default() /* ~ changed by cargo-mutants ~ */
+     }
+ 
+     fn to_judgment(&self, result: ValidationResult) -> AdmissibilityJudgment {
+         let mut statement_evaluations = Vec::new();
+         let mut violated_axioms = Vec::new();
+ 
+         for stmt in &result.statement_results {
+             let modality = stmt

@@ -1,0 +1,21 @@
+--- src/main.rs
++++ replace += with *= in run
+@@ -39,17 +39,17 @@
+     let mut command = String::new();
+     let mut agent_output: Option<String> = None;
+     let mut conversation_json: Option<String> = None;
+     let mut grounds_json: Option<String> = None;
+ 
+     while i < args.len() {
+         match args[i].as_str() {
+             "--log-level" => {
+-                i += 1;
++                i *= /* ~ changed by cargo-mutants ~ */ 1;
+             }
+             "-v" | "-vv" => {}
+             "evaluate" => {
+                 command = "evaluate".to_string();
+             }
+             "--agent-output" => {
+                 i += 1;
+                 if let Some(v) = args.get(i) {
