@@ -1,0 +1,43 @@
+[package]
+name = "normcore"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+description = "Rust implementation baseline for NormCore normative admissibility evaluator"
+readme = "README.md"
+repository = "https://github.com/olegische/normcore"
+homepage = "https://github.com/olegische/normcore"
+documentation = "https://github.com/olegische/normcore#readme"
+keywords = [
+    "llm",
+    "ai-agents",
+    "grounding",
+    "admissibility",
+    "deterministic",
+]
+categories = [
+    "development-tools",
+    "science",
+]
+
+[lib]
+name = "normcore"
+path = "src/lib.rs"
+
+[lints.clippy]
+collapsible_if = "deny"
+redundant_closure_for_method_calls = "deny"
+uninlined_format_args = "deny"
+
+[profile.release]
+lto = "fat"
+strip = "symbols"
+codegen-units = 1
+
+[profile.ci-test]
+debug = 1
+inherits = "test"
+opt-level = 0
+
+[dev-dependencies]
+proptest = "1.6.0"

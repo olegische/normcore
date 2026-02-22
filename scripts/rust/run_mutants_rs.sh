@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-CRATE_DIR="$ROOT_DIR/src/normcore-rs"
+CRATE_DIR="$ROOT_DIR/normcore-rs"
 OUT_BASE="$ROOT_DIR/artifacts/mutation"
 STAMP="$(date +"%Y%m%d-%H%M%S")"
 OUT_DIR="$OUT_BASE/$STAMP"

@@ -88,11 +88,18 @@ if [[ -n "$LOG_LEVEL" ]]; then
 fi
 
 cd "$ROOT_DIR"
-OUTPUT="$(cargo run --quiet --manifest-path src/normcore-rs/Cargo.toml -- evaluate \
-  --conversation "$CONVERSATION_JSON" \
-  "${GROUNDS_ARGS[@]}" \
-  "${AGENT_ARGS[@]}" \
-  "${LOG_ARGS[@]}")"
+CMD=(cargo run --quiet --manifest-path normcore-rs/Cargo.toml -- evaluate --conversation "$CONVERSATION_JSON")
+if [[ ${#GROUNDS_ARGS[@]} -gt 0 ]]; then
+  CMD+=("${GROUNDS_ARGS[@]}")
+fi
+if [[ ${#AGENT_ARGS[@]} -gt 0 ]]; then
+  CMD+=("${AGENT_ARGS[@]}")
+fi
+if [[ ${#LOG_ARGS[@]} -gt 0 ]]; then
+  CMD+=("${LOG_ARGS[@]}")
+fi
+
+OUTPUT="$("${CMD[@]}")"
 
 if [[ -n "$OUTPUT_PATH" ]]; then
   printf '%s\n' "$OUTPUT" > "$OUTPUT_PATH"

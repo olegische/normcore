@@ -1,5 +1,5 @@
 set shell := ["bash", "-cu"]
-set working-directory := "src/normcore-rs"
+set working-directory := "normcore-rs"
 set positional-arguments
 
 # Display help
@@ -50,16 +50,16 @@ rust-test:
     cargo test --all-features
 
 rust-mutants *args:
-    ../../scripts/rust/run_mutants_rs.sh "$@"
+    ../scripts/rust/run_mutants_rs.sh "$@"
 
 rust-fuzz *args:
-    ../../scripts/rust/run_fuzz_rs.sh "$@"
+    ../scripts/rust/run_fuzz_rs.sh "$@"
 
 formal-check:
-    (cd ../../formal/implementation && tlc -deadlock -workers 1 spec.tla && tlc -deadlock -workers 1 grounding_accounting.tla -config grounding_accounting.cfg)
+    (cd ../formal/implementation && tlc -deadlock -workers 1 spec.tla && tlc -deadlock -workers 1 grounding_accounting.tla -config grounding_accounting.cfg)
 
 formal-trace-export input output:
-    python3 ../../scripts/formal/tlc_trace_to_json.py --input "{{input}}" --output "{{output}}"
+    python3 ../scripts/formal/tlc_trace_to_json.py --input "{{input}}" --output "{{output}}"
 
 formal-replay trace_json:
     TRACE_REPLAY_JSON="{{trace_json}}" cargo test --test trace_replay replay_generated_formal_trace

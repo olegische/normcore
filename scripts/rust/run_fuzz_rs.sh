@@ -23,5 +23,5 @@ if ! command -v cargo-fuzz >/dev/null 2>&1; then
   exit 2
 fi
 
-cd "$ROOT_DIR/src/normcore-rs"
+cd "$ROOT_DIR/normcore-rs"
 cargo fuzz run "$TARGET" -- -runs="$RUNS"

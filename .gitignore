@@ -217,3 +217,7 @@ secrets/
 
 # Mutation testing artifacts
 /artifacts/mutation/
+
+# Rust mutation local output
+/normcore-rs/mutants.out/
+/src/normcore-rs/mutants.out/
