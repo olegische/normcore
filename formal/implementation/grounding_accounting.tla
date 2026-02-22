@@ -1,5 +1,5 @@
 ---- MODULE grounding_accounting ----
-EXTENDS TLC, Naturals
+EXTENDS TLC, Naturals, Sequences
 
 (*
 DERIVATION artifact.
@@ -22,16 +22,37 @@ GroundCountValues == 0..4
 ExternalGroundInputFormats ==
     {"none", "ground_records", "openai_annotations", "legacy_openai_citations", "invalid_ignored"}
 
+TraceOps == {"GroundingAccountingStep"}
+
+TraceArgsSet ==
+    [toolGroundsAccepted: GroundCountValues,
+     externalGroundsAccepted: GroundCountValues,
+     externalGroundInputFormat: ExternalGroundInputFormats]
+
+TraceExpectSet ==
+    [groundsAccepted: GroundCountValues, groundsCited: GroundCountValues]
+
+TraceEventSet ==
+    [op: TraceOps, args: TraceArgsSet, expect: TraceExpectSet]
+
 VARIABLES
     toolGroundsAccepted,
     externalGroundsAccepted,
     groundsAccepted,
     groundsCited,
-    externalGroundInputFormat
+    externalGroundInputFormat,
+    log
 
 vars ==
     <<toolGroundsAccepted, externalGroundsAccepted,
-      groundsAccepted, groundsCited, externalGroundInputFormat>>
+      groundsAccepted, groundsCited, externalGroundInputFormat, log>>
+
+BuildTraceEvent(toolCount, externalCount, accepted, cited, inputFormat) ==
+    [op |-> "GroundingAccountingStep",
+     args |-> [toolGroundsAccepted |-> toolCount,
+               externalGroundsAccepted |-> externalCount,
+               externalGroundInputFormat |-> inputFormat],
+     expect |-> [groundsAccepted |-> accepted, groundsCited |-> cited]]
 
 UnionCountFeasible(toolCount, externalCount, unionCount) ==
     /\ unionCount >= toolCount
@@ -49,6 +70,8 @@ TypeOK ==
     /\ groundsAccepted \in GroundCountValues
     /\ groundsCited \in GroundCountValues
     /\ externalGroundInputFormat \in ExternalGroundInputFormats
+    /\ log \in Seq(TraceEventSet)
+    /\ Len(log) <= 1
     /\ UnionCountFeasible(toolGroundsAccepted, externalGroundsAccepted, groundsAccepted)
     /\ groundsCited <= groundsAccepted
     /\ ExternalGroundInputFeasible(externalGroundsAccepted, externalGroundInputFormat)
@@ -59,14 +82,17 @@ Init ==
     /\ groundsAccepted \in GroundCountValues
     /\ groundsCited \in GroundCountValues
     /\ externalGroundInputFormat \in ExternalGroundInputFormats
+    /\ log = <<>>
     /\ TypeOK
 
 Next ==
+    /\ Len(log) = 0
     /\ toolGroundsAccepted' \in GroundCountValues
     /\ externalGroundsAccepted' \in GroundCountValues
     /\ groundsAccepted' \in GroundCountValues
     /\ groundsCited' \in GroundCountValues
     /\ externalGroundInputFormat' \in ExternalGroundInputFormats
+    /\ log' = Append(log, BuildTraceEvent(toolGroundsAccepted', externalGroundsAccepted', groundsAccepted', groundsCited', externalGroundInputFormat'))
     /\ TypeOK'
 
 Spec ==

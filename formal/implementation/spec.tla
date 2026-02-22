@@ -37,6 +37,22 @@ CoreStatuses == AggregateInputStatuses \cup {"NO_NORMATIVE_CONTENT"}
 StatementStatusSeqs ==
     {<<>>} \cup {<<s>> : s \in AggregateInputStatuses}
 
+TraceOps ==
+    {"RefusalEntryPath", "CorePrecheckEmptyOutput", "CorePrecheckNoNormative", "CoreEvaluateSingleStatement"}
+
+ReplayCases ==
+    {"empty_output", "no_normative", "assistant_refusal", "assertive_unlicensed",
+     "conditional_declared", "descriptive_ungrounded", "grounded_conversation"}
+
+TraceArgsSet ==
+    [mode: EvaluationModes, path: CorePaths, replayCase: ReplayCases]
+
+TraceExpectSet ==
+    [coreStatus: CoreStatuses, licensed: BOOLEAN, canRetry: BOOLEAN, numStatements: 0..1]
+
+TraceEventSet ==
+    [op: TraceOps, args: TraceArgsSet, expect: TraceExpectSet]
+
 VARIABLES
     evaluationMode,
     path,
@@ -51,13 +67,14 @@ VARIABLES
     statementStatuses,
     coreStatus,
     licensed,
-    canRetry
+    canRetry,
+    log
 
 vars ==
     <<evaluationMode, path, hasAgentOutput, hasNormativeContent,
       modality, conditionsDeclared, licenseMode, factualStrength,
       effectiveSupportsPresent, statementStatus, statementStatuses,
-      coreStatus, licensed, canRetry>>
+      coreStatus, licensed, canRetry, log>>
 
 Contains(seq, value) ==
     \E i \in 1..Len(seq): seq[i] = value
@@ -136,6 +153,35 @@ SupportsFeasible(mode, m, factual, supportsPresent) ==
     THEN ~supportsPresent
     ELSE supportsPresent \in BOOLEAN
 
+TraceOpForState(mode, p) ==
+    IF mode = "assistant_refusal"
+    THEN "RefusalEntryPath"
+    ELSE IF p = "empty_output"
+    THEN "CorePrecheckEmptyOutput"
+    ELSE IF p = "no_normative"
+    THEN "CorePrecheckNoNormative"
+    ELSE "CoreEvaluateSingleStatement"
+
+ReplayCaseForState(mode, p, cStatus) ==
+    IF mode = "assistant_refusal"
+    THEN "assistant_refusal"
+    ELSE IF p = "empty_output"
+    THEN "empty_output"
+    ELSE IF p = "no_normative"
+    THEN "no_normative"
+    ELSE IF cStatus = "VIOLATES_NORM"
+    THEN "assertive_unlicensed"
+    ELSE IF cStatus = "CONDITIONALLY_ACCEPTABLE"
+    THEN "conditional_declared"
+    ELSE IF cStatus = "UNSUPPORTED"
+    THEN "descriptive_ungrounded"
+    ELSE "grounded_conversation"
+
+BuildTraceEvent(mode, p, cStatus, lic, retry, statuses) ==
+    [op |-> TraceOpForState(mode, p),
+     args |-> [mode |-> mode, path |-> p, replayCase |-> ReplayCaseForState(mode, p, cStatus)],
+     expect |-> [coreStatus |-> cStatus, licensed |-> lic, canRetry |-> retry, numStatements |-> Len(statuses)]]
+
 CoreFlowConsistent ==
     IF evaluationMode = "assistant_refusal"
     THEN
@@ -210,6 +256,8 @@ TypeOK ==
     /\ coreStatus \in CoreStatuses
     /\ licensed \in BOOLEAN
     /\ canRetry \in BOOLEAN
+    /\ log \in Seq(TraceEventSet)
+    /\ Len(log) <= 1
     /\ SupportsFeasible(licenseMode, modality, factualStrength, effectiveSupportsPresent)
 
 Init ==
@@ -227,10 +275,12 @@ Init ==
     /\ coreStatus \in CoreStatuses
     /\ licensed \in BOOLEAN
     /\ canRetry \in BOOLEAN
+    /\ log = <<>>
     /\ TypeOK
     /\ CoreFlowConsistent
 
 Next ==
+    /\ Len(log) = 0
     /\ evaluationMode' \in EvaluationModes
     /\ path' \in CorePaths
     /\ hasAgentOutput' \in BOOLEAN
@@ -245,6 +295,7 @@ Next ==
     /\ coreStatus' \in CoreStatuses
     /\ licensed' \in BOOLEAN
     /\ canRetry' \in BOOLEAN
+    /\ log' = Append(log, BuildTraceEvent(evaluationMode', path', coreStatus', licensed', canRetry', statementStatuses'))
     /\ TypeOK'
     /\ CoreFlowConsistent'
 

@@ -1,0 +1,91 @@
+{
+  "traces": [
+    {
+      "name": "core_decision_path",
+      "steps": [
+        {
+          "event": "CorePrecheckEmptyOutput",
+          "agent_output": "",
+          "expect": {
+            "status": "underdetermined",
+            "licensed": false,
+            "can_retry": false,
+            "num_statements": 0
+          }
+        },
+        {
+          "event": "CorePrecheckNoNormative",
+          "agent_output": "Hello! How can I help you today?",
+          "expect": {
+            "status": "no_normative_content",
+            "licensed": false,
+            "can_retry": false,
+            "num_statements": 0
+          }
+        },
+        {
+          "event": "CoreEvaluateSingleStatement",
+          "agent_output": "If latency matters, choose A.",
+          "expect": {
+            "status": "conditionally_acceptable",
+            "licensed": true,
+            "can_retry": false,
+            "num_statements": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "grounded_and_violation_path",
+      "steps": [
+        {
+          "event": "EvaluateEntry",
+          "conversation": [
+            {
+              "role": "assistant",
+              "content": "",
+              "tool_calls": [
+                {
+                  "id": "callWeatherNYC",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\":\"New York\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "callWeatherNYC",
+              "content": "{\"weather_id\":\"nyc_2026-02-07\"}"
+            },
+            {
+              "role": "assistant",
+              "content": "You should carry an umbrella [@callWeatherNYC]."
+            }
+          ],
+          "expect": {
+            "status": "acceptable",
+            "licensed": true,
+            "can_retry": false,
+            "num_statements": 1,
+            "grounds_accepted_at_least": 1,
+            "grounds_cited_at_least": 1
+          }
+        },
+        {
+          "event": "ApplyA5",
+          "agent_output": "We should deploy now.",
+          "expect": {
+            "status": "violates_norm",
+            "licensed": false,
+            "can_retry": true,
+            "violated_axioms": ["A5"],
+            "num_statements": 1
+          }
+        }
+      ]
+    }
+  ]
+}

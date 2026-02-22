@@ -214,3 +214,10 @@ secrets/
 # TLA+/TLC state snapshots
 /states/
 /formal/**/states/
+
+# Mutation testing artifacts
+/artifacts/mutation/
+
+# Rust mutation local output
+/normcore-rs/mutants.out/
+/src/normcore-rs/mutants.out/
