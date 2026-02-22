@@ -100,3 +100,39 @@ py-smoke-pypi:
 
 # Main-branch Python flow: publish to PyPI, then smoke
 py-main-release: py-publish py-smoke-pypi
+
+# crates.io dry-run from Rust release branches
+rs-publish-dry-run:
+    branch="$(git branch --show-current)"; \
+    if [[ ! "$branch" =~ ^release/rs/ ]]; then \
+      echo "ERROR: rs-publish-dry-run must run from release/rs/* branch (current: $branch)" >&2; \
+      exit 2; \
+    fi; \
+    cargo publish --dry-run --manifest-path Cargo.toml
+
+# Smoke packaged .crate artifact locally
+rs-smoke-artifact:
+    ../scripts/rust/smoke_crate_artifact.sh
+
+# Codex-driven Rust smoke flow
+rs-smoke-codex:
+    ../scripts/rust/smoke_codex_rust_local.sh
+
+# Smoke published crates.io release via installed binary
+rs-smoke-crates-io:
+    ../scripts/rust/smoke_crates_io_published.sh
+
+# Rust release-branch validation flow
+rs-release-test: rust-check rs-publish-dry-run rs-smoke-artifact rs-smoke-codex
+
+# Publish Rust crate to crates.io from main only
+rs-publish:
+    branch="$(git branch --show-current)"; \
+    if [[ "$branch" != "main" ]]; then \
+      echo "ERROR: rs-publish must run from main branch (current: $branch)" >&2; \
+      exit 2; \
+    fi; \
+    ../scripts/rust/publish_crates_io.sh
+
+# Main-branch Rust flow: publish to crates.io, then smoke the published crate
+rs-main-release: rs-publish rs-smoke-crates-io
