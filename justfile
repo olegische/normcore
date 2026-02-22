@@ -66,3 +66,37 @@ formal-replay trace_json:
 
 check: fmt-check clippy-strict test
 rust-check: rust-fmt-check rust-lint rust-test
+
+# Publish Python package to TestPyPI from release branches
+py-publish-test:
+    branch="$(git branch --show-current)"; \
+    if [[ ! "$branch" =~ ^release/ ]]; then \
+      echo "ERROR: py-publish-test must run from release/* branch (current: $branch)" >&2; \
+      exit 2; \
+    fi; \
+    ../scripts/python/publish_testpypi.sh
+
+# Smoke TestPyPI package installation and evaluator flow
+py-smoke-testpypi:
+    PIP_INDEX_URL="https://test.pypi.org/simple/" \
+    PIP_EXTRA_INDEX_URL="https://pypi.org/simple/" \
+    ../scripts/python/smoke_codex_pypi_normcore.sh
+
+# Release-branch Python flow: publish to TestPyPI, then smoke
+py-release-test: py-publish-test py-smoke-testpypi
+
+# Publish Python package to production PyPI from main only
+py-publish:
+    branch="$(git branch --show-current)"; \
+    if [[ "$branch" != "main" ]]; then \
+      echo "ERROR: py-publish must run from main branch (current: $branch)" >&2; \
+      exit 2; \
+    fi; \
+    ../scripts/python/publish_pypi.sh
+
+# Smoke production PyPI package installation and evaluator flow
+py-smoke-pypi:
+    ../scripts/python/smoke_codex_pypi_normcore.sh
+
+# Main-branch Python flow: publish to PyPI, then smoke
+py-main-release: py-publish py-smoke-pypi
