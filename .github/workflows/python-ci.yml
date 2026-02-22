@@ -7,8 +7,6 @@ on:
       - 'release/**'
     paths:
       - 'normcore-py/**'
-      - 'pyproject.toml'
-      - 'uv.lock'
       - '.github/workflows/python-ci.yml'
   push:
     branches:
@@ -16,14 +14,15 @@ on:
       - 'release/**'
     paths:
       - 'normcore-py/**'
-      - 'pyproject.toml'
-      - 'uv.lock'
       - '.github/workflows/python-ci.yml'
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: normcore-py
     strategy:
       fail-fast: false
       matrix:

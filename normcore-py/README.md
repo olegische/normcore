@@ -31,13 +31,14 @@ pip install normcore
 From source:
 
 ```bash
+cd normcore-py
 uv sync
 ```
 
 or:
 
 ```bash
-pip install -e .
+pip install -e normcore-py
 ```
 
 ## What this is
@@ -290,7 +291,7 @@ echo "your prompt" | codex exec \
   > context/run.jsonl 2> context/run.stderr.log
 
 # 2) Convert Codex events to NormCore conversation format
-.venv/bin/python scripts/codex_exec_events_to_conversation.py \
+normcore-py/.venv/bin/python scripts/codex_exec_events_to_conversation.py \
   context/run.jsonl \
   -o context/run.conversation.json
 

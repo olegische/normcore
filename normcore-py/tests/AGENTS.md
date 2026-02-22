@@ -12,7 +12,7 @@ Any behavior outside this contract is invalid.
 The **only allowed test command** is:
 
 ```
-uv run --python .venv/bin/python --extra test -m pytest
+uv run --python normcore-py/.venv/bin/python --project normcore-py --extra test -m pytest
 ```
 
 - The command MUST be executed from the **worktree root**.

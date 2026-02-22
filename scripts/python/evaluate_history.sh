@@ -2,6 +2,13 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+if [[ -x "$ROOT_DIR/normcore-py/.venv/bin/python" ]]; then
+  PYTHON_BIN="$ROOT_DIR/normcore-py/.venv/bin/python"
+elif [[ -x "$ROOT_DIR/.venv/bin/python" ]]; then
+  PYTHON_BIN="$ROOT_DIR/.venv/bin/python"
+else
+  PYTHON_BIN="$(command -v python3)"
+fi
 
 usage() {
   cat <<'EOF'
@@ -79,7 +86,7 @@ OUTPUT_PATH="$OUTPUT_PATH" \
 AGENT_OUTPUT_VAL="$AGENT_OUTPUT_VAL" \
 AGENT_OUTPUT_SET="$AGENT_OUTPUT_SET" \
 LOG_LEVEL="$LOG_LEVEL" \
-.venv/bin/python - <<'PY'
+"$PYTHON_BIN" - <<'PY'
 import json
 import os
 import sys

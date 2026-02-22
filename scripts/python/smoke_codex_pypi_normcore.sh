@@ -10,7 +10,9 @@ REASONING_EFFORT="${REASONING_EFFORT:-medium}"
 PROFILE="${PROFILE:-}"
 EVALUATOR_LOG_LEVEL="${EVALUATOR_LOG_LEVEL:-DEBUG}"
 NORMCORE_PYPI_SPEC="${NORMCORE_PYPI_SPEC:-normcore}"
-if [[ -x "$ROOT_DIR/.venv/bin/python" ]]; then
+if [[ -x "$ROOT_DIR/normcore-py/.venv/bin/python" ]]; then
+  PYTHON_BIN_DEFAULT="$ROOT_DIR/normcore-py/.venv/bin/python"
+elif [[ -x "$ROOT_DIR/.venv/bin/python" ]]; then
   PYTHON_BIN_DEFAULT="$ROOT_DIR/.venv/bin/python"
 else
   PYTHON_BIN_DEFAULT="$(command -v python3)"
@@ -63,7 +65,7 @@ Constraints:
   remove leading `./`, use `/` separators, use repo-relative path.
 - Compute hashes via tools; do not invent citation keys.
 - Inspect primarily these files:
-  - pyproject.toml
+  - normcore-py/pyproject.toml
   - normcore-py/src/normcore/__init__.py
   - normcore-py/src/normcore/evaluator.py
   - normcore-py/src/normcore/cli.py
@@ -72,7 +74,7 @@ Constraints:
 - Only inspect extra files if strictly needed to confirm a blocker.
 
 Required checks:
-1) pyproject.toml packaging/metadata sanity for PyPI.
+1) normcore-py/pyproject.toml packaging/metadata sanity for PyPI.
 2) Public API contract consistency:
    - Python API: normcore.evaluate
    - CLI contract: normcore evaluate

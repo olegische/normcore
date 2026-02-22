@@ -152,14 +152,14 @@ Sanity rule:
 
 Rust-focused evaluation scripts are in:
 - `scripts/rust/evaluate_history_rs.sh`
-- `scripts/rust/check_grounds_weather_ny_rs.sh`
-- `scripts/rust/check_external_grounds_weather_history_rs.sh`
+- `scripts/rust/run_normcore_rs_eval.sh`
+- `scripts/rust/smoke_codex_rust_local.sh`
 
 Example:
 
 ```bash
-scripts/rust/check_grounds_weather_ny_rs.sh
-scripts/rust/check_external_grounds_weather_history_rs.sh
+scripts/rust/run_normcore_rs_eval.sh "The deployment is blocked."
+scripts/rust/evaluate_history_rs.sh context/rollout.conversation.json -o context/judgment.rs.json
 ```
 
 ## Rust Test Tracks
@@ -167,19 +167,19 @@ scripts/rust/check_external_grounds_weather_history_rs.sh
 This crate includes five complementary Rust-only testing tracks:
 
 1. Property-based invariants (`proptest`):
-   - `/Users/olegromanchuk/Projects/normcore/normcore/tests/property_invariants.rs`
+   - `normcore-rs/tests/property_invariants.rs`
 2. Golden scenario corpus regression:
-   - `/Users/olegromanchuk/Projects/normcore/normcore/tests/golden_corpus.rs`
-   - `/Users/olegromanchuk/Projects/normcore/normcore/tests/fixtures/golden_corpus.json`
+   - `normcore-rs/tests/golden_corpus.rs`
+   - `normcore-rs/tests/fixtures/golden_corpus.json`
 3. Formal trace replay regression:
-   - `/Users/olegromanchuk/Projects/normcore/normcore/tests/trace_replay.rs`
-   - `/Users/olegromanchuk/Projects/normcore/normcore/tests/fixtures/trace_replay.json`
+   - `normcore-rs/tests/trace_replay.rs`
+   - `normcore-rs/tests/fixtures/trace_replay.json`
 4. Mutation testing (`cargo-mutants`):
    - `just rust-mutants`
-   - wrapper script: `/Users/olegromanchuk/Projects/normcore/scripts/rust/run_mutants_rs.sh`
+   - wrapper script: `scripts/rust/run_mutants_rs.sh`
 5. Fuzz testing (`cargo-fuzz`):
    - `just rust-fuzz fuzz_parse_json 5000`
    - `just rust-fuzz fuzz_parse_conversation 5000`
    - `just rust-fuzz fuzz_extract_citation_keys 5000`
-   - wrapper script: `/Users/olegromanchuk/Projects/normcore/scripts/rust/run_fuzz_rs.sh`
-   - fuzz crate: `/Users/olegromanchuk/Projects/normcore/normcore/fuzz/Cargo.toml`
+   - wrapper script: `scripts/rust/run_fuzz_rs.sh`
+   - fuzz crate: `normcore-rs/fuzz/Cargo.toml`

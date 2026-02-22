@@ -4,6 +4,13 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 CONTEXT_DIR="$ROOT_DIR/context"
 mkdir -p "$CONTEXT_DIR"
+if [[ -x "$ROOT_DIR/normcore-py/.venv/bin/python" ]]; then
+  PYTHON_BIN="$ROOT_DIR/normcore-py/.venv/bin/python"
+elif [[ -x "$ROOT_DIR/.venv/bin/python" ]]; then
+  PYTHON_BIN="$ROOT_DIR/.venv/bin/python"
+else
+  PYTHON_BIN="$(command -v python3)"
+fi
 
 MODEL="${MODEL:-gpt-5.2-codex}"
 REASONING_EFFORT="${REASONING_EFFORT:-medium}"
@@ -55,7 +62,7 @@ Constraints:
   remove leading `./`, use `/` separators, use repo-relative path.
 - Compute hashes via tools; do not invent citation keys.
 - Inspect primarily these files:
-  - pyproject.toml
+  - normcore-py/pyproject.toml
   - normcore-py/src/normcore/__init__.py
   - normcore-py/src/normcore/evaluator.py
   - normcore-py/src/normcore/cli.py
@@ -64,7 +71,7 @@ Constraints:
 - Only inspect extra files if strictly needed to confirm a blocker.
 
 Required checks:
-1) pyproject.toml packaging/metadata sanity for PyPI.
+1) normcore-py/pyproject.toml packaging/metadata sanity for PyPI.
 2) Public API contract consistency:
    - Python API: normcore.evaluate
    - CLI contract: normcore evaluate
@@ -109,7 +116,7 @@ if [[ $CODEX_EXIT -ne 0 ]]; then
 fi
 
 log "Converting rollout JSONL to conversation JSON"
-.venv/bin/python "$ROOT_DIR/scripts/codex_exec_events_to_conversation.py" \
+"$PYTHON_BIN" "$ROOT_DIR/scripts/codex_exec_events_to_conversation.py" \
   "$ROLLOUT_JSONL" \
   -o "$CONVERSATION_JSON"
 
