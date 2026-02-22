@@ -110,20 +110,20 @@ rs-publish-dry-run:
     fi; \
     cargo publish --dry-run --manifest-path Cargo.toml
 
-# Smoke packaged .crate artifact locally
+# Codex-driven smoke against packaged .crate artifact
 rs-smoke-artifact:
-    ../scripts/rust/smoke_crate_artifact.sh
+    RUST_SMOKE_SOURCE=artifact ../scripts/rust/smoke_codex_crates_io_published.sh
 
 # Codex-driven Rust smoke flow
 rs-smoke-codex:
     ../scripts/rust/smoke_codex_rust_local.sh
 
-# Smoke published crates.io release via installed binary
-rs-smoke-crates-io:
-    ../scripts/rust/smoke_crates_io_published.sh
+# Codex-driven smoke against published crates.io release
+rs-smoke-published:
+    RUST_SMOKE_SOURCE=published ../scripts/rust/smoke_codex_crates_io_published.sh
 
 # Rust release-branch validation flow
-rs-release-test: rust-check rs-publish-dry-run rs-smoke-artifact rs-smoke-codex
+rs-release-test: rust-check rs-publish-dry-run rs-smoke-artifact
 
 # Publish Rust crate to crates.io from main only
 rs-publish:
@@ -134,5 +134,5 @@ rs-publish:
     fi; \
     ../scripts/rust/publish_crates_io.sh
 
-# Main-branch Rust flow: publish to crates.io, then smoke the published crate
-rs-main-release: rs-publish rs-smoke-crates-io
+# Main-branch Rust flow: publish to crates.io, then codex smoke published crate
+rs-main-release: rs-publish rs-smoke-published
