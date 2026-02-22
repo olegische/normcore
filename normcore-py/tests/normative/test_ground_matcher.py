@@ -42,3 +42,17 @@ def test_refusal_matches_no_grounding():
     nodes = [_node("f1", Scope.FACTUAL)]
     ground_set = matcher.match(_statement(Modality.REFUSAL), nodes)
     assert ground_set.nodes == []
+
+
+def test_unknown_modality_matches_nothing():
+    matcher = GroundSetMatcher()
+    statement = Statement(
+        id="s1",
+        subject="agent",
+        predicate="participation",
+        raw_text="text",
+        modality=None,
+    )
+    nodes = [_node("f1", Scope.FACTUAL)]
+    ground_set = matcher.match(statement, nodes)
+    assert ground_set.nodes == []

@@ -3,7 +3,7 @@ import json
 import pytest
 
 from normcore.evaluator import AdmissibilityEvaluator
-from normcore.models.messages import _TextPart
+from normcore.models.messages import _AssistantMessage, _TextPart
 
 
 def test_parse_tool_args():
@@ -12,10 +12,12 @@ def test_parse_tool_args():
     assert evaluator._parse_tool_args({"a": 1}) == {"a": 1}
     assert evaluator._parse_tool_args('{"a": 1}') == {"a": 1}
     assert evaluator._parse_tool_args("not json") == {}
+    assert evaluator._parse_tool_args(123) == {}
 
 
 def test_extract_text_content_variants():
     evaluator = AdmissibilityEvaluator()
+    assert evaluator._extract_text_content(None) == ""
     assert evaluator._extract_text_content("hi") == "hi"
     parts = [_TextPart(type="text", text="a"), _TextPart(type="text", text="b")]
     assert evaluator._extract_text_content(parts) == "ab"
@@ -94,3 +96,27 @@ def test_map_tool_call_custom():
     }
     mapped = evaluator._map_tool_call(tool_call)
     assert mapped.name == "my_tool"
+
+
+def test_map_content_none_and_unsupported_type():
+    evaluator = AdmissibilityEvaluator()
+    assert evaluator._map_content(None) is None
+    with pytest.raises(ValueError):
+        evaluator._map_content(123)
+
+
+def test_map_tool_call_unsupported_type_raises():
+    evaluator = AdmissibilityEvaluator()
+    with pytest.raises(ValueError):
+        evaluator._map_tool_call({"id": "x", "type": "unknown"})
+
+
+def test_to_speech_act_handles_none_content_and_unsupported_content_type():
+    evaluator = AdmissibilityEvaluator()
+    assistant_none = evaluator._map_assistant_message({"role": "assistant", "content": None})
+    speech = evaluator._to_speech_act(assistant_none)
+    assert hasattr(speech, "text") and speech.text == ""
+
+    bad_assistant = _AssistantMessage.model_construct(content=123, tool_calls=[])
+    with pytest.raises(ValueError):
+        evaluator._to_speech_act(bad_assistant)

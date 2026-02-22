@@ -1,11 +1,14 @@
 import json
 import sys
+from argparse import Namespace
+from importlib.metadata import PackageNotFoundError
 
 import pytest
 
 import normcore
 from normcore import evaluate
 from normcore.cli import main as cli_main
+from normcore.cli import _resolve_log_level
 from normcore.evaluator import evaluate as namespaced_evaluate
 
 
@@ -29,6 +32,16 @@ def test_normcore_cli_version_runs(monkeypatch, capsys):
     assert cli_main() == 0
     output = capsys.readouterr().out.strip()
     assert output
+
+
+def test_resolve_log_level_handles_non_int_verbose():
+    args = Namespace(log_level=None, verbose="loud")
+    assert _resolve_log_level(args) is None
+
+
+def test_resolve_log_level_debug_for_vv():
+    args = Namespace(log_level=None, verbose=2)
+    assert _resolve_log_level(args) == "DEBUG"
 
 
 def test_normcore_cli_evaluate_runs(capsys):
@@ -216,6 +229,20 @@ def test_normcore_cli_evaluate_with_external_grounds_runs(capsys):
 def test_normcore_cli_evaluate_with_invalid_grounds_json_fails():
     with pytest.raises(SystemExit):
         cli_main(["evaluate", "--agent-output", "Text", "--grounds", "{bad json}"])
+
+
+def test_normcore_cli_evaluate_with_invalid_conversation_json_fails():
+    with pytest.raises(SystemExit):
+        cli_main(["evaluate", "--conversation", "{bad json}"])
+
+
+def test_normcore_cli_version_not_installed_fallback(monkeypatch, capsys):
+    def _raise_not_found(_name: str) -> str:
+        raise PackageNotFoundError
+
+    monkeypatch.setattr("normcore.cli.version", _raise_not_found)
+    assert cli_main(["--version"]) == 0
+    assert capsys.readouterr().out.strip() == "normcore (not installed)"
 
 
 def test_normcore_programmatic_evaluate_matches_cli_contract(capsys):

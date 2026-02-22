@@ -65,3 +65,12 @@ def test_license_permits():
     license = License(permitted_modalities={Modality.ASSERTIVE})
     assert license.permits(Modality.ASSERTIVE)
     assert not license.permits(Modality.CONDITIONAL)
+
+
+def test_ground_set_observed_and_scope_helpers():
+    factual = _node("n1", scope=Scope.FACTUAL, strength="weak")
+    contextual = _node("n2", scope=Scope.CONTEXTUAL, strength="strong")
+    ground_set = GroundSet(nodes=[factual, contextual])
+    assert ground_set.has_observed() is True
+    assert GroundSet(nodes=[factual]).get_scope_strength(Scope.CONTEXTUAL) is None
+    assert ground_set.get_nodes_by_scope(Scope.CONTEXTUAL) == [contextual]

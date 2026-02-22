@@ -1,5 +1,8 @@
+from types import SimpleNamespace
+
 from normcore.evaluator import AdmissibilityEvaluator
 from normcore.normative.models import (
+    AxiomCheckResult,
     EvaluationStatus,
     GroundSet,
     KnowledgeNode,
@@ -82,3 +85,70 @@ def test_to_judgment_maps_status_and_statement_data():
     assert judgment.statement_evaluations[0].statement_id == "s1"
     assert judgment.grounds_accepted == 3
     assert judgment.grounds_cited == 2
+
+
+def test_aggregate_mixed_conditional_and_acceptable():
+    evaluator = AdmissibilityEvaluator()
+    axiom_results = [
+        AxiomCheckResult(status=EvaluationStatus.CONDITIONALLY_ACCEPTABLE),
+        AxiomCheckResult(status=EvaluationStatus.ACCEPTABLE),
+    ]
+    statement = Statement(
+        id="s1",
+        subject="agent",
+        predicate="participation",
+        raw_text="text",
+        modality=Modality.ASSERTIVE,
+    )
+    stmt_results = [
+        StatementValidationResult(
+            statement=statement,
+            status=EvaluationStatus.CONDITIONALLY_ACCEPTABLE,
+            license=License(permitted_modalities={Modality.CONDITIONAL}),
+            ground_set=GroundSet(nodes=[]),
+        ),
+        StatementValidationResult(
+            statement=statement,
+            status=EvaluationStatus.ACCEPTABLE,
+            license=License(permitted_modalities={Modality.ASSERTIVE}),
+            ground_set=GroundSet(nodes=[]),
+        ),
+    ]
+
+    result = evaluator._aggregate(axiom_results, stmt_results)
+    assert result.status == EvaluationStatus.CONDITIONALLY_ACCEPTABLE
+    assert result.explanation == "Mix of conditional and acceptable statements"
+
+
+def test_to_judgment_falls_back_on_unknown_status_value():
+    fake_status = SimpleNamespace(value="not_a_real_status")
+    fake_stmt = SimpleNamespace(
+        statement=SimpleNamespace(
+            id="s1",
+            raw_text="text",
+            modality=None,
+            subject="agent",
+            predicate="participation",
+        ),
+        license=SimpleNamespace(permitted_modalities=set()),
+        status=fake_status,
+        violated_axiom=None,
+        explanation="fallback",
+        ground_set=SimpleNamespace(nodes=[]),
+    )
+    fake_validation = SimpleNamespace(
+        status=fake_status,
+        licensed=False,
+        can_retry=False,
+        statement_results=[fake_stmt],
+        feedback_hint=None,
+        explanation="fallback",
+        num_statements=1,
+        num_acceptable=0,
+        grounds_accepted=0,
+        grounds_cited=0,
+    )
+
+    judgment = AdmissibilityEvaluator._to_judgment(fake_validation)
+    assert judgment.status.value == "underdetermined"
+    assert judgment.statement_evaluations[0].status.value == "underdetermined"

@@ -58,3 +58,24 @@ def test_stable_id_fragment_is_deterministic():
     builder = KnowledgeStateBuilder()
     value = "same-input"
     assert builder._stable_id_fragment(value) == builder._stable_id_fragment(value)
+
+
+def test_non_epistemic_tool_detection_extra_patterns():
+    builder = KnowledgeStateBuilder()
+    assert builder._is_non_epistemic_tool("get_user_cognitive_context")
+    assert builder._is_non_epistemic_tool("load_personalization_profile")
+    assert builder._is_non_epistemic_tool("save_memory_note")
+    assert builder._is_non_epistemic_tool("update_profile_settings")
+    assert builder._is_non_epistemic_tool("remember_this")
+
+
+def test_extract_semantic_id_handles_empty_invalid_and_non_object_payloads():
+    builder = KnowledgeStateBuilder()
+    assert builder._extract_semantic_id(_tool_result("get_issue", "")) is None
+    assert builder._extract_semantic_id(_tool_result("get_issue", "123")) is None
+    assert builder._extract_semantic_id(_tool_result("get_issue", "{bad json}")) is None
+
+
+def test_extract_entity_id_returns_none_when_no_matching_fields():
+    builder = KnowledgeStateBuilder()
+    assert builder._extract_entity_id({"foo": "bar"}) is None

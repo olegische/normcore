@@ -18,6 +18,10 @@ def test_parse_grounds_from_dict_payload():
     assert grounds[0].citation_key == "DocX"
 
 
+def test_parse_grounds_empty_payload_returns_empty():
+    assert parse_grounds([]) == []
+
+
 def test_build_links_from_grounds_only_for_cited_keys():
     grounds = [
         Ground(citation_key="toolCall1", ground_id="issue_AGENT-8"),
@@ -45,3 +49,7 @@ def test_grounds_from_tool_call_refs_expands_multiple_grounds():
         ("call_a", "g2"),
         ("call_b", "g3"),
     ]
+
+
+def test_extract_citation_keys_empty_text_returns_empty():
+    assert extract_citation_keys("") == []

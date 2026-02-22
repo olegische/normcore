@@ -61,6 +61,13 @@ def test_conservative_license_weak_factual():
     assert Modality.CONDITIONAL in license.permitted_modalities
 
 
+def test_conservative_license_without_factual_scope_is_refusal_only():
+    deriver = LicenseDeriver()
+    ground_set = GroundSet(nodes=[_node("n1", scope=Scope.CONTEXTUAL, strength="strong")])
+    license = deriver.derive(ground_set)
+    assert license.permitted_modalities == {Modality.REFUSAL}
+
+
 def test_license_with_links_no_supports():
     deriver = LicenseDeriver()
     ground_set = GroundSet(nodes=[_node("n1")])
@@ -93,6 +100,14 @@ def test_license_with_links_weak_supports():
     assert Modality.ASSERTIVE not in license.permitted_modalities
 
 
+def test_license_with_links_without_factual_supports_is_refusal_only():
+    deriver = LicenseDeriver()
+    ground_set = GroundSet(nodes=[_node("n1", scope=Scope.CONTEXTUAL)])
+    links = LinkSet(links=[_link("s1", "n1")])
+    license = deriver.derive(ground_set, links=links)
+    assert license.permitted_modalities == {Modality.REFUSAL}
+
+
 def test_derive_with_trace_includes_mode_and_nodes():
     deriver = LicenseDeriver()
     ground_set = GroundSet(nodes=[_node("n1")])
@@ -101,3 +116,12 @@ def test_derive_with_trace_includes_mode_and_nodes():
     assert trace["ground_set_size"] == 1
     assert trace["nodes"][0]["id"] == "n1"
     assert Modality.ASSERTIVE in license.permitted_modalities
+
+
+def test_derive_with_trace_includes_support_link_count_in_links_mode():
+    deriver = LicenseDeriver()
+    ground_set = GroundSet(nodes=[_node("n1")])
+    links = LinkSet(links=[_link("s1", "n1"), _link("s1", "n1", role=LinkRole.DISAMBIGUATES)])
+    _license, trace = deriver.derive_with_trace(ground_set, links=links)
+    assert trace["mode"] == "links"
+    assert trace["supports_links_count"] == 1

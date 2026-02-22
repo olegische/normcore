@@ -72,3 +72,24 @@ def test_detect_with_conditions_does_not_extract_for_assertive_tail_if():
     detector.detect_with_conditions(statement)
     assert statement.modality == Modality.ASSERTIVE
     assert statement.conditions == []
+
+
+def test_extract_core_assertion_uses_paragraph_then_sentence_then_first_line_then_fallback():
+    detector = ModalityDetector()
+    assert detector._extract_core_assertion("core\n\ntail") == "core"
+    assert detector._extract_core_assertion("one. two") == "one."
+    assert detector._extract_core_assertion("line1\nline2") == "line1"
+    long_text = "x" * 800
+    assert detector._extract_core_assertion(long_text) == long_text[:500]
+
+
+def test_extract_conditions_supports_assuming_and_personalization_markers():
+    detector = ModalityDetector()
+    conditions = detector._extract_conditions(
+        "Assuming budget is fixed, choose A given your preferences, based on your constraints for you."
+    )
+    lowered = " | ".join(conditions).lower()
+    assert "budget is fixed" in lowered
+    assert "given your preferences" in lowered
+    assert "based on your constraints" in lowered
+    assert "for you" in lowered

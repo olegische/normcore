@@ -377,14 +377,8 @@ class StatementExtractor:
         sentences = re.split(r"(?<=[.!?])\s+", text)
 
         kept = []
-        found_normative = False
 
         for i, sentence in enumerate(sentences):
-            # If we already found normative content, keep everything after
-            if found_normative:
-                kept.append(sentence)
-                continue
-
             has_strong_normative = self._contains_strong_normative_indicators(sentence)
             has_any_normative = self._contains_normative_indicators(sentence)
 
@@ -396,7 +390,6 @@ class StatementExtractor:
             # First normative sentence → keep it and everything after
             if has_any_normative:
                 kept.extend(sentences[i:])
-                found_normative = True
                 break
 
             # Sentence is neither clearly protocol nor clearly normative

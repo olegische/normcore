@@ -91,3 +91,47 @@ def test_default_accepts_when_license_permits():
     license = License(permitted_modalities={Modality.ASSERTIVE})
     result = checker.check(statement, license, GroundSet([_node()]), task_goal="goal")
     assert result.status == EvaluationStatus.ACCEPTABLE
+
+
+def test_conditional_with_conditions_and_no_assertive_license_is_conditionally_acceptable():
+    checker = AxiomChecker()
+    statement = _statement(Modality.CONDITIONAL, conditions=["if x"])
+    license = License(permitted_modalities={Modality.CONDITIONAL})
+    result = checker.check(statement, license, GroundSet([_node()]), task_goal="goal")
+    assert result.status == EvaluationStatus.CONDITIONALLY_ACCEPTABLE
+
+
+def test_modality_none_returns_underdetermined():
+    checker = AxiomChecker()
+    statement = Statement(
+        id="s1",
+        subject="agent",
+        predicate="participation",
+        raw_text="text",
+        modality=None,
+    )
+    result = checker.check(statement, License(set()), GroundSet([_node()]), task_goal="goal")
+    assert result.status == EvaluationStatus.UNDERDETERMINED
+
+
+def test_fallback_underdetermined_when_modality_not_permitted():
+    checker = AxiomChecker()
+    fake_modality = type("FakeModality", (), {"value": "fake"})()
+    statement = Statement(
+        id="s1",
+        subject="agent",
+        predicate="participation",
+        raw_text="text",
+        modality=fake_modality,  # type: ignore[assignment]
+    )
+    license = License(permitted_modalities={Modality.REFUSAL})
+    result = checker.check(statement, license, GroundSet([_node()]), task_goal="goal")
+    assert result.status == EvaluationStatus.UNDERDETERMINED
+
+
+def test_invariant_helpers_return_expected_defaults():
+    checker = AxiomChecker()
+    statement = _statement(Modality.ASSERTIVE)
+    assert checker._is_formable(statement) is True
+    assert checker._is_self_referent(statement) is False
+    assert checker._is_relevant(statement, "goal") is True
