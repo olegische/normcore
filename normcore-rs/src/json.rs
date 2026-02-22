@@ -407,4 +407,49 @@ mod tests {
         assert!(rendered.contains("2,"));
         assert!(rendered.contains("\"x\": true,"));
     }
+
+    #[test]
+    fn pretty_print_matches_expected_structure_exactly() {
+        let value = parse_json(r#"{"a":[1,2],"b":{"x":true}}"#).expect("must parse");
+        let rendered = to_pretty_json(&value);
+        assert_eq!(
+            rendered,
+            "{\n  \"a\": [\n    1,\n    2\n  ],\n  \"b\": {\n    \"x\": true\n  }\n}"
+        );
+    }
+
+    #[test]
+    fn pretty_print_formats_integers_and_non_integers() {
+        let int_value = parse_json("100").expect("must parse");
+        assert_eq!(to_pretty_json(&int_value), "100");
+
+        let float_value = parse_json("1.25").expect("must parse");
+        assert_eq!(to_pretty_json(&float_value), "1.25");
+
+        let sci_value = parse_json("1e2").expect("must parse");
+        assert_eq!(to_pretty_json(&sci_value), "100");
+    }
+
+    #[test]
+    fn parse_json_supports_slash_backspace_formfeed_and_uppercase_hex() {
+        let value = parse_json(r#"{"s":"\/\b\f\u00AF"}"#).expect("must parse");
+        let JsonValue::Object(map) = value else {
+            panic!("expected object")
+        };
+        assert_eq!(
+            map.get("s"),
+            Some(&JsonValue::String("/\u{0008}\u{000C}\u{00AF}".to_string()))
+        );
+    }
+
+    #[test]
+    fn parse_json_rejects_unescaped_control_characters_in_strings() {
+        assert!(parse_json("{\"s\":\"line\nbreak\"}").is_err());
+    }
+
+    #[test]
+    fn pretty_print_escapes_control_characters() {
+        let value = JsonValue::String("x\n\r\ty".to_string());
+        assert_eq!(to_pretty_json(&value), "\"x\\n\\r\\ty\"");
+    }
 }

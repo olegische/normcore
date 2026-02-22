@@ -28,6 +28,7 @@ Notes:
 
 ## Repository Layout
 
+- `ARCHITECTURE.md` — high-level architecture and testing strategy
 - `normcore-py/src/normcore` — Python implementation
 - `normcore-rs` — Rust implementation
 - `formal` — formal specs and artifacts

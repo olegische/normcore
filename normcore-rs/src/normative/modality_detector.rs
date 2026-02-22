@@ -265,6 +265,18 @@ mod tests {
             d.detect("If you're optimizing throughput, use strategy B."),
             Modality::Conditional
         );
+        assert_eq!(
+            d.detect("If you are optimizing cost, use strategy C."),
+            Modality::Conditional
+        );
+        assert_eq!(
+            d.detect("Assuming you want low latency, use strategy D."),
+            Modality::Conditional
+        );
+        assert_eq!(
+            d.detect("If you're aiming for accuracy, use strategy E."),
+            Modality::Conditional
+        );
     }
 
     #[test]
@@ -289,6 +301,21 @@ mod tests {
         );
         assert_eq!(
             d.detect("The deployment is blocked, so you should pause rollout."),
+            Modality::Assertive
+        );
+    }
+
+    #[test]
+    fn detector_non_normative_non_descriptive_defaults_to_assertive() {
+        let d = ModalityDetector;
+        assert_eq!(d.detect("Hello team."), Modality::Assertive);
+    }
+
+    #[test]
+    fn detector_recommendation_phrase_is_assertive() {
+        let d = ModalityDetector;
+        assert_eq!(
+            d.detect("Option A is better for this rollout."),
             Modality::Assertive
         );
     }

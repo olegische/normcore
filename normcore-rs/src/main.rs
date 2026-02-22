@@ -211,4 +211,83 @@ mod tests {
             2
         );
     }
+
+    #[test]
+    fn evaluate_missing_conversation_value_returns_error() {
+        assert_eq!(
+            run(vec![
+                "normcore".to_string(),
+                "evaluate".to_string(),
+                "--conversation".to_string(),
+            ]),
+            2
+        );
+    }
+
+    #[test]
+    fn evaluate_missing_grounds_value_returns_error() {
+        assert_eq!(
+            run(vec![
+                "normcore".to_string(),
+                "evaluate".to_string(),
+                "--grounds".to_string(),
+            ]),
+            2
+        );
+    }
+
+    #[test]
+    fn options_without_evaluate_command_do_not_force_execution() {
+        assert_eq!(
+            run(vec![
+                "normcore".to_string(),
+                "--agent-output".to_string(),
+                "We should deploy now.".to_string(),
+            ]),
+            0
+        );
+        assert_eq!(
+            run(vec![
+                "normcore".to_string(),
+                "--conversation".to_string(),
+                "[]".to_string(),
+            ]),
+            0
+        );
+        assert_eq!(
+            run(vec![
+                "normcore".to_string(),
+                "--grounds".to_string(),
+                "[]".to_string(),
+            ]),
+            0
+        );
+    }
+
+    #[test]
+    fn log_level_consumes_its_value_even_when_it_looks_like_an_option() {
+        assert_eq!(
+            run(vec![
+                "normcore".to_string(),
+                "evaluate".to_string(),
+                "--log-level".to_string(),
+                "--agent-output".to_string(),
+                "--agent-output".to_string(),
+                "We should deploy now.".to_string(),
+            ]),
+            0
+        );
+    }
+
+    #[test]
+    fn log_level_value_does_not_become_command() {
+        assert_eq!(
+            run(vec![
+                "normcore".to_string(),
+                "--log-level".to_string(),
+                "evaluate".to_string(),
+            ]),
+            0
+        );
+    }
 }
